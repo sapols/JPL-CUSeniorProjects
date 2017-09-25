@@ -1,6 +1,6 @@
 # M.A.R.S
 
-##Members:
+## Members:
  - Ross Blassingame
  - Robert Ballard
  - Shawn Polson
