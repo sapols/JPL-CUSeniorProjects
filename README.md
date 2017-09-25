@@ -1,4 +1,5 @@
-# M.A.R.S
+# M.A.R.S 
+Martian Autonomous Routing System
 
 ## Members:
  - Ross Blassingame
