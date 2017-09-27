@@ -26,9 +26,9 @@ One can execute MARS by calling the program through a standard command line with
 
 Once MARS completes, the following files will be output in the provided output path:
 
-absolutePath.csv: A comma delimited list of tuples containing the map coordinates for each step in the route with perfect information.
-relativePath.csv: A comma delimited list of tuples containing the map coordinates for each step in the route with limited information.
-stats.txt: A list of stats regarding the two routes. This file is human-readable.
+ - absolutePath.csv: A comma delimited list of tuples containing the map coordinates for each step in the route with perfect information.
+ - relativePath.csv: A comma delimited list of tuples containing the map coordinates for each step in the route with limited information.
+ - stats.txt: A list of stats regarding the two routes. This file is human-readable.
 
 ## Copyright
 Placeholder
