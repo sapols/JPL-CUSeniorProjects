@@ -19,10 +19,10 @@ This project is sponsored by NASA Jet Propulsion Laboratory, with Marcel Llopis 
 
 One can execute MARS by calling the program through a standard command line with the following possible arguments:
 
--m: Path to elevation map. Required for operation.
--s: Start coordinate, in format X,Y. X and Y must be integer values the correspond to the same pixel on the map. Required for operation.
--g: Goal coordinate, in format X,Y. X and Y must be integer values the correspond to the same pixel on the map. Required for operation.
--o: Output path. Required for operation.
+ - -m: Path to elevation map. Required for operation.
+ - -s: Start coordinate, in format X,Y. X and Y must be integer values the correspond to the same pixel on the map. Required for operation.
+ - -g: Goal coordinate, in format X,Y. X and Y must be integer values the correspond to the same pixel on the map. Required for operation.
+ - -o: Output path. Required for operation.
 
 Once MARS completes, the following files will be output in the provided output path:
 
