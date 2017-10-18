@@ -6,7 +6,6 @@ public class marsTest {
         Route newRoute = new Route();
         String[] testArgs = { "Mars_MGS_MOLA_DEM_mosaic_global_463m.tif" };
         newRoute.main(testArgs);
-        Double result = newRoute.getValue(200.0,200.0);
-        System.out.println(result);
+        newRoute.getLine(100);
     }
 }
