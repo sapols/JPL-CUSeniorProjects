@@ -1,5 +1,6 @@
 package org.geotools;
 
+import mars.IGeoTiff;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.geotools.coverage.grid.GridCoordinates2D;
@@ -22,15 +23,15 @@ import java.util.Map;
 
 import static java.lang.System.in;
 
-public class GeoTIFF {
+public class GeoTIFF implements IGeoTiff {
     private static GridCoverage2D grid;
     private static Raster gridData;
 
-    public static void main(String fileLocation) throws Exception { //initialization
+    public void main(String fileLocation) throws Exception { //initialization
         initTif(fileLocation);
     }
 
-    public static void initTif(String fileLocation) throws Exception {
+    public void initTif(String fileLocation) throws Exception {
         File tiffFile = new File(fileLocation); //get the tiff
         GeoTiffReader reader = new GeoTiffReader(tiffFile); //make a GeoTiffReader (a apache geotools class)
 
@@ -49,7 +50,7 @@ public class GeoTIFF {
         gridData = grid.getRenderedImage().getData(); //and its data
     }
 
-    public static double getValue(double x, double y) throws Exception { //take in x,y and return elevation
+    public double getValue(double x, double y) throws Exception { //take in x,y and return elevation
         GridGeometry2D gg = grid.getGridGeometry();
 
         DirectPosition2D posWorld = new DirectPosition2D(x,y);
