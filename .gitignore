@@ -1,3 +1,7 @@
 *.tif
+*.tiff
 *.idea
+*.iml
 .DS_Store
+/target/
+
