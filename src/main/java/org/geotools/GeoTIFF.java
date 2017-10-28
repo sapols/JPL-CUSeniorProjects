@@ -30,7 +30,7 @@ public class GeoTIFF {
         initTif(fileLocation);
     }
 
-    private static void initTif(String fileLocation) throws Exception {
+    public static void initTif(String fileLocation) throws Exception {
         File tiffFile = new File(fileLocation); //get the tiff
         GeoTiffReader reader = new GeoTiffReader(tiffFile); //make a GeoTiffReader (a apache geotools class)
 
