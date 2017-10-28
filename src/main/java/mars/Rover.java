@@ -5,7 +5,7 @@ import org.geotools.GeoTIFF;
 /**
  * Represents a rover which traverses a given terrain.
  */
-public class Rover {
+public class Rover implements IRover {
 
     double maxSlope;
     int[] currentPosition = new int[2]; //x, y
