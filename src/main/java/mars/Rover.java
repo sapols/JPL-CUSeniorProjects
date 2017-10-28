@@ -32,6 +32,14 @@ public class Rover {
         }
     }
 
+    public void findOptimalPath() {
+        //Run the algorithm and output path to a file
+    }
+
+    public void findSuboptimalPath() {
+        //Run the algorithm and output path to a file
+    }
+
     //----Getter/Setter Methods----------------------------------------------------------------------------------------
 
     public void setMaxSlope(double slope) {
