@@ -1,3 +1,8 @@
 *.tif
+#*.tiff #temporarily allowing .tiffs
 *.idea
+*.iml
 .DS_Store
+*.DS_Store
+/target/
+
