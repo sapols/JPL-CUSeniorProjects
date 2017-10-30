@@ -1,5 +1,5 @@
 *.tif
-*.tiff
+#*.tiff #temporarily allowing .tiffs
 *.idea
 *.iml
 .DS_Store
