@@ -1,34 +1,21 @@
 package org.geotools;
 
-import mars.IGeoTiff;
-import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.ResultSetHandler;
+import mars.TerrainMap;
 import org.geotools.coverage.grid.GridCoordinates2D;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.io.imageio.geotiff.GeoKeyEntry;
-import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataDecoder;
 import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.geometry.DirectPosition2D;
 
 import java.awt.image.Raster;
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
-import static java.lang.System.in;
-
-public class GeoTIFF implements IGeoTiff {
+public class GeoTIFF extends TerrainMap {
     private static GridCoverage2D grid;
     private static Raster gridData;
 
     public void main(String fileLocation) throws Exception { //initialization
-        initTif(fileLocation);
+        initMap(fileLocation);
     }
 
     public void initTif(String fileLocation) throws Exception {
@@ -48,6 +35,11 @@ public class GeoTIFF implements IGeoTiff {
 
         grid = reader.read(null); //read in the tiff file
         gridData = grid.getRenderedImage().getData(); //and its data
+    }
+
+    public void initMap(String fileLocation) throws Exception {
+        initTif(fileLocation);
+        //System.out.print("c");
     }
 
     public double getValue(double x, double y) throws Exception { //take in x,y and return elevation
