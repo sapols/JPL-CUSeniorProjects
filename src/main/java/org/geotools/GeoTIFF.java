@@ -18,6 +18,10 @@ public class GeoTIFF extends TerrainMap {
         initMap(fileLocation);
     }
 
+    public void initMap(String fileLocation) throws Exception {
+        initTif(fileLocation);
+    }
+
     public void initTif(String fileLocation) throws Exception {
         File tiffFile = new File(fileLocation); //get the tiff
         GeoTiffReader reader = new GeoTiffReader(tiffFile); //make a GeoTiffReader (a apache geotools class)
@@ -35,11 +39,6 @@ public class GeoTIFF extends TerrainMap {
 
         grid = reader.read(null); //read in the tiff file
         gridData = grid.getRenderedImage().getData(); //and its data
-    }
-
-    public void initMap(String fileLocation) throws Exception {
-        initTif(fileLocation);
-        //System.out.print("c");
     }
 
     public double getValue(double x, double y) throws Exception { //take in x,y and return elevation

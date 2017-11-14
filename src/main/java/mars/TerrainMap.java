@@ -5,8 +5,8 @@ package mars;
  */
 public abstract class TerrainMap {
 
-    abstract void initMap(String fileLocation) throws Exception;
+    public abstract void initMap(String fileLocation) throws Exception;
 
-    abstract double getValue(double x, double y) throws Exception;
+    public abstract double getValue(double x, double y) throws Exception;
 
 }
