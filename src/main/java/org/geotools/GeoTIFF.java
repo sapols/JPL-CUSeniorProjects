@@ -10,6 +10,9 @@ import org.geotools.geometry.DirectPosition2D;
 import java.awt.image.Raster;
 import java.io.File;
 
+/*
+ * A GeoTIFF terrain map.
+ */
 public class GeoTIFF extends TerrainMap {
     private static GridCoverage2D grid;
     private static Raster gridData;

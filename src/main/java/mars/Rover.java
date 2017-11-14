@@ -4,6 +4,8 @@ import org.geotools.GeoTIFF;
 
 /**
  * Abstract class from which all rovers inherit.
+ *
+ * @param "..." //TODO: describe variables
  */
 public abstract class Rover {
 
