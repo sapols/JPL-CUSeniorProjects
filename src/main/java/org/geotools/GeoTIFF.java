@@ -1,33 +1,27 @@
 package org.geotools;
 
-import mars.IGeoTiff;
-import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.ResultSetHandler;
+import mars.TerrainMap;
 import org.geotools.coverage.grid.GridCoordinates2D;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.io.imageio.geotiff.GeoKeyEntry;
-import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataDecoder;
 import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.geometry.DirectPosition2D;
 
 import java.awt.image.Raster;
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
-import static java.lang.System.in;
-
-public class GeoTIFF implements IGeoTiff {
+/*
+ * A GeoTIFF terrain map.
+ */
+public class GeoTIFF extends TerrainMap {
     private static GridCoverage2D grid;
     private static Raster gridData;
 
     public void main(String fileLocation) throws Exception { //initialization
+        initMap(fileLocation);
+    }
+
+    public void initMap(String fileLocation) throws Exception {
         initTif(fileLocation);
     }
 
