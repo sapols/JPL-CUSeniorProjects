@@ -1,4 +1,4 @@
-package org.geotools;
+package mars;
 
 public class marsTest {
     public static void main(String[] args) throws Exception {

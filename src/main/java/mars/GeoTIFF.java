@@ -1,4 +1,4 @@
-package org.geotools;
+package mars;
 
 import mars.TerrainMap;
 import org.geotools.coverage.grid.GridCoordinates2D;

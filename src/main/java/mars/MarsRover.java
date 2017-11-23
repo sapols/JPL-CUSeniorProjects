@@ -1,7 +1,5 @@
 package mars;
 
-import org.geotools.GeoTIFF;
-
 /**
  * Represents a rover which traverses a given terrain.
  */

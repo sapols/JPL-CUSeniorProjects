@@ -1,4 +1,6 @@
-package org.geotools;
+package mars;
+
+import mars.GeoTIFF;
 
 public class Route {
     private double startPoint;

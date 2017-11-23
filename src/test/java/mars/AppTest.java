@@ -1,4 +1,4 @@
-package org.geotools;
+package mars;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
