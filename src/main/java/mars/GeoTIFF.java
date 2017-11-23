@@ -55,4 +55,21 @@ public class GeoTIFF extends TerrainMap {
         double[] data = gridData.getPixel(posGrid.x,posGrid.y,pixel);
         return data[0];
     }
+
+    /* leftover function from Route. Keeping here for now
+    public void getLine(double x) throws Exception {
+        double lastStat = -1;
+        double newStat = -1;
+        int lastY = 0;
+        int maxY = 46080;
+        for(int i=0; i<maxY; i++){
+            newStat = terrain.getValue(x,i);
+            if(newStat != lastStat){
+                System.out.println(Double.toString(lastStat) + " (" + Integer.toString(lastY) + " - " + Integer.toString(i) + ")");
+                lastStat = newStat;
+                lastY = i;
+            }
+        }
+    }
+     */
 }
