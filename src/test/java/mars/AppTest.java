@@ -1,4 +1,4 @@
-package org.geotools;
+package mars;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -25,29 +25,30 @@ public class AppTest extends TestCase {
     }
 
     //@Test
-    public void testInstantiateRoute() {
-        Route newRoute = new Route();
-        newRoute.setStartPoint(10.0);
-        assertEquals(10.0,newRoute.getStartPoint());
+    public void testRover_initialize() {
+        int[] starts = { 10,10 };
+        int[] ends = { 20,20 };
+        MarsRover newRover = new MarsRover(0,starts,ends,"");
+        assertEquals(10,(newRover.getStartPosition())[0]);
     }
 
     //@Test
     public void testHeapSize() {
         long heapMaxSize = Runtime.getRuntime().maxMemory();
         boolean testSuccess = false;
-        if(heapMaxSize > 2047999999){testSuccess = true;};
+        if(heapMaxSize > 2047999999){testSuccess = true;}
         assertTrue((Long.toString(heapMaxSize)),testSuccess);
     }
 
     //@Test
     public void testReadSmallTIFF() throws Exception {
-        Route newRoute = new Route();
-        String[] testArgs = { "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff" }; //file should be in src/test/resources
-        newRoute.main(testArgs);
-        Double result = newRoute.getValue(200.0,200.0);
+        GeoTIFF newMap = new GeoTIFF();
+        newMap.initMap("src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
+        Double result = newMap.getValue(200,200);
         assertNotSame(Double.toString(result),0,result);
     }
 
+    /*
     //@Test
     public void testReadBigTIFF() throws Exception {
         Route newRoute = new Route();
@@ -59,5 +60,6 @@ public class AppTest extends TestCase {
         if(resultbottom > resulttop){testSuccess = true;}
         assertTrue(Double.toString(resultbottom - resulttop),testSuccess);
     }
+    */
 
 }

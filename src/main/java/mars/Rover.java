@@ -1,7 +1,5 @@
 package mars;
 
-import org.geotools.GeoTIFF;
-
 /**
  * Abstract class from which all rovers inherit.
  *
