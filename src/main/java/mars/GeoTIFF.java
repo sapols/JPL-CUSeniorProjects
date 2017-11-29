@@ -52,6 +52,9 @@ public class GeoTIFF extends TerrainMap {
 
         //envelope is the size in the target projection
         double[] pixel = new double[1];
+        if(x > gridData.getWidth() || x < 0 || y > gridData.getHeight() || y < 0){ //if x or y out of bounds, error
+            throw new Exception("Bad getValue");
+        }
         double[] data = gridData.getPixel(posGrid.x,posGrid.y,pixel);
         return data[0];
     }

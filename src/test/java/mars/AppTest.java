@@ -41,11 +41,38 @@ public class AppTest extends TestCase {
     }
 
     //@Test
-    public void testReadSmallTIFF() throws Exception {
+    public void testTIFF_getValue_valid() throws Exception {
         GeoTIFF newMap = new GeoTIFF();
         newMap.initMap("src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
         Double result = newMap.getValue(200,200);
         assertNotSame(Double.toString(result),0,result);
+    }
+
+    //@Test
+    public void testTIFF_getValue_bad() throws Exception {
+        GeoTIFF newMap = new GeoTIFF();
+        newMap.initMap("src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
+        try {
+            Double result = newMap.getValue(-1,-1);
+        } catch (Exception expectedException) {
+            assertEquals("Bad getValue",expectedException.getMessage());
+        }
+    }
+
+    //@Test
+    public void testRover_getSlope_zero() throws Exception {
+        int[] starts = { 10,10 };
+        int[] ends = { 20,20 };
+        MarsRover newRover = new MarsRover(0,starts,ends,"src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
+        assertEquals(0.,newRover.getSlope(20,20,21,20));
+    }
+
+    //@Test
+    public void testRover_testSlope_valid() throws Exception {
+        int[] starts = { 10,10 };
+        int[] ends = { 20,20 };
+        MarsRover newRover = new MarsRover(0,starts,ends,"src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
+        assertTrue(newRover.testSlope(0.5,20,20,21,20));
     }
 
     /*
