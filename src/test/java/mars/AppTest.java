@@ -69,6 +69,19 @@ public class AppTest extends TestCase {
         assertTrue(newRover.testSlope(0.5,20,20,21,20));
     }
 
+    public void testGeotiffMaxHeight() throws Exception{
+        GeoTIFF newMap = new GeoTIFF();
+        newMap.initMap("src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
+        Double result = newMap.getMaxValue();
+        assertEquals(result, result);
+    }
+
+    public void testGeotiffMinHeight() throws Exception{
+        GeoTIFF newMap = new GeoTIFF();
+        newMap.initMap("src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
+        Double result = newMap.getMinValue();
+        assertEquals(result, result);
+    }
     /*
     //@Test
     public void testReadBigTIFF() throws Exception {

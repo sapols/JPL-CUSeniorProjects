@@ -59,6 +59,40 @@ public class GeoTIFF extends TerrainMap {
         return data[0];
     }
 
+    public double getMaxValue() throws Exception {
+        double maxElevation = -Double.MAX_VALUE; //use minimum
+        double currentElevation;
+        for(int i = 0; i < gridData.getWidth(); i++)
+        {
+            for(int j = 0; j < gridData.getHeight(); j++)
+            {
+                currentElevation = getValue(i,j);
+                if(currentElevation > maxElevation){
+                    maxElevation = currentElevation;
+                }
+            }
+        }
+        System.out.println("Maximum Elevation:  "+ maxElevation);
+        return maxElevation;
+    }
+
+    public double getMinValue() throws Exception {
+        double minElevation = Double.MAX_VALUE; //use minimum
+        double currentElevation;
+        for(int i = 0; i < gridData.getWidth(); i++)
+        {
+            for(int j = 0; j < gridData.getHeight(); j++)
+            {
+                currentElevation = getValue(i,j);
+                if(currentElevation < minElevation){
+                    minElevation = currentElevation;
+                }
+            }
+        }
+        System.out.println("Minimum Elevation:  "+ minElevation);
+        return minElevation;
+    }
+
     /* leftover function from Route. Keeping here for now
     public void getLine(double x) throws Exception {
         double lastStat = -1;
