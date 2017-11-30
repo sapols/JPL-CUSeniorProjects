@@ -1,4 +1,7 @@
 package mars;
+import com.sun.corba.se.impl.io.TypeMismatchException;
+
+import org.omg.IOP.CodecPackage.TypeMismatch;
 
 import java.util.Scanner;
 
@@ -16,6 +19,7 @@ public class TerminalInterface extends UserInterface{
     String mapPath = "";
     String alg = ""; //used to determine Algorithm to use
     double fieldOfView = 0;
+    TerrainMap m = new GeoTIFF();
 
     //other variables inherited from "UserInterface"
 
@@ -23,16 +27,21 @@ public class TerminalInterface extends UserInterface{
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to the Martian Autonomous Routing System");
         System.out.println("Please enter the path for the map you would like to traverse");
-        while(true)
-        {
+
+        while(true) {
             try{
                 mapPath = scanner.next();
+                m.initMap(mapPath);
                 break;
-            }catch(Exception e)
-            {
+            }catch(TypeMismatchException e) {
                 System.out.println("Warning: Please enter a string");
                 scanner.nextLine();
+            }catch(Exception e)
+            {
+                System.out.println("Warning: Make sure the path you are entering is correct");
+                scanner.nextLine();
             }
+
         }
         scanner.nextLine();
         System.out.println("Please enter the max slope your rover can handle");
@@ -76,13 +85,11 @@ public class TerminalInterface extends UserInterface{
         while(true) {
             System.out.println("Which algorithm would you like to use, (U)nlimited scope or (L)imited Scope");
             alg = scanner.next();
-            if(alg.equals("U") || alg.equals("u") )
-            {
+            if(alg.equals("U") || alg.equals("u") ) {
                 startAlgorithm();
                 break;
             }
-            else if(alg.equals("L") || alg.equals("l"))
-            {
+            else if(alg.equals("L") || alg.equals("l")) {
                 scanner.nextLine();
                 System.out.println("Enter the Field of View Radius of your rover");
                 while(true) {
@@ -97,8 +104,7 @@ public class TerminalInterface extends UserInterface{
                 startAlgorithm();
                 break;
             }
-            else
-            {
+            else {
                 System.out.println("Warning: Enter U for Unlimited Scope or L for limited scope");
                 scanner.nextLine();
             }
@@ -108,20 +114,29 @@ public class TerminalInterface extends UserInterface{
 
     public void startAlgorithm() {
         //Start Rover then run its algorithm until the output file is populated with results.
-        if (alg.equals("U") || alg.equals("u"))
-        {
+        if (alg.equals("U") || alg.equals("u")) {
             MarsRover r = new MarsRover(slope, startCoords, endCoords, mapPath);
-            //OptimalAlgorithm.OptimalAlgorithm( map, r);
+            algorithm = new OptimalAlgorithm(m, r);
+            algorithm.findPath();
         }
-        else if (alg.equals("L") || alg.equals("l"))
-        {
+        else if (alg.equals("L") || alg.equals("l")) {
             MarsRover r = new MarsRover(slope,startCoords,endCoords,mapPath,fieldOfView);
-            //SuboptimalAlgorithm(r, mapPath);
+            algorithm = new SuboptimalAlgorithm(m, r);
+            algorithm.findPath();
         }
-        else
-        {
+        else {
             System.out.println("Error: No algorithm Selected");
         }
     }
+
+
+    /*  For Testing ***
+    public static void main(String[] args)
+    {
+        TerminalInterface ti = new TerminalInterface();
+        ti.promptUser();
+    }
+    */
+
 }
 
