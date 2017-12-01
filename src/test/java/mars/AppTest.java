@@ -48,13 +48,18 @@ public class AppTest extends TestCase {
         assertNotSame(Double.toString(result),0,result);
     }
 
+    //@Test
     public void testTIFF_getValue_bad() throws Exception {
         GeoTIFF newMap = new GeoTIFF();
         newMap.initMap("src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
-        Double result = newMap.getValue(-1,-1);
-        assertEquals(-999999999.,result);
+        try {
+            Double result = newMap.getValue(-1,-1);
+        } catch (Exception expectedException) {
+            assertEquals("Bad getValue",expectedException.getMessage());
+        }
     }
 
+    //@Test
     public void testRover_getSlope_zero() throws Exception {
         int[] starts = { 10,10 };
         int[] ends = { 20,20 };
@@ -62,6 +67,7 @@ public class AppTest extends TestCase {
         assertEquals(0.,newRover.getSlope(20,20,21,20));
     }
 
+    //@Test
     public void testRover_testSlope_valid() throws Exception {
         int[] starts = { 10,10 };
         int[] ends = { 20,20 };

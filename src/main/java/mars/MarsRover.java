@@ -116,7 +116,7 @@ public class MarsRover extends Rover {
         double z2 = map.getValue(x2,y2);
         double zDistance = z2 - z1;
         double xyDistance = Math.sqrt(Math.pow((x2-x1),2)+Math.pow((y2-y1),2));
-        return Math.atan(zDistance / xyDistance); // construct a right-angle triangle such that adjacent = xyDistance and opposite = zDistance
+        return Math.toDegrees(Math.atan(zDistance / xyDistance)); // construct a right-angle triangle such that adjacent = xyDistance and opposite = zDistance
     }
 
     // returns true if the rover can traverse to this point, false if it can't. enforces slope requirement.
