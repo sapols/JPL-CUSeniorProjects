@@ -16,6 +16,9 @@ public class SuboptimalAlgorithm extends Algorithm {
         rover = r;
     }
 
+    /**
+     * TODO Describe findPath() here
+     */
     public void findPath() {
         //find a path
     }
