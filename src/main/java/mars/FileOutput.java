@@ -5,6 +5,9 @@ package mars;
  */
 public class FileOutput extends Output {
 
+    /*
+     * Describe writeToOutput() function here
+     */
     public void writeToOutput() {
         //Write resultList to a file
     }
