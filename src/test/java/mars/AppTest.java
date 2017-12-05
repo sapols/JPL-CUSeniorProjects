@@ -88,6 +88,14 @@ public class AppTest extends TestCase {
         Double result = newMap.getMinValue();
         assertEquals(result, result);
     }
+
+    public void testGeotiffMinlessthanMax() throws Exception{
+        GeoTIFF newMap = new GeoTIFF();
+        newMap.initMap("src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
+        Double minresult = newMap.getMinValue();
+        Double maxresult = newMap.getMaxValue();
+        assertTrue(minresult < maxresult);
+    }
     /*
     //@Test
     public void testReadBigTIFF() throws Exception {

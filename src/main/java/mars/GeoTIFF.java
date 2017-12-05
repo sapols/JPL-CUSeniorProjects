@@ -60,7 +60,7 @@ public class GeoTIFF extends TerrainMap {
     }
 
     public double getMaxValue() throws Exception {
-        double maxElevation = -Double.MAX_VALUE; //use minimum
+        double maxElevation = Double.MIN_VALUE; //use minimum
         double currentElevation;
         for(int i = 0; i < gridData.getWidth(); i++)
         {
@@ -77,7 +77,7 @@ public class GeoTIFF extends TerrainMap {
     }
 
     public double getMinValue() throws Exception {
-        double minElevation = Double.MAX_VALUE; //use minimum
+        double minElevation = Double.MAX_VALUE; //use maximum
         double currentElevation;
         for(int i = 0; i < gridData.getWidth(); i++)
         {
