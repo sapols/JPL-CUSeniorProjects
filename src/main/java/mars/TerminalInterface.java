@@ -136,27 +136,18 @@ public class TerminalInterface extends UserInterface {
         //Start Rover then run its algorithm until the output file is populated with results.
         if (alg.equalsIgnoreCase("U")) {
             MarsRover r = new MarsRover(slope, startCoords, endCoords, mapPath);
-            algorithm = new OptimalAlgorithm(map, r);
+            algorithm = new AlgorithmUnlimitedScope(map, r);
             algorithm.findPath();
         }
         else if (alg.equalsIgnoreCase("L")) {
             MarsRover r = new MarsRover(slope,startCoords,endCoords,mapPath,fieldOfView);
-            algorithm = new SuboptimalAlgorithm(map, r);
+            algorithm = new AlgorithmLimitedScope(map, r);
             algorithm.findPath();
         }
         else {
             System.out.println("Error: No algorithm selected.");
         }
     }
-
-
-    /*  For Testing ***
-    public static void main(String[] args)
-    {
-        TerminalInterface ti = new TerminalInterface();
-        ti.promptUser();
-    }
-    */
 
 }
 
