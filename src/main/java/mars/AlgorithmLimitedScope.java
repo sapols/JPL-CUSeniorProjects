@@ -3,28 +3,28 @@ package mars;
 import java.util.ArrayList;
 
 /**
- * Class which implements the path-finding algorithm without a limited field of view.
+ * Class which implements the path-finding algorithm with a limited field of view.
  */
-public class OptimalAlgorithm extends Algorithm {
+public class AlgorithmLimitedScope extends Algorithm {
 
     ArrayList<int[]> path = new ArrayList<int[]>();
 
     /*
-     * Default constructor for an OptimalAlgorithm.
+     * Default constructor for an AlgorithmUnlimitedScope.
      *
      * @param map The terrain map
      * @param rover The rover
      */
-    public OptimalAlgorithm(TerrainMap m, MarsRover r) {
+    public AlgorithmLimitedScope(TerrainMap m, MarsRover r) {
         map = m;
         rover = r;
     }
 
     public void findPath() {
-        //find a path with A*
+        //find a path
 
         //---A "blank" algorithm-----------------------------------
-          //This commented-out code can be used to ensure that all the pieces connected properly
+        //This commented-out code can be used to ensure that all the pieces connected properly
 //        rover.printSpecs();
 //        try {
 //            System.out.println("Map value at start position: " + map.getValue(rover.getStartPosition()[0], rover.getStartPosition()[1]));
@@ -38,5 +38,4 @@ public class OptimalAlgorithm extends Algorithm {
         output = new TerminalOutput(path);
         //---------------------------------------------------------
     }
-
 }

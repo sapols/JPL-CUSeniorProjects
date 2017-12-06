@@ -1,8 +1,6 @@
 package mars;
 import com.sun.corba.se.impl.io.TypeMismatchException;
 
-import org.omg.IOP.CodecPackage.TypeMismatch;
-
 import java.util.Scanner;
 
 /**
@@ -132,12 +130,12 @@ public class TerminalInterface extends UserInterface {
         //Start Rover then run its algorithm until the output file is populated with results.
         if (alg.equalsIgnoreCase("U")) {
             MarsRover r = new MarsRover(slope, startCoords, endCoords, mapPath);
-            algorithm = new OptimalAlgorithm(map, r);
+            algorithm = new AlgorithmUnlimitedScope(map, r);
             algorithm.findPath();
         }
         else if (alg.equalsIgnoreCase("L")) {
             MarsRover r = new MarsRover(slope,startCoords,endCoords,mapPath,fieldOfView);
-            algorithm = new SuboptimalAlgorithm(map, r);
+            algorithm = new AlgorithmLimitedScope(map, r);
             algorithm.findPath();
         }
         else {
