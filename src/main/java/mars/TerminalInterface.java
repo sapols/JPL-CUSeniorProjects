@@ -31,6 +31,10 @@ public class TerminalInterface extends UserInterface {
 
     //other variables inherited from "UserInterface"
 
+    /**
+     * Function that manually prompts the user for required variables to run. No formal return, input is stored
+     * as variables.
+     */
     public void promptUser() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to the Martian Autonomous Routing System.\n");
@@ -135,6 +139,9 @@ public class TerminalInterface extends UserInterface {
 
     }
 
+    /**
+     * Function to run the requested algorithm with user-prompted variables.
+     */
     public void startAlgorithm() {
         //Start Rover then run its algorithm until the output file is populated with results.
         if (alg.equalsIgnoreCase("U")) {
