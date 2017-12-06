@@ -6,7 +6,8 @@ package mars;
 public abstract class Algorithm {
 
     TerrainMap map;
-    Rover rover;
+    MarsRover rover;
+    Output output;
 
     public abstract void findPath();
 
