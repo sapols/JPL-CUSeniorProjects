@@ -17,5 +17,4 @@ public abstract class Rover {
     int[] endPosition = new int[2];
     GeoTIFF map = new GeoTIFF();
     double fieldOfView;
-
 }

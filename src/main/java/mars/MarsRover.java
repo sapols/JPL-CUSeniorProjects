@@ -22,6 +22,7 @@ public class MarsRover extends Rover {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        fieldOfView = Double.MAX_VALUE; //"Unlimited"
     }
 
     /**
@@ -145,6 +146,16 @@ public class MarsRover extends Rover {
             }
         }
         return true;
+    }
+
+    // Prints out all of the specs of this rover.
+    public void printSpecs() {
+        System.out.println("\nThe specs of this rover: ");
+        System.out.println("Max slope: " + maxSlope);
+        System.out.println("Field of view: " + ((fieldOfView==Double.MAX_VALUE) ? "Unlimited" : fieldOfView));
+        System.out.println("Current position - X: " + currentPosition[0] + ", Y: " + currentPosition[1]);
+        System.out.println("Start position - X: " + startPosition[0] + ", Y: " + startPosition[1]);
+        System.out.println("End position - X: " + endPosition[0] + ", Y: " + endPosition[1]);
     }
 
 }
