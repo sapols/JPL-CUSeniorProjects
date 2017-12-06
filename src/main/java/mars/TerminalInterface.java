@@ -1,6 +1,8 @@
 package mars;
 import com.sun.corba.se.impl.io.TypeMismatchException;
 
+import org.omg.IOP.CodecPackage.TypeMismatch;
+
 import java.util.Scanner;
 
 /**
@@ -66,7 +68,9 @@ public class TerminalInterface extends UserInterface {
         System.out.println("Enter start coordinates (pressing enter between each number): ");
         while(true) {
             try {
+                System.out.print("X: ");
                 startCoords[0] = scanner.nextInt();
+                System.out.print("Y: ");
                 startCoords[1] = scanner.nextInt();
                 break;
             }
@@ -83,7 +87,9 @@ public class TerminalInterface extends UserInterface {
         System.out.println("Enter end coordinates (pressing enter between each number):");
         while(true) {
             try {
+                System.out.print("X: ");
                 endCoords[0] = scanner.nextInt();
+                System.out.print("Y: ");
                 endCoords[1] = scanner.nextInt();
                 break;
             } catch (Exception e) {
@@ -130,12 +136,12 @@ public class TerminalInterface extends UserInterface {
         //Start Rover then run its algorithm until the output file is populated with results.
         if (alg.equalsIgnoreCase("U")) {
             MarsRover r = new MarsRover(slope, startCoords, endCoords, mapPath);
-            algorithm = new AlgorithmUnlimitedScope(map, r);
+            algorithm = new OptimalAlgorithm(map, r);
             algorithm.findPath();
         }
         else if (alg.equalsIgnoreCase("L")) {
             MarsRover r = new MarsRover(slope,startCoords,endCoords,mapPath,fieldOfView);
-            algorithm = new AlgorithmLimitedScope(map, r);
+            algorithm = new SuboptimalAlgorithm(map, r);
             algorithm.findPath();
         }
         else {
