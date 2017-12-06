@@ -9,4 +9,8 @@ public abstract class TerrainMap {
 
     public abstract double getValue(double x, double y) throws Exception;
 
+    public abstract double getMaxValue() throws Exception;
+
+    public abstract double getMinValue() throws Exception;
+
 }
