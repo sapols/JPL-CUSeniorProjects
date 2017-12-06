@@ -11,93 +11,109 @@ import java.util.Scanner;
  * (including which algorithm to run, and start/end coordinates).
  * A rover with those specifications is then started and the program runs until completed.
  */
-public class TerminalInterface extends UserInterface{
+public class TerminalInterface extends UserInterface {
 
     double slope = 0;
     int[] startCoords = {0, 0};
     int[] endCoords = {0, 0};
     String mapPath = "";
-    String alg = ""; //used to determine Algorithm to use
+    String alg = ""; //used to determine Algorithm to use. TODO: make this a local param instead of global?
     double fieldOfView = 0;
-    TerrainMap m = new GeoTIFF();
+    TerrainMap map = new GeoTIFF();
 
     //other variables inherited from "UserInterface"
 
     public void promptUser() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Welcome to the Martian Autonomous Routing System");
-        System.out.println("Please enter the path for the map you would like to traverse");
+        System.out.println("Welcome to the Martian Autonomous Routing System.\n");
+        System.out.println("Please enter the file path for the map you would like to traverse. Example:");
+        System.out.println("src/main/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
 
+        //Prompt for the map path
+        //TODO: refactor into "promptForMap() method.
+        //TODO: tell people what path their path will be relative to. Possibly provide options to choose from.
         while(true) {
-            try{
+            try {
                 mapPath = scanner.next();
-                m.initMap(mapPath);
+                map.initMap(mapPath);
                 break;
-            }catch(TypeMismatchException e) {
-                System.out.println("Warning: Please enter a string");
+            } catch(TypeMismatchException e) {
+                System.out.println("Warning: Please enter the file path as a string.");
                 scanner.nextLine();
-            }catch(Exception e)
-            {
-                System.out.println("Warning: Make sure the path you are entering is correct");
+            } catch(Exception e) {
+                System.out.println("Warning: Make sure the path you are entering is correct (path is relative to project root).");
                 scanner.nextLine();
             }
 
         }
+
+        //Prompt for the rover's slope
+        //TODO: refactor into "promptForSlope()" method
         scanner.nextLine();
-        System.out.println("Please enter the max slope your rover can handle");
+        System.out.println("Please enter the maximum slope your rover can handle (in degrees):");
         while(true) {
             try {
-
                 slope = scanner.nextDouble();
                 break;
             } catch (Exception e) {
-
-                System.out.println("Warning: Please enter a number");
+                System.out.println("Warning: Please enter a number.");
                 scanner.nextLine();
             }
         }
 
-        System.out.println("Enter Start Coordinates");
+        //Prompt for the start coordinates
+        //TODO: refactor into "promptForStartCoords()" method
+        //TODO: use newly created "Coordinate" class
+        //TODO: make input format (including X vs. Y) more clear.
+        System.out.println("Enter start coordinates (pressing enter between each number): ");
         while(true) {
             try {
                 startCoords[0] = scanner.nextInt();
                 startCoords[1] = scanner.nextInt();
                 break;
             }
-            catch (Exception e){
-                System.out.println("Warning: Enter coordinates as ints");
+            catch (Exception e) {
+                System.out.println("Warning: Enter coordinates as whole numbers only."); //TODO: handle this in Coordinate
                 scanner.nextLine();
             }
         }
+
+        //Prompt for the end coordinates
+        //TODO: refactor into "promptForEndCoords()" method
+        //TODO: use newly created "Coordinate" class
         scanner.nextLine();
-        System.out.println("Enter end Coordinates");
+        System.out.println("Enter end coordinates (pressing enter between each number):");
         while(true) {
             try {
                 endCoords[0] = scanner.nextInt();
                 endCoords[1] = scanner.nextInt();
                 break;
-            } catch (Exception e){
-                System.out.println("Warning: Enter Coordinates as ints");
+            } catch (Exception e) {
+                System.out.println("Warning: Enter cordinates as whole numbers only."); //TODO: handle this in Coordinate
                 scanner.nextLine();
             }
         }
+
+        //Prompt for which algorithm to use
+        //TODO: refactor into "promptForAlgorithm()" method
         scanner.nextLine();
         while(true) {
-            System.out.println("Which algorithm would you like to use, (U)nlimited scope or (L)imited Scope");
+            System.out.println("Which algorithm would you like to use? (U)nlimited scope or (L)imited Scope:");
             alg = scanner.next();
-            if(alg.equals("U") || alg.equals("u") ) {
+            if(alg.equalsIgnoreCase("U")) {
                 startAlgorithm();
                 break;
             }
-            else if(alg.equals("L") || alg.equals("l")) {
+            else if(alg.equalsIgnoreCase("L")) {
                 scanner.nextLine();
-                System.out.println("Enter the Field of View Radius of your rover");
+                //TODO: say what the units are here.
+                System.out.println("Enter the Field of View radius of your rover:");
                 while(true) {
                     try {
                         fieldOfView = scanner.nextDouble();
                         break;
                     } catch (Exception e) {
-                        System.out.println("Warning: please enter double for Field of View Radius");
+                        System.out.println("Warning: please enter number for the Field of View Radius");
                         scanner.nextLine();
                     }
                 }
@@ -105,7 +121,7 @@ public class TerminalInterface extends UserInterface{
                 break;
             }
             else {
-                System.out.println("Warning: Enter U for Unlimited Scope or L for limited scope");
+                System.out.println("Warning: Enter 'U' for Unlimited Scope or 'L' for limited scope");
                 scanner.nextLine();
             }
         }
@@ -114,18 +130,18 @@ public class TerminalInterface extends UserInterface{
 
     public void startAlgorithm() {
         //Start Rover then run its algorithm until the output file is populated with results.
-        if (alg.equals("U") || alg.equals("u")) {
+        if (alg.equalsIgnoreCase("U")) {
             MarsRover r = new MarsRover(slope, startCoords, endCoords, mapPath);
-            algorithm = new OptimalAlgorithm(m, r);
+            algorithm = new OptimalAlgorithm(map, r);
             algorithm.findPath();
         }
-        else if (alg.equals("L") || alg.equals("l")) {
+        else if (alg.equalsIgnoreCase("L")) {
             MarsRover r = new MarsRover(slope,startCoords,endCoords,mapPath,fieldOfView);
-            algorithm = new SuboptimalAlgorithm(m, r);
+            algorithm = new SuboptimalAlgorithm(map, r);
             algorithm.findPath();
         }
         else {
-            System.out.println("Error: No algorithm Selected");
+            System.out.println("Error: No algorithm selected.");
         }
     }
 
