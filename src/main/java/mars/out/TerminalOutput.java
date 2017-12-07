@@ -1,4 +1,6 @@
-package mars;
+package mars.out;
+
+import mars.coordinate.Coordinate;
 
 import java.util.ArrayList;
 
@@ -7,7 +9,11 @@ import java.util.ArrayList;
  */
 public class TerminalOutput extends Output {
 
-    public TerminalOutput(ArrayList<int[]> out) {
+    /*
+     * Constructor for TerminalOutput.
+     * It immediately prints the output.
+     */
+    public TerminalOutput(ArrayList<Coordinate> out) {
         resultList = out;
         writeToOutput();
     }
@@ -15,10 +21,9 @@ public class TerminalOutput extends Output {
     public void writeToOutput() {
         System.out.println("\nOutput path: ");
         System.out.println("------------");
-        //System.out.println(resultList); //TODO: consider changing this if it only prints the list's address
         for (int i = 1; i <= resultList.size(); i++) {
-            int x = resultList.get(i-1)[0];
-            int y = resultList.get(i-1)[1];
+            int x = resultList.get(i-1).getX();
+            int y = resultList.get(i-1).getY();
             System.out.println(i + ". [" + x + ", " + y + "]");
         }
         System.out.println("------------");

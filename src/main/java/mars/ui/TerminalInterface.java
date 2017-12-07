@@ -1,7 +1,12 @@
-package mars;
+package mars.ui;
 import com.sun.corba.se.impl.io.TypeMismatchException;
 
-import org.omg.IOP.CodecPackage.TypeMismatch;
+import mars.coordinate.Coordinate;
+import mars.algorithm.AlgorithmLimitedScope;
+import mars.algorithm.AlgorithmUnlimitedScope;
+import mars.map.GeoTIFF;
+import mars.map.TerrainMap;
+import mars.rover.MarsRover;
 
 import java.util.Scanner;
 
@@ -14,8 +19,8 @@ import java.util.Scanner;
 public class TerminalInterface extends UserInterface {
 
     double slope = 0;
-    int[] startCoords = {0, 0};
-    int[] endCoords = {0, 0};
+    Coordinate startCoords;
+    Coordinate endCoords;
     String mapPath = "";
     String alg = ""; //used to determine Algorithm to use. TODO: make this a local param instead of global?
     double fieldOfView = 0;
@@ -24,14 +29,23 @@ public class TerminalInterface extends UserInterface {
     //other variables inherited from "UserInterface"
 
     public void promptUser() {
+        System.out.println("**==================================================**");
+        System.out.println("*  Welcome to the Martian Autonomous Routing System. *");
+        System.out.println("**==================================================**\n");
+
+        promptForMap();
+        promptForSlope();
+        promptForStartCoords();
+        promptForEndCoords();
+        promptForAlgorithm();
+    }
+
+    public void promptForMap() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Welcome to the Martian Autonomous Routing System.\n");
-        System.out.println("Please enter the file path for the map you would like to traverse. Example:");
+        System.out.println("\nPlease enter the file path for the map you would like to traverse. Example:");
         System.out.println("src/main/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
 
-        //Prompt for the map path
-        //TODO: refactor into "promptForMap() method.
-        //TODO: tell people what path their path will be relative to. Possibly provide options to choose from.
+        //TODO: Tell people what path their path will be relative to. Or possibly provide options to choose from.
         while(true) {
             try {
                 mapPath = scanner.next();
@@ -46,11 +60,11 @@ public class TerminalInterface extends UserInterface {
             }
 
         }
+    }
 
-        //Prompt for the rover's slope
-        //TODO: refactor into "promptForSlope()" method
-        scanner.nextLine();
-        System.out.println("Please enter the maximum slope your rover can handle (in degrees):");
+    public void promptForSlope() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("\nPlease enter the maximum slope your rover can handle (in degrees):");
         while(true) {
             try {
                 slope = scanner.nextDouble();
@@ -60,49 +74,56 @@ public class TerminalInterface extends UserInterface {
                 scanner.nextLine();
             }
         }
+    }
 
-        //Prompt for the start coordinates
-        //TODO: refactor into "promptForStartCoords()" method
-        //TODO: use newly created "Coordinate" class
-        //TODO: make input format (including X vs. Y) more clear.
-        System.out.println("Enter start coordinates (pressing enter between each number): ");
+    public void promptForStartCoords() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("\nEnter start coordinates (pressing enter between each number): ");
+
+        int x;
+        int y;
         while(true) {
             try {
                 System.out.print("X: ");
-                startCoords[0] = scanner.nextInt();
+                x = scanner.nextInt();
                 System.out.print("Y: ");
-                startCoords[1] = scanner.nextInt();
+                y = scanner.nextInt();
+                startCoords = new Coordinate(x, y);
                 break;
             }
             catch (Exception e) {
-                System.out.println("Warning: Enter coordinates as whole numbers only."); //TODO: handle this in Coordinate
+                System.out.println("Warning: Enter coordinates as whole numbers only.");
                 scanner.nextLine();
             }
         }
+    }
 
-        //Prompt for the end coordinates
-        //TODO: refactor into "promptForEndCoords()" method
-        //TODO: use newly created "Coordinate" class
-        scanner.nextLine();
-        System.out.println("Enter end coordinates (pressing enter between each number):");
+    public void promptForEndCoords() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("\nEnter end coordinates (pressing enter between each number):");
+
+        int x;
+        int y;
         while(true) {
             try {
                 System.out.print("X: ");
-                endCoords[0] = scanner.nextInt();
+                x = scanner.nextInt();
                 System.out.print("Y: ");
-                endCoords[1] = scanner.nextInt();
+                y = scanner.nextInt();
+                endCoords = new Coordinate(x, y);
                 break;
             } catch (Exception e) {
-                System.out.println("Warning: Enter cordinates as whole numbers only."); //TODO: handle this in Coordinate
+                System.out.println("Warning: Enter cordinates as whole numbers only.");
                 scanner.nextLine();
             }
         }
+    }
 
-        //Prompt for which algorithm to use
-        //TODO: refactor into "promptForAlgorithm()" method
-        scanner.nextLine();
+    public void promptForAlgorithm() {
+        Scanner scanner = new Scanner(System.in);
+
         while(true) {
-            System.out.println("Which algorithm would you like to use? (U)nlimited scope or (L)imited Scope:");
+            System.out.println("\nWhich algorithm would you like to use? (U)nlimited scope or (L)imited Scope:");
             alg = scanner.next();
             if(alg.equalsIgnoreCase("U")) {
                 startAlgorithm();
@@ -111,7 +132,7 @@ public class TerminalInterface extends UserInterface {
             else if(alg.equalsIgnoreCase("L")) {
                 scanner.nextLine();
                 //TODO: say what the units are here.
-                System.out.println("Enter the Field of View radius of your rover:");
+                System.out.println("\nEnter the Field of View radius of your rover:");
                 while(true) {
                     try {
                         fieldOfView = scanner.nextDouble();
@@ -129,7 +150,6 @@ public class TerminalInterface extends UserInterface {
                 scanner.nextLine();
             }
         }
-
     }
 
     public void startAlgorithm() {

@@ -1,4 +1,6 @@
-package mars;
+package mars.out;
+
+import mars.coordinate.Coordinate;
 
 import java.util.ArrayList;
 
@@ -8,7 +10,7 @@ import java.util.ArrayList;
  */
 public abstract class Output {
 
-    ArrayList<int[]> resultList;
+    ArrayList<Coordinate> resultList;
 
     public abstract void writeToOutput();
 }

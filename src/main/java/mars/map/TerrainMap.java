@@ -1,4 +1,4 @@
-package mars;
+package mars.map;
 
 /**
  * Abstract class from which all terrain maps inherit.
