@@ -17,4 +17,7 @@ public abstract class Rover {
     int[] endPosition = new int[2];
     GeoTIFF map = new GeoTIFF();
     double fieldOfView;
+
+    public abstract double getSlope(double x1, double y1, double x2, double y2) throws Exception;
+    public abstract boolean testSlope(double maxSlope, double x1, double y1, double x2, double y2) throws Exception;
 }
