@@ -3,6 +3,9 @@ package mars;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import mars.coordinate.Coordinate;
+import mars.map.GeoTIFF;
+import mars.rover.MarsRover;
 
 
 public class AppTest extends TestCase {
@@ -26,10 +29,10 @@ public class AppTest extends TestCase {
 
     //@Test
     public void testRover_initialize() {
-        int[] starts = { 10,10 };
-        int[] ends = { 20,20 };
+        Coordinate starts = new Coordinate(10,10);
+        Coordinate ends = new Coordinate(20, 20);
         MarsRover newRover = new MarsRover(0,starts,ends,"");
-        assertEquals(10,(newRover.getStartPosition())[0]);
+        assertEquals(10,(newRover.getStartPosition()).getX());
     }
 
     //@Test
@@ -61,18 +64,22 @@ public class AppTest extends TestCase {
 
     //@Test
     public void testRover_getSlope_zero() throws Exception {
-        int[] starts = { 10,10 };
-        int[] ends = { 20,20 };
+        Coordinate starts = new Coordinate(10,10);
+        Coordinate ends = new Coordinate(20, 20);
         MarsRover newRover = new MarsRover(0,starts,ends,"src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
         assertEquals(0.,newRover.getSlope(20,20,21,20));
     }
 
     //@Test
     public void testRover_testSlope_valid() throws Exception {
-        int[] starts = { 10,10 };
-        int[] ends = { 20,20 };
+        Coordinate starts = new Coordinate(10,10);
+        Coordinate ends = new Coordinate(20, 20);
         MarsRover newRover = new MarsRover(0,starts,ends,"src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
-        assertTrue(newRover.testSlope(0.5,20,20,21,20));
+
+        double maxSlope = 0.5;
+        Coordinate point1 = new Coordinate(20, 20);
+        Coordinate point2 = new Coordinate(21, 20);
+        assertTrue(newRover.testSlope(maxSlope,point1,point2));
     }
 
     public void testGeotiffMaxHeight() throws Exception{
