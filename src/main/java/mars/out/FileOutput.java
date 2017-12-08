@@ -1,4 +1,4 @@
-package mars;
+package mars.out;
 
 /**
  * Class which writes a discovered path to an output file
