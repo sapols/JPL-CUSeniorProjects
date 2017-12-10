@@ -49,7 +49,7 @@ public class MarsRover extends Rover {
         }
     }
 
-    // determines slope between two points on the elevation map (returns double that is the slope in radians)
+    // determines slope between two points on the elevation map (returns double that is the slope in degrees)
     // formally, we find the difference between the elevation (z) of slope1 and slope2, and the xy distance between (x1,y1) and (x2,y2), then construct a right-angle triangle such that:
     //                             /| vertex b (x2,y2,z2)
     //                           /' |
@@ -59,6 +59,22 @@ public class MarsRover extends Rover {
     //               xyDistance (opp)
     // angle A at vertex a equals tan^-1(adj/opp) = atan(zDistance/xyDistance)
     public double getSlope(int x1, int y1, int x2, int y2) throws Exception {
+        double z1 = map.getValue(x1,y1);
+        double z2 = map.getValue(x2,y2);
+        double zDistance = z2 - z1;
+        double xyDistance = Math.sqrt(Math.pow((x2-x1),2)+Math.pow((y2-y1),2));
+        return Math.toDegrees(Math.atan(zDistance / xyDistance)); // construct a right-angle triangle such that adjacent = xyDistance and opposite = zDistance
+    }
+
+    /*
+     * Overload of getSlope to allow passing coordinates instead of x's and y's.
+     */
+    public double getSlope(Coordinate point1, Coordinate point2) throws Exception {
+        int x1 = point1.getX();
+        int y1 = point1.getY();
+        int x2 = point2.getX();
+        int y2 = point2.getY();
+
         double z1 = map.getValue(x1,y1);
         double z2 = map.getValue(x2,y2);
         double zDistance = z2 - z1;

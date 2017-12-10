@@ -25,7 +25,7 @@ public class AlgorithmLimitedScope extends Algorithm {
         map = r.getMap();
     }
 
-    public void findPath() {
+    public void findPath(ArrayList<Coordinate> coords) throws Exception {
         //find a path
 
         //---A "blank" algorithm-----------------------------------
