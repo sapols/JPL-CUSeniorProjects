@@ -1,6 +1,7 @@
 package mars.rover;
 
 import mars.coordinate.Coordinate;
+import mars.map.GeoTIFF;
 
 /**
  * Represents a rover which traverses a given terrain.
@@ -97,6 +98,8 @@ public class MarsRover extends Rover {
     }
 
     //----Getter/Setter Methods----------------------------------------------------------------------------------------
+
+    public GeoTIFF getMap() { return map; }
 
     public void setMaxSlope(double slope) {
         maxSlope = slope;

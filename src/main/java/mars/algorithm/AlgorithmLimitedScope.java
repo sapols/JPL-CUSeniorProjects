@@ -20,9 +20,9 @@ public class AlgorithmLimitedScope extends Algorithm {
      * @param map The terrain map
      * @param rover The rover
      */
-    public AlgorithmLimitedScope(TerrainMap m, MarsRover r) {
-        map = m;
+    public AlgorithmLimitedScope(MarsRover r) {
         rover = r;
+        map = r.getMap();
     }
 
     public void findPath() {
