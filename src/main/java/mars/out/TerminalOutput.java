@@ -24,7 +24,7 @@ public class TerminalOutput extends Output {
         for (int i = 1; i <= resultList.size(); i++) {
             int x = resultList.get(i-1).getX();
             int y = resultList.get(i-1).getY();
-            System.out.println(i + ". [" + x + ", " + y + "]");
+            System.out.println(i + ". (" + x + ", " + y + ")");
         }
         System.out.println("------------");
     }
