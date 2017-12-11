@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class AlgorithmUnlimitedScope extends Algorithm {
 
     ArrayList<Coordinate> path = new ArrayList<Coordinate>();
+    Coordinate goal;
 
     /*
      * Default constructor for an AlgorithmUnlimitedScope.
@@ -24,9 +25,12 @@ public class AlgorithmUnlimitedScope extends Algorithm {
     public AlgorithmUnlimitedScope(MarsRover r) throws Exception {
         rover = r;
         map = r.getMap();
+        goal = r.getEndPosition();
 
         path.add(rover.getStartPosition());
         ArrayList<Coordinate> neighbors = getReachableNeighbors(rover.getStartPosition());
+        sortCoordinatesByDistanceToGoal(neighbors);
+
         try {
             findPath(neighbors);
         } catch (Exception e) {
@@ -34,8 +38,10 @@ public class AlgorithmUnlimitedScope extends Algorithm {
         }
     }
 
+    /*
+     * Find a path from start to goal with A*.
+     */
     public void findPath(ArrayList<Coordinate> coords) throws Exception {
-        //find a path with A*
         //TODO: This is technically "best first search". Consider cost to arrive at points to make it "A*".
         if (coords.isEmpty()) {
             throw new Exception("WARNING: A path to the goal could not be found.");
@@ -43,13 +49,15 @@ public class AlgorithmUnlimitedScope extends Algorithm {
         else {
             Coordinate thisCoord = coords.get(0);
             path.add(thisCoord);
-            if (thisCoord.compareTo(rover.getEndPosition()) == 0) { //if we found the goal. TODO: incorrect! need a new method
+            if (thisCoord.equalsOtherCoordinate(goal)) { //if we found the goal
                 output = new TerminalOutput(path);
             }
             else {
-                ArrayList<Coordinate> children = getReachableNeighbors(thisCoord);
-                children.remove(thisCoord); //TODO: check this for correctness
-                findPath(children);
+                ArrayList<Coordinate> neighbors = getReachableNeighbors(thisCoord);
+                coords.addAll(neighbors);
+                sortCoordinatesByDistanceToGoal(coords);
+                coords.remove(thisCoord);
+                findPath(coords);
             }
         }
     }
@@ -92,21 +100,13 @@ public class AlgorithmUnlimitedScope extends Algorithm {
      * Given a set of coordinates, sort them according to their
      * euclidean distance to the rover's goal coordinate.
      */
-    public void sortNeighborsByDistanceToGoal(Coordinate[] neighbors) {
-        ArrayList<Coordinate> coordinates = new ArrayList<Coordinate>();
-
-        //set the distance to the rover's goal for each coordinate and add to List
-        for (Coordinate c : neighbors) {
+    public void sortCoordinatesByDistanceToGoal(ArrayList<Coordinate> coords) {
+        //set the distance to the rover's goal for each coordinate
+        for (Coordinate c : coords) {
             c.setDistanceToGoal(getDistanceToGoal(c));
-            coordinates.add(c);
         }
 
-        Collections.sort(coordinates); //Do the sort, per the "compareTo" method in Coordinate
-
-        //Copy the contents of the sorted "coordinates" back into "neighbors"
-        for (int i = 0; i < coordinates.size(); i++) {
-            neighbors[i] = coordinates.get(i);
-        }
+        Collections.sort(coords); //Do the sort, per the "compareTo" method in Coordinate
     }
 
     /*
@@ -116,8 +116,8 @@ public class AlgorithmUnlimitedScope extends Algorithm {
     public double getDistanceToGoal(Coordinate coord) {
         int x1 = coord.getX();
         int y1 = coord.getY();
-        int x2 = rover.getEndPosition().getX();
-        int y2 = rover.getEndPosition().getY();
+        int x2 = goal.getX();
+        int y2 = goal.getY();
 
         double radicand = (Math.pow((x2-x1), 2) + Math.pow((y2-y1), 2));
         double distance = Math.sqrt(radicand);

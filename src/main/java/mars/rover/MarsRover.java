@@ -25,7 +25,7 @@ public class MarsRover extends Rover {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        fieldOfView = Double.MAX_VALUE; //"Unlimited"
+        fieldOfView = Double.POSITIVE_INFINITY; //"Unlimited"
     }
 
     /**

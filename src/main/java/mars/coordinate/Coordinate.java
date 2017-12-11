@@ -14,8 +14,9 @@ public class Coordinate implements Comparable<Coordinate> {
     public Coordinate(int x, int y) {
         this.x = x;
         this.y = y;
-        distanceToGoal = Double.MAX_VALUE; //initialize to infinity
+        distanceToGoal = Double.POSITIVE_INFINITY; //initialize to infinity
     }
+
 
     public int getX() {
         return x;
@@ -37,12 +38,16 @@ public class Coordinate implements Comparable<Coordinate> {
         distanceToGoal = d;
     }
 
+    public boolean equalsOtherCoordinate(Coordinate other) {
+        return ((other.getX()==this.getX()) && (other.getY()==this.getY()));
+    }
+
     //----For sorting based on distance to a goal----------------------------------------------------------------------
 
     /*
      * compareTo should return < 0 if this is supposed to be
      * less than other, > 0 if this is supposed to be greater than
-     * other and 0 if they are supposed to be equal
+     * other and 0 if they are supposed to be equal.
      */
     public int compareTo(Coordinate other) {
         if (this.distanceToGoal < other.distanceToGoal) {

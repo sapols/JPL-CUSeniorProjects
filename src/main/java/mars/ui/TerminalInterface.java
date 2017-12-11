@@ -8,6 +8,7 @@ import mars.map.GeoTIFF;
 import mars.map.TerrainMap;
 import mars.rover.MarsRover;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -166,7 +167,12 @@ public class TerminalInterface extends UserInterface {
         else if (alg.equalsIgnoreCase("L")) {
             MarsRover r = new MarsRover(slope,startCoords,endCoords,mapPath,fieldOfView);
             algorithm = new AlgorithmLimitedScope(r);
-            //algorithm.findPath();
+
+            try {
+                algorithm.findPath(new ArrayList<Coordinate>(1));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         else {
             System.out.println("Error: No algorithm selected.");
