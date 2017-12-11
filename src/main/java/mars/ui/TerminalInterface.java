@@ -156,8 +156,10 @@ public class TerminalInterface extends UserInterface {
         //Start Rover then run its algorithm until the output file is populated with results.
         if (alg.equalsIgnoreCase("U")) {
             MarsRover r = new MarsRover(slope, startCoords, endCoords, mapPath);
+            algorithm = new AlgorithmUnlimitedScope(r);
+
             try {
-                algorithm = new AlgorithmUnlimitedScope(r);
+                algorithm.findPath();
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -168,7 +170,7 @@ public class TerminalInterface extends UserInterface {
             algorithm = new AlgorithmLimitedScope(r);
 
             try {
-                algorithm.findPath(new ArrayList<Coordinate>(1));
+                algorithm.findPath();
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -17,6 +17,6 @@ public abstract class Algorithm {
     MarsRover rover;
     Output output;
 
-    public abstract void findPath(ArrayList<? extends Coordinate> coords) throws Exception;
+    public abstract void findPath() throws Exception;
 
 }

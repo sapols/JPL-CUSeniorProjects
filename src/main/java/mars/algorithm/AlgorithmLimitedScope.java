@@ -25,14 +25,16 @@ public class AlgorithmLimitedScope extends Algorithm {
         map = r.getMap();
     }
 
-    public void findPath(ArrayList<? extends Coordinate> coords) throws Exception {
-        //find a path
+    public void findPath() throws Exception {
+        //Call the search algorithm method
+        blankAlgorithm();
+    }
 
-        //---A "blank" algorithm---------------------------------------
+    //TODO: Implement something
+    public void blankAlgorithm() {
         path.add(rover.getStartPosition());
         path.add(rover.getEndPosition());
 
         output = new TerminalOutput(path);
-        //-------------------------------------------------------------
     }
 }

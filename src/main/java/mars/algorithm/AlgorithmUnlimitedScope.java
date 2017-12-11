@@ -24,28 +24,31 @@ public class AlgorithmUnlimitedScope extends Algorithm {
      * @param map The terrain map
      * @param rover The rover
      */
-    public AlgorithmUnlimitedScope(MarsRover r) throws Exception {
+    public AlgorithmUnlimitedScope(MarsRover r) {
         rover = r;
         map = r.getMap();
         goal = r.getEndPosition();
+    }
 
-        AStarCoordinate start = new AStarCoordinate(rover.getStartPosition());
-        path.add(start);
-        ArrayList<AStarCoordinate> neighbors = getReachableNeighbors(start);
-        sortCoordinatesByCost(neighbors);
+    /*
+     * Method which starts this search algorithm.
+     */
+    public void findPath() throws Exception {
+        ArrayList<AStarCoordinate> start = new ArrayList<AStarCoordinate>();
+        start.add(new AStarCoordinate(rover.getStartPosition()));
 
         try {
-            findPath(neighbors);
+            AStarSearch(start);
         } catch (Exception e) {
-            throw new Exception(e.getMessage());
+            throw e;
         }
     }
 
     /*
      * Find a path from start to goal with A*. Then output it.
-     * Throw an exception if a path cannot be found.
+     * Throw an exception if a path cannot be found. //TODO: Consider A* method which is called by findPath();
      */
-    public void findPath(ArrayList<? extends Coordinate> coords) throws Exception {
+    public void AStarSearch(ArrayList<? extends Coordinate> coords) throws Exception {
         if (coords.isEmpty()) {
             throw new Exception("WARNING: A path to the goal could not be found.");
         }
@@ -60,7 +63,7 @@ public class AlgorithmUnlimitedScope extends Algorithm {
                 for (Coordinate c : coords) searchCoords.add((AStarCoordinate)c); //Keep the remaining unsearched "coords" in the search
                 sortCoordinatesByCost(searchCoords);
                 searchCoords.remove(thisCoord);
-                findPath(searchCoords);
+                AStarSearch(searchCoords);
             }
         }
     }
