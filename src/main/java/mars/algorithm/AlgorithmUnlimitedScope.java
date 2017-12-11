@@ -42,7 +42,8 @@ public class AlgorithmUnlimitedScope extends Algorithm {
      * Find a path from start to goal with A*.
      */
     public void findPath(ArrayList<Coordinate> coords) throws Exception {
-        //TODO: This is technically "best first search". Consider cost to arrive at points to make it "A*".
+        //TODO: This is technically "best first search".
+        //Consider cost to arrive at points (not just distance to goal) to make it "A*".
         if (coords.isEmpty()) {
             throw new Exception("WARNING: A path to the goal could not be found.");
         }
