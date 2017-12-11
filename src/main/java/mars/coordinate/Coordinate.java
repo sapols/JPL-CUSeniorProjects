@@ -10,10 +10,17 @@ public class Coordinate {
     private int y;
     private String units = "pixels";
 
+    /**
+     * Constructor for Coordinate class
+     * @param x x-coordinate
+     * @param y y-coordinate
+     */
     public Coordinate(int x, int y) {
         this.x = x;
         this.y = y;
     }
+
+    //----Getter/Setter Methods----------------------------------------------------------------------------------------
 
     public int getX() {
         return x;
