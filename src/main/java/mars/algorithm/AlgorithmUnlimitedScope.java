@@ -46,21 +46,21 @@ public class AlgorithmUnlimitedScope extends Algorithm {
 
     /*
      * Find a path from start to goal with A*. Then output it.
-     * Throw an exception if a path cannot be found. //TODO: Consider A* method which is called by findPath();
+     * Throw an exception if a path cannot be found.
      */
-    public void AStarSearch(ArrayList<? extends Coordinate> coords) throws Exception {
+    public void AStarSearch(ArrayList<AStarCoordinate> coords) throws Exception {
         if (coords.isEmpty()) {
             throw new Exception("WARNING: A path to the goal could not be found.");
         }
         else {
-            AStarCoordinate thisCoord = (AStarCoordinate)coords.get(0);
+            AStarCoordinate thisCoord = coords.get(0);
             path.add(thisCoord);
             if (thisCoord.equals(goal)) { //if we found the goal
                 output = new TerminalOutput(path);
             }
             else {
                 ArrayList<AStarCoordinate> searchCoords = getReachableNeighbors(thisCoord);
-                for (Coordinate c : coords) searchCoords.add((AStarCoordinate)c); //Keep the remaining unsearched "coords" in the search
+                searchCoords.addAll(coords);
                 sortCoordinatesByCost(searchCoords);
                 searchCoords.remove(thisCoord);
                 AStarSearch(searchCoords);
