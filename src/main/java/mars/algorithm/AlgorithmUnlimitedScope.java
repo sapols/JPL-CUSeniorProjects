@@ -59,11 +59,11 @@ public class AlgorithmUnlimitedScope extends Algorithm {
                 output = new TerminalOutput(path);
             }
             else {
-                ArrayList<AStarCoordinate> searchCoords = getReachableNeighbors(thisCoord);
-                searchCoords.addAll(coords);
-                sortCoordinatesByCost(searchCoords);
-                searchCoords.remove(thisCoord);
-                AStarSearch(searchCoords);
+                ArrayList<AStarCoordinate> neighbors = getReachableNeighbors(thisCoord);
+                coords.addAll(neighbors);
+                sortCoordinatesByCost(coords);
+                coords.remove(thisCoord);
+                AStarSearch(coords);
             }
         }
     }
