@@ -43,7 +43,7 @@ public class AlgorithmUnlimitedScope extends Algorithm {
         else {
             Coordinate thisCoord = coords.get(0);
             path.add(thisCoord);
-            if (thisCoord.compareTo(rover.getEndPosition()) == 0) { //if we found the goal. TODO: check this for correctness
+            if (thisCoord.compareTo(rover.getEndPosition()) == 0) { //if we found the goal. TODO: incorrect! need a new method
                 output = new TerminalOutput(path);
             }
             else {
