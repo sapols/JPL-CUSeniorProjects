@@ -1,6 +1,7 @@
 package mars.algorithm;
 
 import mars.coordinate.Coordinate;
+import mars.coordinate.AStarCoordinate;
 import mars.rover.MarsRover;
 import mars.out.Output;
 import mars.map.TerrainMap;
@@ -16,6 +17,7 @@ public abstract class Algorithm {
     MarsRover rover;
     Output output;
 
-    public abstract void findPath(ArrayList<Coordinate> coords) throws Exception;
+    //TODO: MAKE THIS GENERIC AGAIN, not just AStarCoordinate
+    public abstract void findPath(ArrayList<AStarCoordinate> coords) throws Exception;
 
 }

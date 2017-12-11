@@ -1,6 +1,6 @@
 package mars.out;
 
-import mars.coordinate.Coordinate;
+import mars.coordinate.*;
 
 import java.util.ArrayList;
 
@@ -13,7 +13,7 @@ public class TerminalOutput extends Output {
      * Constructor for TerminalOutput.
      * It immediately prints the output.
      */
-    public TerminalOutput(ArrayList<Coordinate> out) {
+    public TerminalOutput(ArrayList<AStarCoordinate> out) {
         resultList = out;
         writeToOutput();
     }

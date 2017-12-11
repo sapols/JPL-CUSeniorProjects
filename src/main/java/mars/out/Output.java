@@ -1,6 +1,6 @@
 package mars.out;
 
-import mars.coordinate.Coordinate;
+import mars.coordinate.*;
 
 import java.util.ArrayList;
 
@@ -9,8 +9,8 @@ import java.util.ArrayList;
  *
  */
 public abstract class Output {
-
-    ArrayList<Coordinate> resultList;
+    //TODO: MAKE THIS GENERIC AGAIN.
+    ArrayList<AStarCoordinate> resultList;
 
     public abstract void writeToOutput();
 }

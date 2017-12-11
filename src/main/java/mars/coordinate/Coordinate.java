@@ -10,7 +10,6 @@ public class Coordinate {
     protected int y;
     protected String units = "pixels";
 
-
     public Coordinate(int x, int y) {
         this.x = x;
         this.y = y;
@@ -21,13 +20,17 @@ public class Coordinate {
         return x;
     }
 
-    public void setX(int x) { this.x = x; }
+    public void setX(int x) {
+        this.x = x;
+    }
 
     public int getY() {
         return y;
     }
 
-    public void setY(int y) { this.y = y; }
+    public void setY(int y) {
+        this.y = y;
+    }
 
     public String getUnits() {
         return units;

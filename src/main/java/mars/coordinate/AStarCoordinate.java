@@ -8,17 +8,40 @@ public class AStarCoordinate extends Coordinate implements Comparable<AStarCoord
     private double costSoFar;
     private double distanceToGoal;
 
+    /*
+     * Main constructor for an AStarCoordinate.
+     */
     public AStarCoordinate(int x, int y) {
         super(x, y);
         costSoFar = Double.POSITIVE_INFINITY;      //initialize to infinity
         distanceToGoal = Double.POSITIVE_INFINITY; //initialize to infinity
     }
 
+    /*
+     * Second constructor for an AStarCoordinate which accepts a Coordinate.
+     */
+    public AStarCoordinate(Coordinate coord) {
+        super(coord.getX(), coord.getY());
+        costSoFar = 0; //Note this behavior
+        distanceToGoal = Double.POSITIVE_INFINITY;
+    }
+
+    public double getCostSoFar() {
+        return costSoFar;
+    }
+
     public void setCostSoFar(double c) {
         costSoFar = c;
     }
 
-    public void setDistanceToGoal(double d) { distanceToGoal = d; }
+    public double getDistanceToGoal() {
+        return distanceToGoal;
+    }
+
+    public void setDistanceToGoal(double d) {
+        distanceToGoal = d;
+    }
+
 
     //----For sorting based on A* heuristics--------------------------------------------------------------------------
 

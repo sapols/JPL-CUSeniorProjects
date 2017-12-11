@@ -1,6 +1,6 @@
 package mars.algorithm;
 
-import mars.coordinate.Coordinate;
+import mars.coordinate.*;
 import mars.rover.MarsRover;
 import mars.out.TerminalOutput;
 import mars.map.TerrainMap;
@@ -11,8 +11,8 @@ import java.util.ArrayList;
  * Class which implements the path-finding algorithm with a limited field of view.
  */
 public class AlgorithmLimitedScope extends Algorithm {
-
-    ArrayList<Coordinate> path = new ArrayList<Coordinate>();
+    //TODO: MAKE THIS GENERIC AGAIN
+    ArrayList<AStarCoordinate> path = new ArrayList<AStarCoordinate>();
 
     /*
      * Default constructor for an AlgorithmUnlimitedScope.
@@ -24,13 +24,13 @@ public class AlgorithmLimitedScope extends Algorithm {
         rover = r;
         map = r.getMap();
     }
-
-    public void findPath(ArrayList<Coordinate> coords) throws Exception {
+    //TODO: MAKE THIS GENERIC AGAIN
+    public void findPath(ArrayList<AStarCoordinate> coords) throws Exception {
         //find a path
 
         //---A "blank" algorithm-----------------------------------
-        path.add(rover.getStartPosition());
-        path.add(rover.getEndPosition());
+        //path.add(rover.getStartPosition());
+        //path.add(rover.getEndPosition());
 
         output = new TerminalOutput(path);
         //---------------------------------------------------------

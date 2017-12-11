@@ -168,7 +168,7 @@ public class TerminalInterface extends UserInterface {
             algorithm = new AlgorithmLimitedScope(r);
 
             try {
-                algorithm.findPath(new ArrayList<Coordinate>(1));
+                //algorithm.findPath(new ArrayList<Coordinate>(1));
             } catch (Exception e) {
                 e.printStackTrace();
             }

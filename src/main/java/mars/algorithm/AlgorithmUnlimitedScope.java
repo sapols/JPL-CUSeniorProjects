@@ -1,6 +1,7 @@
 package mars.algorithm;
 
 import mars.coordinate.Coordinate;
+import mars.coordinate.AStarCoordinate;
 import mars.rover.MarsRover;
 import mars.out.TerminalOutput;
 import mars.map.TerrainMap;
@@ -10,10 +11,11 @@ import java.util.ArrayList;
 
 /**
  * Class which implements the path-finding algorithm without a limited field of view.
+ * Uses an A* search.
  */
 public class AlgorithmUnlimitedScope extends Algorithm {
 
-    ArrayList<Coordinate> path = new ArrayList<Coordinate>();
+    ArrayList<AStarCoordinate> path = new ArrayList<AStarCoordinate>();
     Coordinate goal;
 
     /*
@@ -27,9 +29,10 @@ public class AlgorithmUnlimitedScope extends Algorithm {
         map = r.getMap();
         goal = r.getEndPosition();
 
-        path.add(rover.getStartPosition());
-        ArrayList<Coordinate> neighbors = getReachableNeighbors(rover.getStartPosition());
-        sortCoordinatesByDistanceToGoal(neighbors);
+        AStarCoordinate start = new AStarCoordinate(rover.getStartPosition());
+        path.add(start);
+        ArrayList<AStarCoordinate> neighbors = getReachableNeighbors(start);
+        sortCoordinatesByCost(neighbors);
 
         try {
             findPath(neighbors);
@@ -39,24 +42,23 @@ public class AlgorithmUnlimitedScope extends Algorithm {
     }
 
     /*
-     * Find a path from start to goal with A*.
+     * Find a path from start to goal with A*. Then output it.
+     * Throw an exception if a path cannot be found.
      */
-    public void findPath(ArrayList<Coordinate> coords) throws Exception {
-        //TODO: This is technically "best first search".
-        //      Consider cost-so-far to arrive at points (not just distance to goal) to make it "A*".
+    public void findPath(ArrayList<AStarCoordinate/*? extends Coordinate*/> coords) throws Exception {
         if (coords.isEmpty()) {
             throw new Exception("WARNING: A path to the goal could not be found.");
         }
         else {
-            Coordinate thisCoord = coords.get(0);
+            AStarCoordinate thisCoord = coords.get(0);
             path.add(thisCoord);
             if (thisCoord.equals(goal)) { //if we found the goal
                 output = new TerminalOutput(path);
             }
             else {
-                ArrayList<Coordinate> neighbors = getReachableNeighbors(thisCoord);
+                ArrayList<AStarCoordinate> neighbors = getReachableNeighbors(thisCoord);
                 coords.addAll(neighbors);
-                sortCoordinatesByDistanceToGoal(coords);
+                sortCoordinatesByCost(coords);
                 coords.remove(thisCoord);
                 findPath(coords);
             }
@@ -71,16 +73,18 @@ public class AlgorithmUnlimitedScope extends Algorithm {
      * the slope between the coordinates is not too steep).
      * Possible neighbors are all eight coordinates surrounding the given one.
      */
-    public ArrayList<Coordinate> getReachableNeighbors(Coordinate coord) {
+    public ArrayList<AStarCoordinate> getReachableNeighbors(AStarCoordinate coord) {
         int x = coord.getX();
         int y = coord.getY();
-        ArrayList<Coordinate> neighbors = new ArrayList<Coordinate>();
+        double costSoFar = coord.getCostSoFar();
+        ArrayList<AStarCoordinate> neighbors = new ArrayList<AStarCoordinate>();
 
         for (int i = x-1; i <= x+1; i++) {
             for (int j = y-1; j <= y+1; j++) {
                 if (!(i == x && j == y)) { //if this is not the given coordinate "coord"
                     try {
-                        Coordinate potentialNeighbor = new Coordinate(i, j);
+                        AStarCoordinate potentialNeighbor = new AStarCoordinate(i, j);
+                        potentialNeighbor.setCostSoFar(costSoFar+1); //TODO: diagonals should add sqrt(2), not 1
                         double slope = rover.getSlope(coord, potentialNeighbor);
 
                         if (slope <= rover.getMaxSlope()) { //if rover could visit this coordinate, add it
@@ -98,22 +102,23 @@ public class AlgorithmUnlimitedScope extends Algorithm {
     }
 
     /*
-     * Given a set of coordinates, sort them according to their
-     * euclidean distance to the rover's goal coordinate.
+     * Given a set of coordinates, sort them according to their overall cost,
+     * which is the euclidean distance to the rover's goal coordinate
+     * plus the distance traveled from the start to a coordinate.
      */
-    public void sortCoordinatesByDistanceToGoal(ArrayList<Coordinate> coords) {
-        for (Coordinate c : coords) {
-            c.setCost(getDistanceToGoal(c));
+    public void sortCoordinatesByCost(ArrayList<AStarCoordinate> coords) {
+        for (AStarCoordinate c : coords) {
+            c.setDistanceToGoal(getDistanceToGoal(c));
         }
 
-        Collections.sort(coords); //Do the sort, per the "compareTo" method in Coordinate
+        Collections.sort(coords); //Do the sort, per the "compareTo" method in AStarCoordinate
     }
 
     /*
      * Given a coordinate, calculate its euclidean distance to the rover's goal coordinate
      * (using the distance formula derived from the Pythagorean theorem).
      */
-    public double getDistanceToGoal(Coordinate coord) {
+    public double getDistanceToGoal(AStarCoordinate coord) {
         int x1 = coord.getX();
         int y1 = coord.getY();
         int x2 = goal.getX();
@@ -121,6 +126,5 @@ public class AlgorithmUnlimitedScope extends Algorithm {
 
         return Math.sqrt((Math.pow((x2-x1),2) + Math.pow((y2-y1),2)));
     }
-
 
 }
