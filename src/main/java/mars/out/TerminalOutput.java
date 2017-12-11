@@ -13,7 +13,7 @@ public class TerminalOutput extends Output {
      * Constructor for TerminalOutput.
      * It immediately prints the output.
      */
-    public TerminalOutput(ArrayList<AStarCoordinate> out) {
+    public TerminalOutput(ArrayList<? extends Coordinate> out) {
         resultList = out;
         writeToOutput();
     }

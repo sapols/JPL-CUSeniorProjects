@@ -11,8 +11,8 @@ import java.util.ArrayList;
  * Class which implements the path-finding algorithm with a limited field of view.
  */
 public class AlgorithmLimitedScope extends Algorithm {
-    //TODO: MAKE THIS GENERIC AGAIN
-    ArrayList<AStarCoordinate> path = new ArrayList<AStarCoordinate>();
+
+    ArrayList<Coordinate> path = new ArrayList<Coordinate>();
 
     /*
      * Default constructor for an AlgorithmUnlimitedScope.
@@ -24,15 +24,15 @@ public class AlgorithmLimitedScope extends Algorithm {
         rover = r;
         map = r.getMap();
     }
-    //TODO: MAKE THIS GENERIC AGAIN
-    public void findPath(ArrayList<AStarCoordinate> coords) throws Exception {
+
+    public void findPath(ArrayList<? extends Coordinate> coords) throws Exception {
         //find a path
 
-        //---A "blank" algorithm-----------------------------------
-        //path.add(rover.getStartPosition());
-        //path.add(rover.getEndPosition());
+        //---A "blank" algorithm---------------------------------------
+        path.add(rover.getStartPosition());
+        path.add(rover.getEndPosition());
 
         output = new TerminalOutput(path);
-        //---------------------------------------------------------
+        //-------------------------------------------------------------
     }
 }

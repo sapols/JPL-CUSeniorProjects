@@ -9,8 +9,8 @@ import java.util.ArrayList;
  *
  */
 public abstract class Output {
-    //TODO: MAKE THIS GENERIC AGAIN.
-    ArrayList<AStarCoordinate> resultList;
+
+    ArrayList<? extends Coordinate> resultList;
 
     public abstract void writeToOutput();
 }

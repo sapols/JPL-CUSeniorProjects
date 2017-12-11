@@ -17,7 +17,6 @@ public abstract class Algorithm {
     MarsRover rover;
     Output output;
 
-    //TODO: MAKE THIS GENERIC AGAIN, not just AStarCoordinate
-    public abstract void findPath(ArrayList<AStarCoordinate> coords) throws Exception;
+    public abstract void findPath(ArrayList<? extends Coordinate> coords) throws Exception;
 
 }
