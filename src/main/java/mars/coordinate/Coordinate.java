@@ -9,12 +9,12 @@ public class Coordinate implements Comparable<Coordinate> {
     private int x;
     private int y;
     private String units = "pixels";
-    private double distanceToGoal;
+    private double cost;
 
     public Coordinate(int x, int y) {
         this.x = x;
         this.y = y;
-        distanceToGoal = Double.POSITIVE_INFINITY; //initialize to infinity
+        cost = Double.POSITIVE_INFINITY; //initialize to infinity
     }
 
 
@@ -34,11 +34,11 @@ public class Coordinate implements Comparable<Coordinate> {
         return units;
     }
 
-    public void setDistanceToGoal(double d) {
-        distanceToGoal = d;
+    public void setCost(double d) {
+        cost = d;
     }
 
-    public boolean equalsOtherCoordinate(Coordinate other) {
+    public boolean equals(Coordinate other) {
         return ((other.getX()==this.getX()) && (other.getY()==this.getY()));
     }
 
@@ -50,10 +50,10 @@ public class Coordinate implements Comparable<Coordinate> {
      * other and 0 if they are supposed to be equal.
      */
     public int compareTo(Coordinate other) {
-        if (this.distanceToGoal < other.distanceToGoal) {
+        if (this.cost < other.cost) {
             return -1;
         }
-        else if (this.distanceToGoal > other.distanceToGoal) {
+        else if (this.cost > other.cost) {
             return 1;
         }
         else {

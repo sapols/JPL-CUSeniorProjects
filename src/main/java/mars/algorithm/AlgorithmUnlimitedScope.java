@@ -50,7 +50,7 @@ public class AlgorithmUnlimitedScope extends Algorithm {
         else {
             Coordinate thisCoord = coords.get(0);
             path.add(thisCoord);
-            if (thisCoord.equalsOtherCoordinate(goal)) { //if we found the goal
+            if (thisCoord.equals(goal)) { //if we found the goal
                 output = new TerminalOutput(path);
             }
             else {
@@ -102,9 +102,8 @@ public class AlgorithmUnlimitedScope extends Algorithm {
      * euclidean distance to the rover's goal coordinate.
      */
     public void sortCoordinatesByDistanceToGoal(ArrayList<Coordinate> coords) {
-        //set the distance to the rover's goal for each coordinate
         for (Coordinate c : coords) {
-            c.setDistanceToGoal(getDistanceToGoal(c));
+            c.setCost(getDistanceToGoal(c));
         }
 
         Collections.sort(coords); //Do the sort, per the "compareTo" method in Coordinate
@@ -120,10 +119,7 @@ public class AlgorithmUnlimitedScope extends Algorithm {
         int x2 = goal.getX();
         int y2 = goal.getY();
 
-        double radicand = (Math.pow((x2-x1), 2) + Math.pow((y2-y1), 2));
-        double distance = Math.sqrt(radicand);
-
-        return distance;
+        return Math.sqrt((Math.pow((x2-x1),2) + Math.pow((y2-y1),2)));
     }
 
 
