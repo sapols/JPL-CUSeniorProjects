@@ -1,5 +1,7 @@
 package mars;
 
+import mars.ui.TerminalInterface;
+
 /**
  * This class houses the main method which starts our program.
  */

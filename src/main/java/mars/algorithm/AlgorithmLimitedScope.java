@@ -1,4 +1,9 @@
-package mars;
+package mars.algorithm;
+
+import mars.coordinate.Coordinate;
+import mars.rover.MarsRover;
+import mars.out.TerminalOutput;
+import mars.map.TerrainMap;
 
 import java.util.ArrayList;
 
@@ -7,7 +12,7 @@ import java.util.ArrayList;
  */
 public class AlgorithmLimitedScope extends Algorithm {
 
-    ArrayList<int[]> path = new ArrayList<int[]>();
+    ArrayList<Coordinate> path = new ArrayList<Coordinate>();
 
     /*
      * Default constructor for an AlgorithmUnlimitedScope.
@@ -27,14 +32,6 @@ public class AlgorithmLimitedScope extends Algorithm {
         //find a path
 
         //---A "blank" algorithm-----------------------------------
-        //This commented-out code can be used to ensure that all the pieces connected properly
-//        rover.printSpecs();
-//        try {
-//            System.out.println("Map value at start position: " + map.getValue(rover.getStartPosition()[0], rover.getStartPosition()[1]));
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        }
-
         path.add(rover.getStartPosition());
         path.add(rover.getEndPosition());
 

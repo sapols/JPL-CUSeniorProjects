@@ -1,6 +1,5 @@
-package mars;
+package mars.map;
 
-import mars.TerrainMap;
 import org.geotools.coverage.grid.GridCoordinates2D;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -17,12 +16,8 @@ public class GeoTIFF extends TerrainMap {
     private static GridCoverage2D grid; //grid coverage from input GeoTIFF, see http://docs.geotools.org/latest/javadocs/org/geotools/coverage/grid/GridCoverage2D.html
     private static Raster gridData; //image data from input GeoTIFF
 
-    //basic default main function, takes in the file path to a target GeoTIFF
-    public void main(String fileLocation) throws Exception { //initialization
-        initMap(fileLocation);
-    }
 
-    //wrapper function
+    //init function, takes in the file path to a target GeoTIFF
     public void initMap(String fileLocation) throws Exception {
         initTif(fileLocation);
     }

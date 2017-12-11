@@ -1,9 +1,9 @@
-package mars;
+package mars.coordinate;
 
 /**
- * Wrapper class for an (X, Y) coordinate
+ * Wrapper class for an (X, Y) coordinate.
  *
- * TODO: make this abstract and extend for units?
+ * TODO: make this abstract and extend for different units?
  */
 public class Coordinate {
     private int x;
@@ -19,9 +19,13 @@ public class Coordinate {
         return x;
     }
 
+    public void setX(int x) { this.x = x; }
+
     public int getY() {
         return y;
     }
+
+    public void setY(int y) { this.y = y; }
 
     public String getUnits() {
         return units;
