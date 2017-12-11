@@ -23,10 +23,9 @@ public class TerminalInterface extends UserInterface {
     Coordinate startCoords;
     Coordinate endCoords;
     String mapPath = "";
-    String alg = ""; //used to determine Algorithm to use. TODO: make this a local param instead of global?
+    String alg = ""; //used to determine Algorithm to use.
     double fieldOfView = 0;
     TerrainMap map = new GeoTIFF();
-
     //other variables inherited from "UserInterface"
 
     public void promptUser() {
@@ -114,7 +113,7 @@ public class TerminalInterface extends UserInterface {
                 endCoords = new Coordinate(x, y);
                 break;
             } catch (Exception e) {
-                System.out.println("Warning: Enter cordinates as whole numbers only.");
+                System.out.println("Warning: Enter coordinates as whole numbers only.");
                 scanner.nextLine();
             }
         }
