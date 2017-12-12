@@ -19,6 +19,6 @@ public abstract class Rover {
     double fieldOfView;
 
     public abstract double getSlope(int x1, int y1, int x2, int y2) throws Exception;
-    public abstract boolean testSlope(double maxSlope, Coordinate point1, Coordinate point2) throws Exception;
+    public abstract boolean canTraverse(Coordinate point1, Coordinate point2);
     public abstract TerrainMap getMap();
 }

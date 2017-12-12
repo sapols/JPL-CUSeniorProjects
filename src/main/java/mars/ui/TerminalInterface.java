@@ -3,12 +3,11 @@ import com.sun.corba.se.impl.io.TypeMismatchException;
 
 import mars.coordinate.Coordinate;
 import mars.algorithm.AlgorithmLimitedScope;
-import mars.algorithm.AlgorithmUnlimitedScope;
+import mars.algorithm.*;
 import mars.map.GeoTIFF;
 import mars.map.TerrainMap;
 import mars.rover.MarsRover;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -156,14 +155,13 @@ public class TerminalInterface extends UserInterface {
         //Start Rover then run its algorithm until the output file is populated with results.
         if (alg.equalsIgnoreCase("U")) {
             MarsRover r = new MarsRover(slope, startCoords, endCoords, mapPath);
-            algorithm = new AlgorithmUnlimitedScope(r);
+            algorithm = new AlgorithmUnlimitedScopeNonRecursive(r);
 
             try {
                 algorithm.findPath();
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-
         }
         else if (alg.equalsIgnoreCase("L")) {
             MarsRover r = new MarsRover(slope,startCoords,endCoords,mapPath,fieldOfView);

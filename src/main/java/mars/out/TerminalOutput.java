@@ -2,7 +2,7 @@ package mars.out;
 
 import mars.coordinate.*;
 
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * Class which writes a discovered path to the terminal.
@@ -13,7 +13,7 @@ public class TerminalOutput extends Output {
      * Constructor for TerminalOutput.
      * It immediately prints the output.
      */
-    public TerminalOutput(ArrayList<? extends Coordinate> out) {
+    public TerminalOutput(List<? extends Coordinate> out) {
         resultList = out;
         writeToOutput();
     }

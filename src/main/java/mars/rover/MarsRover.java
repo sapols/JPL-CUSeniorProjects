@@ -83,24 +83,29 @@ public class MarsRover extends Rover {
     }
 
     // returns true if the rover can traverse to this point, false if it can't. enforces slope requirement.
-    public boolean testSlope(double maxSlope, Coordinate point1, Coordinate point2) throws Exception {
-        int x1 = point1.getX();
-        int y1 = point1.getY();
-        int x2 = point2.getX();
-        int y2 = point2.getY();
+    public boolean canTraverse(Coordinate point1, Coordinate point2) {
+        try {
+            int x1 = point1.getX();
+            int y1 = point1.getY();
+            int x2 = point2.getX();
+            int y2 = point2.getY();
 
-        double[] slopes = {-1,-1,-1,-1,-1};
-        slopes[0] = getSlope(x1,y1,x2,y2); // traversal slope
-        slopes[1] = getSlope(x2,y2,x2+1,y2); //eastern slope
-        slopes[2] = getSlope(x2,y2,x2-1,y2); //western slope
-        slopes[3] = getSlope(x2,y2,x2,y2+1); //northern slope
-        slopes[4] = getSlope(x2,y2,x2,y2-1); //southern slope
-        for(double slope : slopes) {
-            if (Math.abs(slope) > maxSlope) {
-                return false;
+            double[] slopes = {-1, -1, -1, -1, -1};
+            slopes[0] = getSlope(x1, y1, x2, y2); // traversal slope
+            slopes[1] = getSlope(x2, y2, x2 + 1, y2); //eastern slope
+            slopes[2] = getSlope(x2, y2, x2 - 1, y2); //western slope
+            slopes[3] = getSlope(x2, y2, x2, y2 + 1); //northern slope
+            slopes[4] = getSlope(x2, y2, x2, y2 - 1); //southern slope
+            for (double slope : slopes) {
+                if (Math.abs(slope) > maxSlope) {
+                    return false;
+                }
             }
+            return true;
         }
-        return true;
+        catch(Exception e) {
+            return false;
+        }
     }
 
     // Prints out all of the specs of this rover.

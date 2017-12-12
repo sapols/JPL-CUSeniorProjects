@@ -13,18 +13,18 @@ import java.util.ArrayList;
  * Class which implements the path-finding algorithm without a limited field of view.
  * Uses an A* search.
  */
-public class AlgorithmUnlimitedScope extends Algorithm {
+public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
 
     ArrayList<AStarCoordinate> path = new ArrayList<AStarCoordinate>();
     Coordinate goal;
 
     /*
-     * Default constructor for an AlgorithmUnlimitedScope.
+     * Default constructor for an AlgorithmUnlimitedScopeRecursive.
      *
      * @param map The terrain map
      * @param rover The rover
      */
-    public AlgorithmUnlimitedScope(MarsRover r) {
+    public AlgorithmUnlimitedScopeRecursive(MarsRover r) {
         rover = r;
         map = r.getMap();
         goal = r.getEndPosition();
@@ -87,13 +87,11 @@ public class AlgorithmUnlimitedScope extends Algorithm {
                 if (!(i == x && j == y)) { //if this is not the given coordinate "coord"
                     try {
                         AStarCoordinate potentialNeighbor = new AStarCoordinate(i, j);
-                        potentialNeighbor.setCostSoFar(costSoFar+1); //TODO: diagonals should add sqrt(2), not 1
-                        double slope = rover.getSlope(coord, potentialNeighbor);
-
-                        if (slope <= rover.getMaxSlope()) { //if rover could visit this coordinate, add it
+                        potentialNeighbor.setCostSoFar(costSoFar+1); //TODO: diagonals should technically add sqrt(2), not 1
+                        //TODO: Address issues with MarsRover.canTraverse
+                        if (rover.canTraverse(coord, potentialNeighbor)) { //if rover could visit this coordinate, add it
                             neighbors.add(potentialNeighbor);
                         }
-
                     } catch (Exception e) {
                         //"potentialNeighbor" was out of bounds of the map, so no-op.
                     }
