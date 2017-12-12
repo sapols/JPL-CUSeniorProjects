@@ -1,6 +1,6 @@
 package mars.algorithm;
 
-import mars.coordinate.Coordinate;
+import mars.coordinate.*;
 import mars.rover.MarsRover;
 import mars.out.TerminalOutput;
 import mars.map.TerrainMap;
@@ -15,24 +15,26 @@ public class AlgorithmLimitedScope extends Algorithm {
     ArrayList<Coordinate> path = new ArrayList<Coordinate>();
 
     /*
-     * Default constructor for an AlgorithmUnlimitedScope.
+     * Default constructor for an AlgorithmUnlimitedScopeRecursive.
      *
      * @param map The terrain map
      * @param rover The rover
      */
-    public AlgorithmLimitedScope(TerrainMap m, MarsRover r) {
-        map = m;
+    public AlgorithmLimitedScope(MarsRover r) {
         rover = r;
+        map = r.getMap();
     }
 
-    public void findPath() {
-        //find a path
+    public void findPath() throws Exception {
+        //Call the search algorithm method
+        blankAlgorithm();
+    }
 
-        //---A "blank" algorithm-----------------------------------
+    //TODO: Implement something
+    public void blankAlgorithm() {
         path.add(rover.getStartPosition());
         path.add(rover.getEndPosition());
 
         output = new TerminalOutput(path);
-        //---------------------------------------------------------
     }
 }

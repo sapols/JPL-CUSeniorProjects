@@ -1,8 +1,12 @@
 package mars.algorithm;
 
+import mars.coordinate.Coordinate;
+import mars.coordinate.AStarCoordinate;
 import mars.rover.MarsRover;
 import mars.out.Output;
 import mars.map.TerrainMap;
+
+import java.util.ArrayList;
 
 /**
  * Abstract class from which all path-finding algorithms inherit.
@@ -13,6 +17,6 @@ public abstract class Algorithm {
     MarsRover rover;
     Output output;
 
-    public abstract void findPath();
+    public abstract void findPath() throws Exception;
 
 }

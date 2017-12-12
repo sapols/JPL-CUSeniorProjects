@@ -3,7 +3,7 @@ import com.sun.corba.se.impl.io.TypeMismatchException;
 
 import mars.coordinate.Coordinate;
 import mars.algorithm.AlgorithmLimitedScope;
-import mars.algorithm.AlgorithmUnlimitedScope;
+import mars.algorithm.*;
 import mars.map.GeoTIFF;
 import mars.map.TerrainMap;
 import mars.rover.MarsRover;
@@ -22,10 +22,9 @@ public class TerminalInterface extends UserInterface {
     Coordinate startCoords;
     Coordinate endCoords;
     String mapPath = "";
-    String alg = ""; //used to determine Algorithm to use. TODO: make this a local param instead of global?
+    String alg = ""; //used to determine Algorithm to use.
     double fieldOfView = 0;
     TerrainMap map = new GeoTIFF();
-
     //other variables inherited from "UserInterface"
 
     public void promptUser() {
@@ -113,7 +112,7 @@ public class TerminalInterface extends UserInterface {
                 endCoords = new Coordinate(x, y);
                 break;
             } catch (Exception e) {
-                System.out.println("Warning: Enter cordinates as whole numbers only.");
+                System.out.println("Warning: Enter coordinates as whole numbers only.");
                 scanner.nextLine();
             }
         }
@@ -156,13 +155,23 @@ public class TerminalInterface extends UserInterface {
         //Start Rover then run its algorithm until the output file is populated with results.
         if (alg.equalsIgnoreCase("U")) {
             MarsRover r = new MarsRover(slope, startCoords, endCoords, mapPath);
-            algorithm = new AlgorithmUnlimitedScope(map, r);
-            algorithm.findPath();
+            algorithm = new AlgorithmUnlimitedScopeNonRecursive(r);
+
+            try {
+                algorithm.findPath();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         }
         else if (alg.equalsIgnoreCase("L")) {
             MarsRover r = new MarsRover(slope,startCoords,endCoords,mapPath,fieldOfView);
-            algorithm = new AlgorithmLimitedScope(map, r);
-            algorithm.findPath();
+            algorithm = new AlgorithmLimitedScope(r);
+
+            try {
+                algorithm.findPath();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         else {
             System.out.println("Error: No algorithm selected.");
