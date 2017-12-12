@@ -1,8 +1,8 @@
 package mars.out;
 
-import mars.coordinate.Coordinate;
+import mars.coordinate.*;
 
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * Abstract class from which all output classes inherit.
@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public abstract class Output {
 
-    ArrayList<Coordinate> resultList;
+    List<? extends Coordinate> resultList;
 
     public abstract void writeToOutput();
 }
