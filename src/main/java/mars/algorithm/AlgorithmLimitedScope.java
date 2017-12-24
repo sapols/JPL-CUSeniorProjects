@@ -33,9 +33,6 @@ public class AlgorithmLimitedScope extends Algorithm {
         blankAlgorithm();
     }
 
-    public void findPath() {
-        //find a path
-
     //TODO: Implement something
     public void blankAlgorithm() {
         path.add(rover.getStartPosition());

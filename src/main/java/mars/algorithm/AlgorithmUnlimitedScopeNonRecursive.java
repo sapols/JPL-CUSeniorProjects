@@ -26,6 +26,9 @@ public class AlgorithmUnlimitedScopeNonRecursive extends Algorithm {
         map = rover.getMap();
     }
 
+    /**
+     * Implementation of A*
+     */
     public void findPath() {
         Coordinate startPosition = rover.getStartPosition();
         Coordinate endPosition= rover.getEndPosition();
@@ -93,6 +96,12 @@ public class AlgorithmUnlimitedScopeNonRecursive extends Algorithm {
         output = new TerminalOutput(fullPath);
     }
 
+    /**
+     * Check if there is a node matching ours in a list
+     * @param node node to test for
+     * @param list list to check
+     * @return boolean whether node is in list
+     */
     private boolean isNodeInList(Node node, List<Node> list) {
         int x = node.getPosition().getX();
         int y = node.getPosition().getY();
@@ -104,6 +113,10 @@ public class AlgorithmUnlimitedScopeNonRecursive extends Algorithm {
         return false;
     }
 
+    /**
+     * Constructs a path for A* by traversing nodes' parents.
+     * @param currentNode node to start traversing
+     */
     private void constructPath(Node currentNode) {
         while (currentNode != null) {
             fullPath.add(currentNode.getPosition());
@@ -111,6 +124,12 @@ public class AlgorithmUnlimitedScopeNonRecursive extends Algorithm {
         }
     }
 
+    /**
+     * Determines distance between two nodes
+     * @param currentNode first node to check
+     * @param neighborNode neighbor node to the current node
+     * @return distance between current node and neighbor node
+     */
     private double distBetween(Node currentNode, Node neighborNode) {
         int currentX = currentNode.getPosition().getX();
         int currentY = currentNode.getPosition().getY();
@@ -120,6 +139,11 @@ public class AlgorithmUnlimitedScopeNonRecursive extends Algorithm {
         return Math.sqrt(Math.pow(currentX - neighborX, 2) + Math.pow(currentY - neighborY, 2));
     }
 
+    /**
+     * Finds neighbors of a given node
+     * @param currentNode node to check
+     * @return list of nodes neighboring the current node
+     */
     private List<Node> getNeighbors(Node currentNode) {
         // TODO
         // Check if on edge of map - breaks if we're on the pixel right next
@@ -130,6 +154,7 @@ public class AlgorithmUnlimitedScopeNonRecursive extends Algorithm {
         int currentX = currentCoordinate.getX();
         int currentY = currentCoordinate.getY();
 
+        // since we're on a grid, treat our graph as such and determine neighbors like that
         Coordinate coordinateLeft = new Coordinate(currentX - 1, currentY);
         Coordinate coordinateUpLeft = new Coordinate(currentX - 1, currentY + 1);
         Coordinate coordinateUp = new Coordinate(currentX, currentY + 1);
@@ -160,6 +185,11 @@ public class AlgorithmUnlimitedScopeNonRecursive extends Algorithm {
         return neighborNodeList;
     }
 
+    /**
+     * A* function to get lowest F Score from a list of nodes
+     * @param list list of nodes to check
+     * @return node with lowest F Score
+     */
     private Node getLowestFScore(List<Node> list) {
         Node lowestNode = list.get(0);
         for (Node n : list) {
@@ -170,6 +200,12 @@ public class AlgorithmUnlimitedScopeNonRecursive extends Algorithm {
         return lowestNode;
     }
 
+    /**
+     * Heuristic function for A* implementing Manhattan distance between two nodes
+     * @param currentNode current node
+     * @param goalNode goal node
+     * @return Manhattan distance
+     */
     private double estimateHeuristic(Node currentNode, Node goalNode) {
         // Manhattan estimate. Using only horizontal/vertical distances as
         // opposed to "how to crow flies".
@@ -185,6 +221,12 @@ public class AlgorithmUnlimitedScopeNonRecursive extends Algorithm {
         return Math.abs(currentXPos - goalXPos) + Math.abs(currentYPos - goalYPos);
     }
 
+    /**
+     * Check if the two nodes are the same
+     * @param currentNode first node to check
+     * @param goalNode second node to check
+     * @return boolean if the nodes are the same
+     */
     private boolean currentIsGoal(Node currentNode, Node goalNode) {
         double currentX = currentNode.getPosition().getX();
         double currentY = currentNode.getPosition().getY();
