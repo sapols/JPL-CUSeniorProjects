@@ -79,7 +79,7 @@ public class AppTest extends TestCase {
         double maxSlope = 0.5;
         Coordinate point1 = new Coordinate(20, 20);
         Coordinate point2 = new Coordinate(21, 20);
-        assertTrue(newRover.testSlope(maxSlope,point1,point2));
+        assertTrue(newRover.canTraverse(point1,point2));
     }
 
     public void testGeotiffMaxHeight() throws Exception{

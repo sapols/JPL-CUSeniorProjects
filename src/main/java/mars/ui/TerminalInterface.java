@@ -3,7 +3,7 @@ import com.sun.corba.se.impl.io.TypeMismatchException;
 
 import mars.coordinate.Coordinate;
 import mars.algorithm.AlgorithmLimitedScope;
-import mars.algorithm.AlgorithmUnlimitedScope;
+import mars.algorithm.*;
 import mars.map.GeoTIFF;
 import mars.map.TerrainMap;
 import mars.rover.MarsRover;
@@ -15,14 +15,6 @@ import java.util.Scanner;
  * At start up, "promptUser" asks the user for rover specifications
  * (including which algorithm to run, and start/end coordinates).
  * A rover with those specifications is then started and the program runs until completed.
- *
- * TODO properly format with tags -- may not be possible due to how javadoc works
- * slope: maxSlope for input rover
- * startCoords: starting coordinates for input rover
- * endCoords: ending coordinates for input rover
- * mapPath: file path to a terrain map
- * alg: string used to determine what algorithm user chooses
- * fieldOfView:
  */
 public class TerminalInterface extends UserInterface {
 
@@ -30,10 +22,9 @@ public class TerminalInterface extends UserInterface {
     Coordinate startCoords;
     Coordinate endCoords;
     String mapPath = "";
-    String alg = "";
+    String alg = ""; //used to determine Algorithm to use.
     double fieldOfView = 0;
     TerrainMap map = new GeoTIFF();
-
     //other variables inherited from "UserInterface"
 
     /**
@@ -145,7 +136,7 @@ public class TerminalInterface extends UserInterface {
                 //TODO: say what the units are here.
                 System.out.println("\nEnter the Field of View radius of your rover:");
                 while(true) {
-                    try { // get fieldOfView
+                    try {
                         fieldOfView = scanner.nextDouble();
                         break;
                     } catch (Exception e) {
@@ -170,13 +161,23 @@ public class TerminalInterface extends UserInterface {
         //Start Rover then run its algorithm until the output file is populated with results.
         if (alg.equalsIgnoreCase("U")) {
             MarsRover r = new MarsRover(slope, startCoords, endCoords, mapPath);
-            algorithm = new AlgorithmUnlimitedScope(map, r);
-            algorithm.findPath();
+            algorithm = new AlgorithmUnlimitedScopeNonRecursive(r);
+
+            try {
+                algorithm.findPath();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         }
         else if (alg.equalsIgnoreCase("L")) {
             MarsRover r = new MarsRover(slope,startCoords,endCoords,mapPath,fieldOfView);
-            algorithm = new AlgorithmLimitedScope(map, r);
-            algorithm.findPath();
+            algorithm = new AlgorithmLimitedScope(r);
+
+            try {
+                algorithm.findPath();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         else {
             System.out.println("Error: No algorithm selected.");

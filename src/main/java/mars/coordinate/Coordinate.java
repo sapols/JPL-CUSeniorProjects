@@ -3,12 +3,12 @@ package mars.coordinate;
 /**
  * Wrapper class for an (X, Y) coordinate.
  *
- * TODO: make this abstract and extend for different units?
+ * TODO: Extend this class for different units?
  */
 public class Coordinate {
-    private int x;
-    private int y;
-    private String units = "pixels";
+    protected int x;
+    protected int y;
+    protected String units = "pixels";
 
     /**
      * Constructor for Coordinate class
@@ -26,15 +26,24 @@ public class Coordinate {
         return x;
     }
 
-    public void setX(int x) { this.x = x; }
+    public void setX(int x) {
+        this.x = x;
+    }
 
     public int getY() {
         return y;
     }
 
-    public void setY(int y) { this.y = y; }
+    public void setY(int y) {
+        this.y = y;
+    }
 
     public String getUnits() {
         return units;
     }
+
+    public boolean equals(Coordinate other) {
+        return ((other.getX()==this.getX()) && (other.getY()==this.getY()));
+    }
+
 }
