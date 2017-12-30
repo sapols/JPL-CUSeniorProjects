@@ -18,7 +18,7 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
     ArrayList<AStarCoordinate> path = new ArrayList<AStarCoordinate>();
     Coordinate goal;
 
-    /*
+    /**
      * Default constructor for an AlgorithmUnlimitedScopeRecursive.
      *
      * @param map The terrain map
@@ -30,7 +30,7 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
         goal = r.getEndPosition();
     }
 
-    /*
+    /**
      * Method which starts this search algorithm.
      */
     public void findPath() throws Exception {
@@ -44,9 +44,11 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
         }
     }
 
-    /*
+    /**
      * Find a path from start to goal with A*. Then output it.
      * Throw an exception if a path cannot be found.
+     *
+     * @param coords The list of coordinates being considered by the algorithm.
      */
     public void AStarSearch(ArrayList<AStarCoordinate> coords) throws Exception {
         if (coords.isEmpty()) {
@@ -70,11 +72,12 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
 
     //----Helper methods-----------------------------------------------------------------------------------------------
 
-    /*
+    /**
      * Given a coordinate, return all the neighboring coordinates
      * which can be visited by this algorithm's rover (meaning that
      * the slope between the coordinates is not too steep).
      * Possible neighbors are all eight coordinates surrounding the given one.
+     * @param coord The coordinate whose neighbors will be found.
      */
     public ArrayList<AStarCoordinate> getReachableNeighbors(AStarCoordinate coord) {
         int x = coord.getX();
@@ -102,7 +105,7 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
         return neighbors;
     }
 
-    /*
+    /**
      * Given a set of coordinates, sort them according to their overall cost,
      * which is the euclidean distance to the rover's goal coordinate
      * plus the distance traveled from the start to a coordinate.
@@ -115,7 +118,7 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
         Collections.sort(coords); //Do the sort, per the "compareTo" method in AStarCoordinate
     }
 
-    /*
+    /**
      * Given a coordinate, calculate its euclidean distance to the rover's goal coordinate
      * (using the distance formula derived from the Pythagorean theorem).
      */

@@ -8,7 +8,7 @@ public class AStarCoordinate extends Coordinate implements Comparable<AStarCoord
     private double costSoFar;
     private double distanceToGoal;
 
-    /*
+    /**
      * Main constructor for an AStarCoordinate.
      */
     public AStarCoordinate(int x, int y) {
@@ -17,7 +17,7 @@ public class AStarCoordinate extends Coordinate implements Comparable<AStarCoord
         distanceToGoal = Double.POSITIVE_INFINITY; //initialize to infinity
     }
 
-    /*
+    /**
      * Second constructor for an AStarCoordinate which accepts a Coordinate.
      */
     public AStarCoordinate(Coordinate coord) {
@@ -45,7 +45,7 @@ public class AStarCoordinate extends Coordinate implements Comparable<AStarCoord
 
     //----For sorting based on A* heuristics--------------------------------------------------------------------------
 
-    /*
+    /**
      * compareTo should return < 0 if this is supposed to be
      * less than other, > 0 if this is supposed to be greater than
      * other and 0 if they are supposed to be equal.
