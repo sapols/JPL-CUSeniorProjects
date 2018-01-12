@@ -27,6 +27,10 @@ public class TerminalInterface extends UserInterface {
     TerrainMap map = new GeoTIFF();
     //other variables inherited from "UserInterface"
 
+    /**
+     * Function that manually prompts the user for required variables to run. No formal return, input is stored
+     * as variables.
+     */
     public void promptUser() {
         System.out.println("**==================================================**");
         System.out.println("*  Welcome to the Martian Autonomous Routing System. *");
@@ -89,8 +93,7 @@ public class TerminalInterface extends UserInterface {
                 y = scanner.nextInt();
                 startCoords = new Coordinate(x, y);
                 break;
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Warning: Enter coordinates as whole numbers only.");
                 scanner.nextLine();
             }
@@ -151,6 +154,9 @@ public class TerminalInterface extends UserInterface {
         }
     }
 
+    /**
+     * Function to run the requested algorithm with user-prompted variables.
+     */
     public void startAlgorithm() {
         //Start Rover then run its algorithm until the output file is populated with results.
         if (alg.equalsIgnoreCase("U")) {

@@ -25,6 +25,9 @@ public class AlgorithmLimitedScope extends Algorithm {
         map = r.getMap();
     }
 
+    /**
+     * TODO Describe findPath() here
+     */
     public void findPath() throws Exception {
         //Call the search algorithm method
         blankAlgorithm();
