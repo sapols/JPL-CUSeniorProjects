@@ -205,10 +205,6 @@ public class TerminalInterface extends UserInterface {
             System.out.println("Error: No algorithm selected.");
         }
     }
-
-    public static void main(String[] args) {
-        TerminalInterface ti = new TerminalInterface();
-        ti.promptUser();
-    }
+    
 }
 
