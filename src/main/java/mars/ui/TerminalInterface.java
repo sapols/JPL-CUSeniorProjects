@@ -49,33 +49,49 @@ public class TerminalInterface extends UserInterface {
         System.out.println("src/main/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
 
         //TODO: Tell people what path their path will be relative to. Or possibly provide options to choose from.
-        while(true) {
-            try {
-                mapPath = scanner.next();
-                map.initMap(mapPath);
-                break;
-            } catch(TypeMismatchException e) {
-                System.out.println("Warning: Please enter the file path as a string.");
-                scanner.nextLine();
-            } catch(Exception e) {
-                System.out.println("Warning: Make sure the path you are entering is correct (path is relative to project root).");
-                scanner.nextLine();
-            }
+        while(true) if(checkMap(scanner)) break;
 
+
+    }
+
+    public Boolean checkMap(Scanner scan)
+    {
+        try {
+            mapPath = scan.next();
+            map.initMap(mapPath);
+            return true;
+        } catch(TypeMismatchException e) {
+            System.out.println("Warning: Please enter the file path as a string.");
+            scan.nextLine();
+            return false;
+
+        } catch(Exception e) {
+            System.out.println("Warning: Make sure the path you are entering is correct (path is relative to project root).");
+            scan.nextLine();
+            return false;
         }
     }
 
     public void promptForSlope() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("\nPlease enter the maximum slope your rover can handle (in degrees):");
-        while(true) {
-            try {
-                slope = scanner.nextDouble();
-                break;
-            } catch (Exception e) {
-                System.out.println("Warning: Please enter a number.");
-                scanner.nextLine();
+        while(true) if(checkSlope(scanner)) break;
+
+    }
+
+    public Boolean checkSlope(Scanner scan)
+    {
+        try {
+            slope = scan.nextDouble();
+            if(slope >= 0 && slope <= 90) return true;
+            else{
+                System.out.println("Warning: Slope must be between 0 and 90 degrees.");
+                return false;
             }
+        } catch (Exception e) {
+            System.out.println("Warning: Please enter a number between 0 and 90.");
+            scan.nextLine();
+            return false;
         }
     }
 
@@ -83,41 +99,47 @@ public class TerminalInterface extends UserInterface {
         Scanner scanner = new Scanner(System.in);
         System.out.println("\nEnter start coordinates (pressing enter between each number): ");
 
-        int x;
-        int y;
-        while(true) {
-            try {
-                System.out.print("X: ");
-                x = scanner.nextInt();
-                System.out.print("Y: ");
-                y = scanner.nextInt();
-                startCoords = new Coordinate(x, y);
-                break;
-            } catch (Exception e) {
-                System.out.println("Warning: Enter coordinates as whole numbers only.");
-                scanner.nextLine();
-            }
-        }
+        while(true) if(checkStartCoords(scanner)) break;
     }
+
 
     public void promptForEndCoords() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("\nEnter end coordinates (pressing enter between each number):");
+        while(true) if(checkEndCoords(scanner))break;
 
-        int x;
+    }
+
+    public Boolean checkEndCoords(Scanner scan)
+    {   int x;
         int y;
-        while(true) {
-            try {
-                System.out.print("X: ");
-                x = scanner.nextInt();
-                System.out.print("Y: ");
-                y = scanner.nextInt();
-                endCoords = new Coordinate(x, y);
-                break;
-            } catch (Exception e) {
-                System.out.println("Warning: Enter coordinates as whole numbers only.");
-                scanner.nextLine();
-            }
+        try {
+            System.out.print("X: ");
+            x = scan.nextInt();
+            System.out.print("Y: ");
+            y = scan.nextInt();
+            endCoords = new Coordinate(x, y);
+            return true;
+        } catch (Exception e) {
+            System.out.println("Warning: Enter coordinates as whole numbers only.");
+            scan.nextLine();
+            return false;
+        }
+    }
+    public Boolean checkStartCoords(Scanner scan)
+    {   int x;
+        int y;
+        try {
+            System.out.print("X: ");
+            x = scan.nextInt();
+            System.out.print("Y: ");
+            y = scan.nextInt();
+            startCoords = new Coordinate(x, y);
+            return true;
+        } catch (Exception e) {
+            System.out.println("Warning: Enter coordinates as whole numbers only.");
+            scan.nextLine();
+            return false;
         }
     }
 
@@ -183,6 +205,6 @@ public class TerminalInterface extends UserInterface {
             System.out.println("Error: No algorithm selected.");
         }
     }
-
+    
 }
 
