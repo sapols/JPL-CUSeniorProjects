@@ -3,6 +3,7 @@ package mars;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import mars.algorithm.AlgorithmUnlimitedScopeGreedy.GreedyNode;
 import mars.coordinate.Coordinate;
 import mars.map.GeoTIFF;
 import mars.rover.MarsRover;
@@ -102,6 +103,12 @@ public class AppTest extends TestCase {
         Double minresult = newMap.getMinValue();
         Double maxresult = newMap.getMaxValue();
         assertTrue(minresult < maxresult);
+    }
+
+    public void testGreedyNode() throws Exception{
+        Coordinate testCoordinate = new Coordinate(20,20);
+        GreedyNode testNode = new GreedyNode(testCoordinate);
+        assertTrue(testNode.getPosition() == testCoordinate);
     }
     /*
     //@Test
