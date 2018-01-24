@@ -48,13 +48,18 @@ public class AlgorithmUnlimitedScopeGreedy extends Algorithm {
      * Throw an exception if a path cannot be found.
      */
     public void GreedySearch(ArrayList<Coordinate> coords) throws Exception {
+
+        //ArrayList<Coordinate> badcoords = new ArrayList<Coordinate>(); //rejected nodes via backtracking
+        ArrayList<Coordinate> fullcoords = new ArrayList<Coordinate>(); //combined list of rejected nodes and good nodes
+        ArrayList<GreedyNode> preferences = new ArrayList<GreedyNode>(); //list of candidate positions to change to
         boolean working = true; //controls main loop that iterates every position change
         boolean stepped; //controls secondary loop that iterates for every candidate position to change to
-        ArrayList<GreedyNode> preferences = new ArrayList<GreedyNode>(); //list of candidate positions to change to
+
         GreedyNode currentNode = new GreedyNode(coords.get(0)); //current position (represented by a node)
         GreedyNode checkNode; //node to check against the current one
         Coordinate currentCoord = currentNode.getPosition(); //coordinates of currentNode
         double goalDirection = 0.; //angle that points to where the goal is (heuristic)
+
         while(working){ //main loop
             System.out.println(currentCoord.getX() + "," + currentCoord.getY()); //debug
             currentNode.setVisited(true); //we've visited this node
@@ -62,22 +67,22 @@ public class AlgorithmUnlimitedScopeGreedy extends Algorithm {
             if(currentNode.getNorthNeighbor() == null && currentCoord.getY() > 0) { //initialize uninitialized neighbors
                 Coordinate newCoord = new Coordinate(currentCoord.getX(),currentCoord.getY()-1);
                 currentNode.setNorthNeighbor(new GreedyNode(newCoord));
-                if(checkArray(newCoord,coords)){currentNode.getNorthNeighbor().setVisited(true);} //if we've already been to this node, this instance of it should be visited.
+                if(checkArray(newCoord,fullcoords)){currentNode.getNorthNeighbor().setVisited(true);} //if we've already been to this node, this instance of it should be visited.
             }
             if(currentNode.getWestNeighbor() == null && currentCoord.getX() > 0){
                 Coordinate newCoord = new Coordinate(currentCoord.getX()-1,currentCoord.getY());
                 currentNode.setWestNeighbor(new GreedyNode(newCoord));
-                if(checkArray(newCoord,coords)){currentNode.getWestNeighbor().setVisited(true);}
+                if(checkArray(newCoord,fullcoords)){currentNode.getWestNeighbor().setVisited(true);}
             }
             if(currentNode.getEastNeighbor() == null && currentCoord.getX() < map.getWidth()){
                 Coordinate newCoord = new Coordinate(currentCoord.getX()+1,currentCoord.getY());
                 currentNode.setEastNeighbor(new GreedyNode(newCoord));
-                if(checkArray(newCoord,coords)){currentNode.getEastNeighbor().setVisited(true);}
+                if(checkArray(newCoord,fullcoords)){currentNode.getEastNeighbor().setVisited(true);}
             }
             if(currentNode.getSouthNeighbor() == null && currentCoord.getY() < map.getHeight()){
                 Coordinate newCoord = new Coordinate(currentCoord.getX(),currentCoord.getY()+1);
                 currentNode.setSouthNeighbor(new GreedyNode(newCoord));
-                if(checkArray(newCoord,coords)){currentNode.getSouthNeighbor().setVisited(true);}
+                if(checkArray(newCoord,fullcoords)){currentNode.getSouthNeighbor().setVisited(true);}
             }
 
             goalDirection = getAngleToGoal(currentCoord, rover.getEndPosition());
@@ -131,12 +136,20 @@ public class AlgorithmUnlimitedScopeGreedy extends Algorithm {
                         currentNode = checkNode;
                         currentCoord = currentNode.getPosition();
                         coords.add(currentCoord);
+                        fullcoords.add(currentCoord);
                         stepped = false;
                     }else{ //else ditch it and try the next one
                         preferences.remove(0);
                     }
-                }else{ //if we run out of candidates, we lose
-                    throw new Exception("WARNING: A path to the goal could not be found.");
+                }else{ //if we run out of candidates, we backtrack
+                    if(coords.size() > 1) {
+                        System.out.println("bt " + currentCoord.getX() + "," + currentCoord.getY());
+                        coords.remove(currentCoord);
+                        currentCoord = coords.get(coords.size() - 1);
+                        stepped = false;
+                    }else{ //if we can't backtrack, we lose
+                        throw new Exception("WARNING: A path to the goal could not be found.");
+                    }
                 }
             }
             preferences.clear(); //abandon the leftover candidates
