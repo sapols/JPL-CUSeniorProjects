@@ -90,12 +90,8 @@ public class MarsRover extends Rover {
             int x2 = point2.getX();
             int y2 = point2.getY();
 
-            double[] slopes = {-1, -1, -1, -1, -1};
+            double[] slopes = {-1};
             slopes[0] = getSlope(x1, y1, x2, y2); // traversal slope
-            slopes[1] = getSlope(x2, y2, x2 + 1, y2); //eastern slope
-            slopes[2] = getSlope(x2, y2, x2 - 1, y2); //western slope
-            slopes[3] = getSlope(x2, y2, x2, y2 + 1); //northern slope
-            slopes[4] = getSlope(x2, y2, x2, y2 - 1); //southern slope
             for (double slope : slopes) {
                 if (Math.abs(slope) > maxSlope) {
                     return false;

@@ -127,7 +127,7 @@ public class AlgorithmUnlimitedScopeGreedy extends Algorithm {
             while(stepped){
                 if(preferences.size() > 0){
                     checkNode = preferences.get(0);
-                    if(checkNode != null && rover.canTraverse(currentCoord, checkNode.getPosition()) && !checkNode.isVisited()){
+                    if(checkNode != null && processSlope(currentCoord, checkNode.getPosition(), goalDirection) && !checkNode.isVisited()){
                         currentNode = checkNode;
                         currentCoord = currentNode.getPosition();
                         coords.add(currentCoord);
@@ -164,6 +164,29 @@ public class AlgorithmUnlimitedScopeGreedy extends Algorithm {
             }
         }
         return false;
+    }
+
+    public boolean processSlope(Coordinate point1, Coordinate point2, double angle) throws Exception{
+        double point1height = map.getValue(point1.getX(),point1.getY());
+        double point2height = map.getValue(point2.getX(),point2.getY());
+        if(point1height != point2height){
+            double testPoint1x = point1.getX();
+            double testPoint1y = point1.getY();
+            double testPoint2x = point2.getX();
+            double testPoint2y = point2.getY();
+            while(point1height == map.getValue(testPoint1x,testPoint1y) && testPoint1x > 0 &&
+                    testPoint1x < map.getWidth() && testPoint1y > 0 && testPoint1y < map.getHeight() ){
+                testPoint1x -= Math.cos(angle);
+                testPoint1y -= Math.sin(angle);
+            }
+            while(point2height == map.getValue(testPoint2x,testPoint2y) && testPoint2x > 0 &&
+                    testPoint2x < map.getWidth() && testPoint2y > 0 && testPoint2y < map.getHeight() ){
+                testPoint2x += Math.cos(angle);
+                testPoint2y += Math.sin(angle);
+            }
+
+            return rover.canTraverse(new Coordinate((int)testPoint1x,(int)testPoint1y),new Coordinate((int)testPoint2x,(int)testPoint2y));
+        }else return true;
     }
 
     public static class GreedyNode {
