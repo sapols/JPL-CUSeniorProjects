@@ -5,7 +5,9 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.geometry.DirectPosition2D;
+import mars.coordinate.*;
 
+import java.awt.image.PackedColorModel;
 import java.awt.image.Raster;
 import java.io.File;
 
@@ -100,6 +102,41 @@ public class GeoTIFF extends TerrainMap {
         }
         System.out.println("Minimum Elevation:  "+ minElevation);
         return minElevation;
+    }
+
+    /**
+     * Returns the elevations of pixels within a given
+     * rectangular area, defined by an origin point and
+     * a width and height from the origin
+     * (width and height cannot be negative).
+     *
+     * @return a 2D array of the elevations at each pixel in the area
+     * @param origin a Coordinate point which is the origin of the rectangular area
+     * @param width the number of pixels to extend the area in the X direction from the origin
+     * @param height the number of pixels to extend the area in the Y direction from the origin
+     */
+    public double[][] getElevationsInArea(Coordinate origin, int width, int height) {
+        int x = origin.getX();
+        int y = origin.getY();
+        double[][] elevations = new double[height][width];
+        //bounds checking
+        int areaWidth = ((x+width) < gridData.getWidth()) ? width : gridData.getWidth();
+        int areaHeight = ((y+height) < gridData.getHeight()) ? height : gridData.getHeight();
+
+        for (int i = x; i < x+areaWidth; i++) {
+            for (int j = y; j < y+areaHeight; j++) {
+                try {
+                    int row = (height-1) - (j-y);
+                    int col = i - x;
+                    elevations[row][col] = getValue(i, j);
+                }
+                catch (Exception e) {
+                    //out of bounds; no-op
+                }
+            }
+        }
+
+        return elevations;
     }
 
     /* leftover function from Route. Keeping here for now
