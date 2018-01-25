@@ -3,8 +3,9 @@ package mars;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import mars.algorithm.AlgorithmUnlimitedScopeGreedy.GreedyNode;
+//import mars.algorithm.AlgorithmUnlimitedScopeGreedy.GreedyNode;
 import mars.coordinate.Coordinate;
+import mars.coordinate.GreedyCoordinate;
 import mars.map.GeoTIFF;
 import mars.rover.MarsRover;
 
@@ -105,10 +106,10 @@ public class AppTest extends TestCase {
         assertTrue(minresult < maxresult);
     }
 
-    public void testGreedyNode() throws Exception{
+    public void testGreedyCoordinate() throws Exception{
         Coordinate testCoordinate = new Coordinate(20,20);
-        GreedyNode testNode = new GreedyNode(testCoordinate);
-        assertTrue(testNode.getPosition() == testCoordinate);
+        GreedyCoordinate testNode = new GreedyCoordinate(testCoordinate);
+        assertTrue(testNode.getCoordinate() == testCoordinate);
     }
     /*
     //@Test

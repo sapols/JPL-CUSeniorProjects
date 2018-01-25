@@ -155,7 +155,7 @@ public class TerminalInterface extends UserInterface {
         //Start Rover then run its algorithm until the output file is populated with results.
         if (alg.equalsIgnoreCase("U")) {
             MarsRover r = new MarsRover(slope, startCoords, endCoords, mapPath);
-            algorithm = new AlgorithmUnlimitedScopeNonRecursive(r);
+            algorithm = new AlgorithmUnlimitedScopeRecursive(r);
 
             try {
                 algorithm.findPath();
