@@ -109,7 +109,7 @@ public class AppTest extends TestCase {
     public void testGreedyCoordinate() throws Exception{
         Coordinate testCoordinate = new Coordinate(20,20);
         GreedyCoordinate testNode = new GreedyCoordinate(testCoordinate);
-        assertTrue(testNode.getCoordinate() == testCoordinate);
+        assertTrue(testNode.getX() == testCoordinate.getX());
     }
     /*
     //@Test

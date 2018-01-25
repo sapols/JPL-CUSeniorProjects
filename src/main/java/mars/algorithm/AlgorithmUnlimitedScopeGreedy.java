@@ -133,7 +133,7 @@ public class AlgorithmUnlimitedScopeGreedy extends Algorithm {
             while(stepped){
                 if(preferences.size() > 0){
                     checkNode = preferences.get(0); //if we actually were able to make that node, and it has a good slope, and we haven't visited it yet, go there
-                    if(checkNode != null && processSlope(currentNode, checkNode, goalDirection) && !checkNode.isVisited()){
+                    if(checkNode != null && processSlope(currentNode, checkNode, getAngleToGoal(currentNode,checkNode)) && !checkNode.isVisited()){
                         currentNode = checkNode;
                         coords.add(currentNode);
                         fullcoords.add(currentNode);
@@ -145,7 +145,7 @@ public class AlgorithmUnlimitedScopeGreedy extends Algorithm {
                     if(coords.size() > 1) {
                         System.out.println("bt " + currentNode.getX() + "," + currentNode.getY());
                         coords.remove(checkArray(currentNode,coords));
-                        currentNode = new GreedyCoordinate(coords.get(coords.size() - 1));
+                        currentNode = coords.get(coords.size() - 1);
                         currentNode.setVisited(true);
                         stepped = false;
                     }else{ //if we can't backtrack, we lose
@@ -203,27 +203,32 @@ public class AlgorithmUnlimitedScopeGreedy extends Algorithm {
      * @throws Exception thrown by GeoTools
      */
     public boolean processSlope(Coordinate point1, Coordinate point2, double angle) throws Exception{
+        double temp1x = point1.getX(); //manually get the components (makes the math a lot easier)
+        double temp1y = point1.getY();
+        double temp2x = point2.getX();
+        double temp2y = point2.getY();
+
+        if(temp1x < 0 || temp2x < 0 || temp1x > map.getWidth() || temp2x > map.getWidth()
+                || temp1y < 0 || temp2y < 0 || temp1y > map.getHeight() | temp2y > map.getHeight() )
+            return false;
+
         double point1height = map.getValue(point1.getX(),point1.getY()); //get the heights of the given points
         double point2height = map.getValue(point2.getX(),point2.getY());
         if(point1height != point2height){ //if the heights aren't the same
-            double testPoint1x = point1.getX(); //manually get the components (makes the math a lot easier)
-            double testPoint1y = point1.getY();
-            double testPoint2x = point2.getX();
-            double testPoint2y = point2.getY();
             //while the current expanded point height and original are the same, and points are in bounds
-            while(point1height == map.getValue(testPoint1x,testPoint1y) && testPoint1x > 0 &&
-                    testPoint1x < map.getWidth() && testPoint1y > 0 && testPoint1y < map.getHeight() ){
-                testPoint1x -= Math.cos(angle); //subtract one unit length in the desired angle. note we don't round until the end
-                testPoint1y -= Math.sin(angle);
+            while(temp1x > 0 && temp1x < map.getWidth() && temp1y > 0 && temp1y < map.getHeight() ){
+                if(point1height != map.getValue(temp1x,temp1y)) break;
+                temp1x -= Math.cos(angle); //subtract one unit length in the desired angle. note we don't round until the end
+                temp1y -= Math.sin(angle);
             }
             //then do the same for the second point
-            while(point2height == map.getValue(testPoint2x,testPoint2y) && testPoint2x > 0 &&
-                    testPoint2x < map.getWidth() && testPoint2y > 0 && testPoint2y < map.getHeight() ){
-                testPoint2x += Math.cos(angle);
-                testPoint2y += Math.sin(angle);
+            while(temp2x > 0 && temp2x < map.getWidth() && temp2y > 0 && temp2y < map.getHeight() ){
+                if(point2height != map.getValue(temp2x,temp2y)) break;
+                temp2x += Math.cos(angle);
+                temp2y += Math.sin(angle);
             }
             //finally, construct our resultant coordinate and throw it over to canTraverse to judge it
-            return rover.canTraverse(new Coordinate((int)testPoint1x,(int)testPoint1y),new Coordinate((int)testPoint2x,(int)testPoint2y));
+            return rover.canTraverse(new Coordinate((int)temp1x,(int)temp1y),new Coordinate((int)temp2x,(int)temp2y));
         }else return true; //if they're the same height, then it can just freely go there
     }
 
