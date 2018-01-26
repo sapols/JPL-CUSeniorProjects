@@ -1,13 +1,19 @@
 package mars;
 
+import com.vividsolutions.jts.geom.CoordinateList;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-//import mars.algorithm.AlgorithmUnlimitedScopeGreedy.GreedyNode;
 import mars.coordinate.Coordinate;
 import mars.coordinate.GreedyCoordinate;
 import mars.map.GeoTIFF;
+import mars.out.FileOutput;
 import mars.rover.MarsRover;
+import mars.ui.TerminalInterface;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 
 public class AppTest extends TestCase {
@@ -105,6 +111,103 @@ public class AppTest extends TestCase {
         Double maxresult = newMap.getMaxValue();
         assertTrue(minresult < maxresult);
     }
+
+    public void testCLIcheckMapFailsWithoutRealFile() throws Exception{
+        TerminalInterface ti = new TerminalInterface();
+        assertFalse(ti.checkMap(new Scanner("not a real file")));
+    }
+
+    public void testCLIcheckMapPassesWithRealFile() throws Exception{
+        TerminalInterface ti = new TerminalInterface();
+        assertTrue(ti.checkMap(new Scanner("src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff")));
+    }
+
+    public void testCLIcheckSlopeFailsWithNonNumber() throws Exception{
+        TerminalInterface ti = new TerminalInterface();
+        assertFalse(ti.checkSlope(new Scanner("letters")));
+    }
+
+    public void testCLIcheckSlopePassesWithNumber0() throws Exception{
+        TerminalInterface ti = new TerminalInterface();
+        assertTrue(ti.checkSlope(new Scanner("0")));
+    }
+
+    public void testCLIcheckSlopeFailsWithNumberBelow0() throws Exception{
+        TerminalInterface ti = new TerminalInterface();
+        assertFalse(ti.checkSlope(new Scanner("-19")));
+    }
+
+    public void testCLIcheckSlopePassesWithIntBetween0and90() throws Exception{
+        TerminalInterface ti = new TerminalInterface();
+        assertTrue(ti.checkSlope(new Scanner("19")));
+    }
+
+    public void testCLIcheckSlopePassesWithDoubleBetween0and90() throws Exception{
+        TerminalInterface ti = new TerminalInterface();
+        assertTrue(ti.checkSlope(new Scanner("19.1")));
+    }
+
+    public void testCLIcheckSlopePassesWithNumber90() throws Exception{
+        TerminalInterface ti = new TerminalInterface();
+        assertTrue(ti.checkSlope(new Scanner("90")));
+    }
+
+    public void testCLIcheckSlopePassesWithNumberAbove90() throws Exception{
+        TerminalInterface ti = new TerminalInterface();
+        assertFalse(ti.checkSlope(new Scanner("112")));
+    }
+
+    public void testCLIcheckSlopePassesIgnoringExtraneousData() throws Exception{
+        TerminalInterface ti = new TerminalInterface();
+        assertTrue(ti.checkSlope(new Scanner("19.1 extraneous data")));
+    }
+
+    public void testCLIcheckStartCoordsFailsWithNonNumbers() throws Exception{
+        TerminalInterface ti = new TerminalInterface();
+        assertFalse(ti.checkStartCoords(new Scanner("non-number non-number")));
+    }
+
+    public void testCLIcheckStartCoordsFailsWithNonIntegers() throws Exception{
+        TerminalInterface ti = new TerminalInterface();
+        assertFalse(ti.checkStartCoords(new Scanner("19.1 19.1")));
+    }
+
+    public void testCLIcheckStartCoordsPassesWithTwoInts() throws Exception{
+        TerminalInterface ti = new TerminalInterface();
+        assertTrue(ti.checkStartCoords(new Scanner("19 19")));
+    }
+
+    public void testCLIcheckEndCoordsFailsWithNonNumbers() throws Exception{
+        TerminalInterface ti = new TerminalInterface();
+        assertFalse(ti.checkEndCoords(new Scanner("non-number non-number")));
+    }
+
+    public void testCLIcheckEndCoordsFailsWithNonIntegers() throws Exception{
+        TerminalInterface ti = new TerminalInterface();
+        assertFalse(ti.checkEndCoords(new Scanner("19.1 19.1")));
+    }
+
+    public void testCLIcheckEndCoordsPassesWithTwoInts() throws Exception{
+        TerminalInterface ti = new TerminalInterface();
+        assertTrue(ti.checkEndCoords(new Scanner("19 19")));
+    }
+
+    public void testOutFileOutputConstuctorPasses() throws Exception{
+        CoordinateList coords = new CoordinateList();
+        FileOutput fo = new FileOutput(coords);
+    }
+
+    /*
+    public void testOutFileOutputWritesToFile() throws Exception{
+        CoordinateList coords = new CoordinateList();
+        coords.add(new Coordinate(1,1));
+        coords.add(new Coordinate(2,2));
+        coords.add(new Coordinate(3,3));
+        FileOutput fo = new FileOutput(coords);
+        fo.writeToOutput();
+    }
+    */
+
 
     public void testGreedyCoordinate() throws Exception{
         Coordinate testCoordinate = new Coordinate(20,20);
