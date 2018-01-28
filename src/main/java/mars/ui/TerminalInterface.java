@@ -147,9 +147,13 @@ public class TerminalInterface extends UserInterface {
         Scanner scanner = new Scanner(System.in);
 
         while(true) {
-            System.out.println("\nWhich algorithm would you like to use? (U)nlimited scope or (L)imited Scope:");
+            System.out.println("\nWhich algorithm would you like to use? (U)nlimited scope or (L)imited Scope or (D)ijkstra:");
             alg = scanner.next();
             if(alg.equalsIgnoreCase("U")) {
+                startAlgorithm();
+                break;
+            }
+            else if (alg.equalsIgnoreCase("D")) {
                 startAlgorithm();
                 break;
             }
@@ -184,6 +188,16 @@ public class TerminalInterface extends UserInterface {
         if (alg.equalsIgnoreCase("U")) {
             MarsRover r = new MarsRover(slope, startCoords, endCoords, mapPath);
             algorithm = new AlgorithmUnlimitedScopeNonRecursive(r);
+
+            try {
+                algorithm.findPath();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        else if (alg.equalsIgnoreCase("D")) {
+            MarsRover r = new MarsRover(slope, startCoords, endCoords, mapPath);
+            algorithm = new Dijkstra(r);
 
             try {
                 algorithm.findPath();
