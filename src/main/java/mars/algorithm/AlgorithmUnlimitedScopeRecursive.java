@@ -20,9 +20,11 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
 
     /**
      * Default constructor for an AlgorithmUnlimitedScopeRecursive.
+     * rover - the rover being input
+     * map - the map being used
+     * goal - the end position the rover needs to get to
      *
-     * @param map The terrain map
-     * @param rover The rover
+     * @param r Input rover to test with
      */
     public AlgorithmUnlimitedScopeRecursive(MarsRover r) {
         rover = r;

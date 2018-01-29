@@ -4,6 +4,8 @@ import com.vividsolutions.jts.geom.CoordinateList;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import mars.algorithm.Algorithm;
+import mars.algorithm.AlgorithmUnlimitedScopeGreedy;
 import mars.coordinate.Coordinate;
 import mars.coordinate.GreedyCoordinate;
 import mars.map.GeoTIFF;
@@ -209,11 +211,62 @@ public class AppTest extends TestCase {
     */
 
 
-    public void testGreedyCoordinate() throws Exception{
+    public void testGreedyCoordinateInstantiate() throws Exception{
         Coordinate testCoordinate = new Coordinate(20,20);
         GreedyCoordinate testNode = new GreedyCoordinate(testCoordinate);
         assertTrue(testNode.getX() == testCoordinate.getX());
     }
+
+    public void testGreedyCoordinateneighborFunction() throws Exception{
+        GreedyCoordinate testNode = new GreedyCoordinate(20,20);
+        assertEquals(19,testNode.getWestNeighbor().getX());
+        assertEquals(21,testNode.getEastNeighbor().getX());
+        assertEquals(19,testNode.getNorthNeighbor().getY());
+        assertEquals(21,testNode.getSouthNeighbor().getY());
+    }
+
+    public void testGreedyAlgorithmcloseFlatCase() throws Exception{
+        Coordinate startCoord = new Coordinate(10,10);
+        Coordinate endCoord = new Coordinate(10,20);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(1,startCoord,endCoord,mapPath);
+        Algorithm algorithm = new AlgorithmUnlimitedScopeGreedy(rover);
+        try {
+            algorithm.findPath();
+        } catch (Exception expectedException) {
+            assertEquals("Failed to find a route it should have",false,true);
+        }
+    }
+
+    public void testGreedyAlgorithmfarFlatCase() throws Exception{
+        Coordinate startCoord = new Coordinate(538,191);
+        Coordinate endCoord = new Coordinate(208,210);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(45,startCoord,endCoord,mapPath);
+        Algorithm algorithm = new AlgorithmUnlimitedScopeGreedy(rover);
+        try {
+            algorithm.findPath();
+        } catch (Exception expectedException) {
+            assertEquals("Failed to find a route it should have",false,true);
+        }
+    }
+
+    public void testGreedyAlgorithmFailCase() throws Exception{
+        Coordinate startCoord = new Coordinate(600,210);
+        Coordinate endCoord = new Coordinate(700,210);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(1,startCoord,endCoord,mapPath);
+        Algorithm algorithm = new AlgorithmUnlimitedScopeGreedy(rover);
+        boolean failure = false;
+        try {
+            algorithm.findPath();
+            failure = true;
+        } catch (Exception expectedException) {
+            assertEquals(true,true);
+        }
+        if(failure){assertEquals(false,true);}
+    }
+
     /*
     //@Test
     public void testReadBigTIFF() throws Exception {
