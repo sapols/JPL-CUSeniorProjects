@@ -233,8 +233,7 @@ public class AlgorithmUnlimitedScopeNonRecursive extends Algorithm {
         double goalX = goalNode.getPosition().getX();
         double goalY = goalNode.getPosition().getY();
 
-        if ((currentX == goalX) && (currentY == goalY)) {return true;}
-        else {return false;}
+        return (currentX == goalX) && (currentY == goalY);
     }
 
     public class Node {
