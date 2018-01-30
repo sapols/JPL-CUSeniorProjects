@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class AlgorithmUnlimitedScopeNonRecursive extends Algorithm {
 
-    List<Coordinate> fullPath = new ArrayList<Coordinate>();
+    ArrayList<Coordinate> fullPath = new ArrayList<Coordinate>();
 
     /*
      * Default constructor for an AlgorithmUnlimitedScopeNonRecursive.
@@ -24,6 +24,10 @@ public class AlgorithmUnlimitedScopeNonRecursive extends Algorithm {
     public AlgorithmUnlimitedScopeNonRecursive(MarsRover r) {
         rover = r;
         map = rover.getMap();
+    }
+
+    public ArrayList<Coordinate> getPath() {
+        return fullPath;
     }
 
     /**

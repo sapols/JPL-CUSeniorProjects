@@ -149,7 +149,7 @@ public class TerminalInterface extends UserInterface {
         while(true) {
             System.out.println("\nWhich algorithm would you like to use? (U)nlimited scope or (L)imited Scope:");
             alg = scanner.next();
-            if(alg.equalsIgnoreCase("U") || alg.equalsIgnoreCase("G")) {
+            if(alg.equalsIgnoreCase("U") || alg.equalsIgnoreCase("G") || alg.equalsIgnoreCase("F")) {
                 startAlgorithm();
                 break;
             }
@@ -201,9 +201,19 @@ public class TerminalInterface extends UserInterface {
                 e.printStackTrace();
             }
         }
-        else if (alg.equalsIgnoreCase("G")) {
+        else if (alg.equalsIgnoreCase("G")) { //unlimited greedy
             MarsRover r = new MarsRover(slope, startCoords, endCoords, mapPath, fieldOfView);
-            algorithm = new AlgorithmUnlimitedScopeGreedy(r);
+            algorithm = new AlgorithmGreedy(r,"unlimited");
+
+            try {
+                algorithm.findPath();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else if (alg.equalsIgnoreCase("F")) { //next to "g", limited greedy
+            MarsRover r = new MarsRover(slope, startCoords, endCoords, mapPath, fieldOfView);
+            algorithm = new AlgorithmGreedy(r,"limited");
 
             try {
                 algorithm.findPath();

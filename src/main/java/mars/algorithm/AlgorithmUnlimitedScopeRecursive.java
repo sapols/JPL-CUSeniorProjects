@@ -8,6 +8,7 @@ import mars.map.TerrainMap;
 import java.util.Collections;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Class which implements the path-finding algorithm without a limited field of view.
@@ -44,6 +45,15 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
         } catch (Exception e) {
             throw e;
         }
+    }
+
+    public ArrayList<Coordinate> getPath() {
+        ArrayList<Coordinate> convertedPath = new ArrayList<Coordinate>();
+        for (Iterator<AStarCoordinate> i = path.iterator(); i.hasNext();){ //foreach coordinate in list
+            AStarCoordinate item = i.next();
+            convertedPath.add(new Coordinate(item.getX(),item.getY()));
+        }
+        return convertedPath;
     }
 
     /**

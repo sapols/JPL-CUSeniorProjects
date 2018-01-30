@@ -17,7 +17,7 @@ import static jdk.nashorn.internal.objects.NativeMath.min;
  * Class which implements the path-finding algorithm without a limited field of view.
  * Uses an A* search.
  */
-public class AlgorithmUnlimitedScopeGreedy extends Algorithm {
+public class AlgorithmGreedy extends Algorithm {
     public static final int const_SE = 45;
     public static final int const_SW = 135;
     public static final int const_NW = 225;
@@ -30,17 +30,19 @@ public class AlgorithmUnlimitedScopeGreedy extends Algorithm {
 
     ArrayList<GreedyCoordinate> path = new ArrayList<GreedyCoordinate>();
     Coordinate goal;
+    String mode;
 
     /*
-     * Default constructor for an AlgorithmUnlimitedScopeGreedy.
+     * Default constructor for an AlgorithmGreedy.
      *
      * @param map The terrain map
      * @param rover The rover
      */
-    public AlgorithmUnlimitedScopeGreedy(MarsRover r) {
+    public AlgorithmGreedy(MarsRover r, String _mode) {
         rover = r;
         map = r.getMap();
         goal = r.getEndPosition();
+        mode = _mode;
     }
 
     /*
@@ -56,6 +58,19 @@ public class AlgorithmUnlimitedScopeGreedy extends Algorithm {
         }
     }
 
+    /**
+     * Path getter for testing
+     * @return path
+     */
+    public ArrayList<Coordinate> getPath() {
+        ArrayList<Coordinate> convertedPath = new ArrayList<Coordinate>();
+        for (Iterator<GreedyCoordinate> i = path.iterator(); i.hasNext();){ //foreach coordinate in list
+            GreedyCoordinate item = i.next();
+            convertedPath.add(item.getCoordinate());
+        }
+        return convertedPath;
+    }
+
     /*
      * Find a path from start to goal with hope and blind luck. Then output it.
      * Throw an exception if a path cannot be found.
@@ -63,6 +78,7 @@ public class AlgorithmUnlimitedScopeGreedy extends Algorithm {
     public void GreedySearch(ArrayList<GreedyCoordinate> coords) throws Exception {
 
         ArrayList<GreedyCoordinate> fullcoords = new ArrayList<GreedyCoordinate>(); //combined list of rejected nodes and good nodes
+        fullcoords.add(new GreedyCoordinate(rover.getXPosition(),rover.getYPosition()));
         ArrayList<GreedyCoordinate> preferences = new ArrayList<GreedyCoordinate>(); //list of candidate positions to change to
         boolean working = true; //controls main loop that iterates every position change
         boolean stepped; //controls secondary loop that iterates for every candidate position to change to
@@ -83,7 +99,7 @@ public class AlgorithmUnlimitedScopeGreedy extends Algorithm {
         double goalDirection; //angle that points to where the goal is (heuristic)
 
         while(working){ //main loop
-            System.out.println(currentNode.getX() + "," + currentNode.getY()); //debug
+            //System.out.println(currentNode.getX() + "," + currentNode.getY()); //debug
             currentNode.setVisited(true); //we've visited this node
 
             northNeighbor = currentNode.getNorthNeighbor();
@@ -139,6 +155,7 @@ public class AlgorithmUnlimitedScopeGreedy extends Algorithm {
                         coords.remove(checkArray(currentNode,coords));
                         currentNode = coords.get(coords.size() - 1);
                         currentNode.setVisited(true);
+                        if(mode.equals("limited")) fullcoords.add(currentNode);
                         stepped = false;
                     }else{ //if we can't backtrack, we lose
                         throw new Exception("WARNING: A path to the goal could not be found.");
@@ -148,7 +165,12 @@ public class AlgorithmUnlimitedScopeGreedy extends Algorithm {
             preferences.clear(); //abandon the leftover candidates
 
             if(currentNode.equals(goal)){ //and if we reached the goal, stop
-                output = new TerminalOutput(coords);
+                if(mode.equals("limited")){
+                    output = new TerminalOutput(fullcoords);
+                    coords = fullcoords;
+                }else{
+                    output = new TerminalOutput(coords);
+                }
                 working = false;
             }
         }
@@ -175,7 +197,9 @@ public class AlgorithmUnlimitedScopeGreedy extends Algorithm {
     public double getAngleToGoal(Coordinate current, Coordinate goal) {
         int xdiff = goal.getX() - current.getX();
         int ydiff = goal.getY() - current.getY();
-        return Math.toDegrees(Math.atan2(ydiff,xdiff));
+        double result = Math.toDegrees(Math.atan2(ydiff,xdiff));
+        while(result < 0){result += 360;}
+        return result;
     }
 
     /**
@@ -246,4 +270,5 @@ public class AlgorithmUnlimitedScopeGreedy extends Algorithm {
         public GreedyCoordinate getCoordinate(){ return coordinate; }
         public int getDiff(){ return diff; }
     }
+
 }
