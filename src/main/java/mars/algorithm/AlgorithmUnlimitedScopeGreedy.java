@@ -7,7 +7,11 @@ import mars.rover.MarsRover;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
+
+import static java.lang.Math.abs;
+import static jdk.nashorn.internal.objects.NativeMath.min;
 
 /**
  * Class which implements the path-finding algorithm without a limited field of view.
@@ -18,7 +22,8 @@ public class AlgorithmUnlimitedScopeGreedy extends Algorithm {
     public static final int const_SW = 135;
     public static final int const_NW = 225;
     public static final int const_NE = 315;
-    //public static final int const_E = 0;
+    public static final int const_E = 0;
+    public static final int const_Emax = 360;
     public static final int const_S = 90;
     public static final int const_W = 180;
     public static final int const_N = 270;
@@ -68,6 +73,12 @@ public class AlgorithmUnlimitedScopeGreedy extends Algorithm {
         GreedyCoordinate eastNeighbor;
         GreedyCoordinate westNeighbor;
         GreedyCoordinate southNeighbor;
+
+        GreedyCoordinateWrapper northWrapper;
+        GreedyCoordinateWrapper eastWrapper;
+        GreedyCoordinateWrapper westWrapper;
+        GreedyCoordinateWrapper southWrapper;
+
         //Coordinate currentCoord = currentNode.getCoordinate(); //coordinates of currentNode
         double goalDirection; //angle that points to where the goal is (heuristic)
 
@@ -87,47 +98,28 @@ public class AlgorithmUnlimitedScopeGreedy extends Algorithm {
 
             goalDirection = getAngleToGoal(currentNode, rover.getEndPosition());
 
-            if(goalDirection > const_NE || goalDirection < const_SE) { //if closest to east
-                preferences.add(eastNeighbor);
-                if (goalDirection > const_NE) { // check if next closest to north or south
-                    preferences.add(northNeighbor);
-                    preferences.add(southNeighbor);
-                } else {
-                    preferences.add(southNeighbor);
-                    preferences.add(northNeighbor);
-                }
-                preferences.add(westNeighbor);
-            }else if(goalDirection >= const_SE && goalDirection < const_SW){ //if closest to south
-                preferences.add(southNeighbor);
-                if(goalDirection < const_S){
-                    preferences.add(eastNeighbor);
-                    preferences.add(westNeighbor);
-                } else {
-                    preferences.add(westNeighbor);
-                    preferences.add(eastNeighbor);
-                }
-                preferences.add(northNeighbor);
-            }else if(goalDirection >= const_SW && goalDirection < const_NW) { //west
-                preferences.add(westNeighbor);
-                if (goalDirection < const_W) {
-                    preferences.add(southNeighbor);
-                    preferences.add(northNeighbor);
-                } else {
-                    preferences.add(northNeighbor);
-                    preferences.add(southNeighbor);
-                }
-                preferences.add(eastNeighbor);
-            }else{ //north
-                preferences.add(northNeighbor);
-                if(goalDirection < const_N){
-                    preferences.add(westNeighbor);
-                    preferences.add(eastNeighbor);
-                } else {
-                    preferences.add(eastNeighbor);
-                    preferences.add(westNeighbor);
-                }
-                preferences.add(southNeighbor);
+            ArrayList<GreedyCoordinateWrapper> directionList = new ArrayList<GreedyCoordinateWrapper>();
+            directionList.add(new GreedyCoordinateWrapper(northNeighbor, getAngleDiff((int)goalDirection,const_N)));
+            if(goalDirection <= 180) {
+                directionList.add(new GreedyCoordinateWrapper(eastNeighbor, getAngleDiff((int) goalDirection, const_E)));
+            }else {
+                directionList.add(new GreedyCoordinateWrapper(eastNeighbor, getAngleDiff((int) goalDirection, const_Emax)));
             }
+            directionList.add(new GreedyCoordinateWrapper(westNeighbor, getAngleDiff((int)goalDirection,const_W)));
+            directionList.add(new GreedyCoordinateWrapper(southNeighbor, getAngleDiff((int)goalDirection,const_S)));
+
+            Collections.sort(directionList, new Comparator<GreedyCoordinateWrapper>(){
+                public int compare(GreedyCoordinateWrapper l, GreedyCoordinateWrapper r){
+                    return l.getDiff() > r.getDiff() ? 1 : (l.getDiff() < r.getDiff()) ? -1 : 0;
+                }
+            });
+
+            for (Iterator<GreedyCoordinateWrapper> i = directionList.iterator(); i.hasNext();){
+                GreedyCoordinateWrapper item = i.next();
+                preferences.add(item.getCoordinate());
+            }
+
+            directionList.clear();
 
             stepped = true; //using our 4 candidates in order of preference, try each one
             while(stepped){
@@ -143,7 +135,7 @@ public class AlgorithmUnlimitedScopeGreedy extends Algorithm {
                     }
                 }else{ //if we run out of candidates, we backtrack
                     if(coords.size() > 1) {
-                        System.out.println("bt " + currentNode.getX() + "," + currentNode.getY());
+                        //System.out.println("bt " + currentNode.getX() + "," + currentNode.getY());
                         coords.remove(checkArray(currentNode,coords));
                         currentNode = coords.get(coords.size() - 1);
                         currentNode.setVisited(true);
@@ -163,6 +155,16 @@ public class AlgorithmUnlimitedScopeGreedy extends Algorithm {
     }
 
     //----Helper methods-----------------------------------------------------------------------------------------------
+
+    /**
+     * Quick function to find diff between angles
+     * @param angle1 first angle
+     * @param angle2 second angle
+     * @return diff in degrees
+     */
+    public int getAngleDiff(int angle1, int angle2){
+        return (int)abs(angle1-angle2);
+    }
 
     /**
      * Gets angle to the goal coordinate, from the current coordinate
@@ -232,4 +234,16 @@ public class AlgorithmUnlimitedScopeGreedy extends Algorithm {
         }else return true; //if they're the same height, then it can just freely go there
     }
 
+    public class GreedyCoordinateWrapper {
+        private GreedyCoordinate coordinate;
+        private int diff;
+
+        public GreedyCoordinateWrapper(GreedyCoordinate _coordinate, int _diff){
+            coordinate = _coordinate;
+            diff = _diff;
+        }
+
+        public GreedyCoordinate getCoordinate(){ return coordinate; }
+        public int getDiff(){ return diff; }
+    }
 }

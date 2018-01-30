@@ -217,7 +217,7 @@ public class AppTest extends TestCase {
         assertTrue(testNode.getX() == testCoordinate.getX());
     }
 
-    public void testGreedyCoordinateneighborFunction() throws Exception{
+    public void testGreedyCoordinateNeighborFunction() throws Exception{
         GreedyCoordinate testNode = new GreedyCoordinate(20,20);
         assertEquals(19,testNode.getWestNeighbor().getX());
         assertEquals(21,testNode.getEastNeighbor().getX());
@@ -225,7 +225,7 @@ public class AppTest extends TestCase {
         assertEquals(21,testNode.getSouthNeighbor().getY());
     }
 
-    public void testGreedyAlgorithmcloseFlatCase() throws Exception{
+    public void testGreedyAlgorithmCloseFlatCase() throws Exception{
         Coordinate startCoord = new Coordinate(10,10);
         Coordinate endCoord = new Coordinate(10,20);
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
@@ -238,7 +238,7 @@ public class AppTest extends TestCase {
         }
     }
 
-    public void testGreedyAlgorithmfarFlatCase() throws Exception{
+    public void testGreedyAlgorithmFarFlatCase() throws Exception{
         Coordinate startCoord = new Coordinate(538,191);
         Coordinate endCoord = new Coordinate(208,210);
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
@@ -252,13 +252,13 @@ public class AppTest extends TestCase {
     }
 
     public void testGreedyAlgorithmFailCase() throws Exception{
-        Coordinate startCoord = new Coordinate(600,210);
+        Coordinate startCoord = new Coordinate(600,210); //this is on an island in the map that the rover can't escape
         Coordinate endCoord = new Coordinate(700,210);
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         MarsRover rover = new MarsRover(1,startCoord,endCoord,mapPath);
         Algorithm algorithm = new AlgorithmUnlimitedScopeGreedy(rover);
         boolean failure = false;
-        try {
+        try { //it's supposed to fail, so catch results in a successful test
             algorithm.findPath();
             failure = true;
         } catch (Exception expectedException) {
@@ -266,6 +266,8 @@ public class AppTest extends TestCase {
         }
         if(failure){assertEquals(false,true);}
     }
+
+
 
     /*
     //@Test
