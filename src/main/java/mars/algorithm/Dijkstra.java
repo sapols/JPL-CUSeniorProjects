@@ -19,26 +19,35 @@ public class Dijkstra extends Algorithm {
         map = rover.getMap();
     }
 
-    public void findPath() {
+    public void findPath() throws Exception {
         Set<DijkstraNode> nodeSet = new HashSet<DijkstraNode>();
 
+        DijkstraNode startNode = new DijkstraNode(rover.getStartPosition());
         DijkstraNode goalNode = new DijkstraNode(rover.getEndPosition());
 
-        DijkstraNode startNode = new DijkstraNode(rover.getStartPosition());
+        double heightOfMap = map.getHeight();
+        double widthOfMap = map.getWidth();
+
+        for (int y = 1; y <= heightOfMap; y++) {
+            for (int x = 1; x <= widthOfMap; x++) {
+                Coordinate tmpCoordinate = new Coordinate(x,y);
+                DijkstraNode tmpNode = new DijkstraNode(tmpCoordinate);
+                tmpNode.setDistanceFromStart(Double.POSITIVE_INFINITY);
+                tmpNode.setParent(null);
+                nodeSet.add(tmpNode);
+            }
+        }
+
         startNode.setDistanceFromStart(0);
 
         // Add start node to nodeSet.
         nodeSet.add(startNode);
 
-        // Add all neighbors to nodeSet.
-        for (DijkstraNode n : startNode.getNeighbors()) {
-            nodeSet.add(n);
-        }
-
         while (!nodeSet.isEmpty()) {
 
             // Initialize min dist node.
             DijkstraNode minDistNode = new DijkstraNode(new Coordinate(-1, -1));
+            minDistNode.setDistanceFromStart(Double.POSITIVE_INFINITY);
 
             // Get node with min dist from start from nodeSet.
             double min = Double.POSITIVE_INFINITY;
@@ -55,8 +64,6 @@ public class Dijkstra extends Algorithm {
             for (DijkstraNode n : minDistNode.getNeighbors()) {
                 // Only look at notes we have note visited.
                 if (!minDistNode.hasVisited(n)) {
-                    // Add to nodeSet.
-                    nodeSet.add(n);
                     //  total distance to new node
                     double totalDistToNewNode = minDistNode.getDistanceFromStart() + minDistNode.distBetween(n);
 
