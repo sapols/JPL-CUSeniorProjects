@@ -257,6 +257,25 @@ public class AppTest extends TestCase {
         assertTrue("Limited and unlimited routes are not the same",check);
     }
 
+    public void testGreedyAlgorithmComparedComplexCase() throws Exception{
+        Coordinate startCoord = new Coordinate(7568,1507);
+        Coordinate endCoord = new Coordinate(7436,3927);
+        String mapPath = "src/main/resources/Phobos_Viking_Mosaic_40ppd_DLRcontrol.tif";
+        MarsRover rover = new MarsRover(30,startCoord,endCoord,mapPath);
+        Algorithm algorithmUnlimited = new AlgorithmGreedy(rover,"unlimited");
+        Algorithm algorithmLimited = new AlgorithmGreedy(rover,"limited");
+        try {
+            algorithmUnlimited.findPath();
+            algorithmLimited.findPath();
+        } catch (Exception expectedException) {
+            assertTrue("Failed to find a route it should have",false);
+        }
+        int unlimitedLength = (algorithmUnlimited.getPath()).size();
+        int limitedLength = (algorithmLimited.getPath()).size();
+        boolean check = unlimitedLength == limitedLength;
+        assertTrue("Limited and unlimited routes are not the same",check);
+    }
+
     public void testGreedyAlgorithmUnlimitedSlopedCase() throws Exception{
         Coordinate startCoord = new Coordinate(538,191);
         Coordinate endCoord = new Coordinate(208,210);
@@ -271,12 +290,12 @@ public class AppTest extends TestCase {
     }
 
     public void testGreedyAlgorithmUnlimitedRoverSlopeMatters() throws Exception{
-        Coordinate startCoord = new Coordinate(538,191);
-        Coordinate endCoord = new Coordinate(208,210);
-        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
-        MarsRover strongRover = new MarsRover(9999,startCoord,endCoord,mapPath);
+        Coordinate startCoord = new Coordinate(7568,1507);
+        Coordinate endCoord = new Coordinate(7467,2625);
+        String mapPath = "src/main/resources/Phobos_Viking_Mosaic_40ppd_DLRcontrol.tif";
+        MarsRover strongRover = new MarsRover(90,startCoord,endCoord,mapPath);
         MarsRover mediumRover = new MarsRover(40,startCoord,endCoord,mapPath);
-        MarsRover weakRover = new MarsRover(20,startCoord,endCoord,mapPath);
+        MarsRover weakRover = new MarsRover(30,startCoord,endCoord,mapPath);
         Algorithm algorithmStrong = new AlgorithmGreedy(strongRover,"unlimited");
         Algorithm algorithmMedium = new AlgorithmGreedy(mediumRover,"unlimited");
         Algorithm algorithmWeak = new AlgorithmGreedy(weakRover,"unlimited");
@@ -290,7 +309,7 @@ public class AppTest extends TestCase {
         int strongLength = (algorithmStrong.getPath()).size();
         int mediumLength = (algorithmMedium.getPath()).size();
         int weakLength = (algorithmWeak.getPath()).size();
-        boolean check = strongLength <= mediumLength || mediumLength <= weakLength;
+        boolean check = strongLength < mediumLength && mediumLength < weakLength;
         assertTrue("Stronger rovers aren't performing better",check);
     }
 
