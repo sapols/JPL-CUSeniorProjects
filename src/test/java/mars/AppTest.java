@@ -114,6 +114,30 @@ public class AppTest extends TestCase {
         assertTrue(minresult < maxresult);
     }
 
+//     public void testGeotiffGetElevationsInArea() throws Exception {
+//         try {
+//             Coordinate origin = new Coordinate(10, 33);
+//             int width = 4;
+//             int height = 3;
+//             String mapPath = "src/main/resources/Phobos_Viking_Mosaic_40ppd_DLRcontrol.tif";
+//             GeoTIFF map = new GeoTIFF();
+//             map.initMap(mapPath);
+
+//             double[][] knownElevations = new double[][] {
+//                 {map.getValue(10, 35), map.getValue(11, 35), map.getValue(12, 35), map.getValue(13, 35)},
+//                 {map.getValue(10, 34), map.getValue(11, 34), map.getValue(12, 34), map.getValue(13, 34)},
+//                 {map.getValue(10, 33), map.getValue(11, 33), map.getValue(12, 33), map.getValue(13, 33)}
+//             };
+//             double[][] elevations = map.getElevationsInArea(origin, width, height);
+
+//             for (int i = 0; i < height; i++) {
+//                 for(int j = 0; j < width; j++) {
+//                     assertTrue(elevations[i][j] == knownElevations[i][j]);
+//                 }
+//             }
+//         } catch (Exception e) { fail(); }
+//     }
+
     public void testCLIcheckMapFailsWithoutRealFile() throws Exception{
         TerminalInterface ti = new TerminalInterface();
         assertFalse(ti.checkMap(new Scanner("not a real file")));

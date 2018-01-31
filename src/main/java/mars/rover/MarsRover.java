@@ -108,14 +108,14 @@ public class MarsRover extends Rover {
             int x2 = point2.getX();
             int y2 = point2.getY();
 
-            double[] slopes = {-1};
-            slopes[0] = getSlope(x1, y1, x2, y2); // traversal slope
-            for (double slope : slopes) {
-                if (Math.abs(slope) > maxSlope) {
-                    return false;
-                }
+            double slope = getSlope(x1, y1, x2, y2); //traversal slope
+
+            if (Math.abs(slope) > maxSlope) {
+                return false;
             }
-            return true;
+            else {
+                return true;
+            }
         }
         catch(Exception e) {
             return false;
