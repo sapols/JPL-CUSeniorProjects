@@ -18,15 +18,7 @@ import static jdk.nashorn.internal.objects.NativeMath.min;
  * Uses an A* search.
  */
 public class AlgorithmGreedy extends Algorithm {
-    public static final int const_SE = 45;
-    public static final int const_SW = 135;
-    public static final int const_NW = 225;
-    public static final int const_NE = 315;
-    public static final int const_E = 0;
-    public static final int const_Emax = 360;
-    public static final int const_S = 90;
-    public static final int const_W = 180;
-    public static final int const_N = 270;
+
 
     ArrayList<GreedyCoordinate> path = new ArrayList<GreedyCoordinate>();
     Coordinate goal;
@@ -64,8 +56,7 @@ public class AlgorithmGreedy extends Algorithm {
      */
     public ArrayList<Coordinate> getPath() {
         ArrayList<Coordinate> convertedPath = new ArrayList<Coordinate>();
-        for (Iterator<GreedyCoordinate> i = path.iterator(); i.hasNext();){ //foreach coordinate in list
-            GreedyCoordinate item = i.next();
+        for (GreedyCoordinate item : path) { //foreach coordinate in list
             convertedPath.add(item.getCoordinate());
         }
         return convertedPath;
@@ -85,15 +76,6 @@ public class AlgorithmGreedy extends Algorithm {
 
         GreedyCoordinate currentNode = new GreedyCoordinate(coords.get(0)); //current position (represented by a node)
         GreedyCoordinate checkNode; //node to check against the current one
-        GreedyCoordinate northNeighbor;
-        GreedyCoordinate eastNeighbor;
-        GreedyCoordinate westNeighbor;
-        GreedyCoordinate southNeighbor;
-
-        GreedyCoordinateWrapper northWrapper;
-        GreedyCoordinateWrapper eastWrapper;
-        GreedyCoordinateWrapper westWrapper;
-        GreedyCoordinateWrapper southWrapper;
 
         //Coordinate currentCoord = currentNode.getCoordinate(); //coordinates of currentNode
         double goalDirection; //angle that points to where the goal is (heuristic)
@@ -102,36 +84,29 @@ public class AlgorithmGreedy extends Algorithm {
             //System.out.println(currentNode.getX() + "," + currentNode.getY()); //debug
             currentNode.setVisited(true); //we've visited this node
 
-            northNeighbor = currentNode.getNorthNeighbor();
-            eastNeighbor = currentNode.getEastNeighbor();
-            westNeighbor = currentNode.getWestNeighbor();
-            southNeighbor = currentNode.getSouthNeighbor();
-
-            if(checkArray(northNeighbor,fullcoords) > -1){northNeighbor.setVisited(true);}
-            if(checkArray(eastNeighbor,fullcoords) > -1){eastNeighbor.setVisited(true);}
-            if(checkArray(westNeighbor,fullcoords) > -1){westNeighbor.setVisited(true);}
-            if(checkArray(southNeighbor,fullcoords) > -1){southNeighbor.setVisited(true);}
+            ArrayList<GreedyCoordinate> neighbors = currentNode.getNeighbors();
 
             goalDirection = getAngleToGoal(currentNode, rover.getEndPosition());
-
             ArrayList<GreedyCoordinateWrapper> directionList = new ArrayList<GreedyCoordinateWrapper>();
-            directionList.add(new GreedyCoordinateWrapper(northNeighbor, getAngleDiff((int)goalDirection,const_N)));
-            if(goalDirection <= 180) {
-                directionList.add(new GreedyCoordinateWrapper(eastNeighbor, getAngleDiff((int) goalDirection, const_E)));
-            }else {
-                directionList.add(new GreedyCoordinateWrapper(eastNeighbor, getAngleDiff((int) goalDirection, const_Emax)));
-            }
-            directionList.add(new GreedyCoordinateWrapper(westNeighbor, getAngleDiff((int)goalDirection,const_W)));
-            directionList.add(new GreedyCoordinateWrapper(southNeighbor, getAngleDiff((int)goalDirection,const_S)));
 
-            Collections.sort(directionList, new Comparator<GreedyCoordinateWrapper>(){
+            for (GreedyCoordinate item : neighbors) { //foreach neighbor coordinate
+                if (checkArray(item, fullcoords) > -1) {
+                    item.setVisited(true); //check if already visited
+                }
+                if (item.getDirection() == 0 && goalDirection > 180) { //then get angle diffs for each neighbor
+                    directionList.add(new GreedyCoordinateWrapper(item, getAngleDiff((int) goalDirection, 360)));
+                } else {
+                    directionList.add(new GreedyCoordinateWrapper(item, getAngleDiff((int) goalDirection, item.getDirection())));
+                }
+            }
+
+            Collections.sort(directionList, new Comparator<GreedyCoordinateWrapper>(){ //sort the angles by least diff
                 public int compare(GreedyCoordinateWrapper l, GreedyCoordinateWrapper r){
                     return l.getDiff() > r.getDiff() ? 1 : (l.getDiff() < r.getDiff()) ? -1 : 0;
                 }
             });
 
-            for (Iterator<GreedyCoordinateWrapper> i = directionList.iterator(); i.hasNext();){
-                GreedyCoordinateWrapper item = i.next();
+            for (GreedyCoordinateWrapper item : directionList) {
                 preferences.add(item.getCoordinate());
             }
 
@@ -185,7 +160,7 @@ public class AlgorithmGreedy extends Algorithm {
      * @return diff in degrees
      */
     public int getAngleDiff(int angle1, int angle2){
-        return (int)abs(angle1-angle2);
+        return abs(angle1-angle2);
     }
 
     /**
@@ -210,9 +185,8 @@ public class AlgorithmGreedy extends Algorithm {
      */
     public int checkArray(GreedyCoordinate target, ArrayList<GreedyCoordinate> list){
         int index = 0;
-        for (Iterator<GreedyCoordinate> i = list.iterator(); i.hasNext();){ //foreach coordinate in list
-            GreedyCoordinate item = i.next();
-            if(target.getX() == item.getX() && target.getY() == item.getY()){
+        for (GreedyCoordinate item : list) { //foreach coordinate in list
+            if (target.getX() == item.getX() && target.getY() == item.getY()) {
                 return index;
             }
             index++;
