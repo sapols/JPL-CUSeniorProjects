@@ -1,8 +1,4 @@
 package mars.coordinate;
-
-import mars.algorithm.AlgorithmUnlimitedScopeNonRecursive;
-import mars.algorithm.Dijkstra;
-
 import java.util.*;
 
 public class DijkstraNode {

@@ -46,7 +46,7 @@ public class TerminalInterface extends UserInterface {
     public void promptForMap() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("\nPlease enter the file path for the map you would like to traverse. Example:");
-        System.out.println("/Users/rb/Desktop/JPL-CUSeniorProjects/Phobos_Viking_Mosaic_40ppd_DLRcontrol.tif");
+        System.out.println("src/main/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
 
         //TODO: Tell people what path their path will be relative to. Or possibly provide options to choose from.
         while(true) if(checkMap(scanner)) break;
@@ -147,13 +147,9 @@ public class TerminalInterface extends UserInterface {
         Scanner scanner = new Scanner(System.in);
 
         while(true) {
-            System.out.println("\nWhich algorithm would you like to use? (U)nlimited scope or (L)imited Scope or (D)ijkstra:");
+            System.out.println("\nWhich algorithm would you like to use? (U)nlimited scope or (L)imited Scope:");
             alg = scanner.next();
             if(alg.equalsIgnoreCase("U")) {
-                startAlgorithm();
-                break;
-            }
-            else if (alg.equalsIgnoreCase("D")) {
                 startAlgorithm();
                 break;
             }
@@ -195,16 +191,6 @@ public class TerminalInterface extends UserInterface {
                 System.out.println(e.getMessage());
             }
         }
-        else if (alg.equalsIgnoreCase("D")) {
-            MarsRover r = new MarsRover(slope, startCoords, endCoords, mapPath);
-            algorithm = new Dijkstra(r);
-
-            try {
-                algorithm.findPath();
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        }
         else if (alg.equalsIgnoreCase("L")) {
             MarsRover r = new MarsRover(slope,startCoords,endCoords,mapPath,fieldOfView);
             algorithm = new AlgorithmLimitedScope(r);
@@ -219,6 +205,5 @@ public class TerminalInterface extends UserInterface {
             System.out.println("Error: No algorithm selected.");
         }
     }
-    
-}
 
+}
