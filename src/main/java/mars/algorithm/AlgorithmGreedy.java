@@ -54,12 +54,8 @@ public class AlgorithmGreedy extends Algorithm {
      * Path getter for testing
      * @return path
      */
-    public ArrayList<Coordinate> getPath() {
-        ArrayList<Coordinate> convertedPath = new ArrayList<Coordinate>();
-        for (GreedyCoordinate item : path) { //foreach coordinate in list
-            convertedPath.add(item.getCoordinate());
-        }
-        return convertedPath;
+    public ArrayList<GreedyCoordinate> getPath() {
+        return path;
     }
 
     /*

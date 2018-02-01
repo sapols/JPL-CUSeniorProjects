@@ -363,7 +363,7 @@ public class AppTest extends TestCase {
         } catch (Exception expectedException) {
             assertTrue("Failed to find a route it should have",false);
         }
-        ArrayList<Coordinate> path = algorithm.getPath();
+        ArrayList<? extends Coordinate> path = algorithm.getPath();
         Set<Coordinate> pathSet = new HashSet<Coordinate>(path);
         boolean check = path.size() == pathSet.size();
         assertTrue("Path has duplicates",check);
@@ -380,7 +380,7 @@ public class AppTest extends TestCase {
         } catch (Exception expectedException) {
             assertTrue("Failed to find a route it should have",false);
         }
-        ArrayList<Coordinate> path = algorithm.getPath();
+        ArrayList<? extends Coordinate> path = algorithm.getPath();
         Coordinate oldItem;
         Coordinate item = startCoord;
         for (Coordinate aPath : path) { //foreach coordinate in list

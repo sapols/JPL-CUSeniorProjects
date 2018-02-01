@@ -19,6 +19,6 @@ public abstract class Algorithm {
 
     public abstract void findPath() throws Exception;
 
-    public abstract ArrayList<Coordinate> getPath();
+    public abstract ArrayList<? extends Coordinate> getPath();
 
 }
