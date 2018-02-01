@@ -34,16 +34,78 @@ public class Dijkstra extends Algorithm {
         int goalY = goalNode.getPosition().getY();
 
 
-        // Instead of loading entire map, let's try only loading the square from start to goal.
+        // Instead of loading entire map, let's try only loading the square from start to goal with a 100% buffer
         // For example, if start is 10, 10 and goal is 20, 20, the rectangle will have:
         // x vals from 10 - 20, and y vals from 10 - 20.
-        for (int y = startY; y <= goalY; y++) {
-            for (int x = startX; x <= goalX; x++) {
-                Coordinate tmpCoordinate = new Coordinate(x,y);
-                DijkstraNode tmpNode = new DijkstraNode(tmpCoordinate);
-                tmpNode.setDistanceFromStart(Double.POSITIVE_INFINITY);
-                tmpNode.setParent(null);
-                nodeVector.add(tmpNode);
+        int yRange = Math.abs(goalY - startY);
+        int xRange = Math.abs(goalX - startX);
+        int halfYRange = yRange / 2;
+        int halfXRange = xRange / 2;
+        int bufferStartY;
+        int bufferStartX;
+        int bufferGoalY;
+        int bufferGoalX;
+        if (startX < goalX) {
+            bufferStartX = startX - halfXRange;
+            bufferGoalX = goalX + halfXRange;
+            if (startY < goalY) {
+                bufferStartY = startY - halfYRange;
+                bufferGoalY = goalY + halfYRange;
+                for (int y = bufferStartY; y <= bufferGoalY; y++) {
+                    for (int x = bufferStartX; x <= bufferGoalX; x++) {
+                        Coordinate tmpCoordinate = new Coordinate(x, y);
+                        DijkstraNode tmpNode = new DijkstraNode(tmpCoordinate);
+                        tmpNode.setDistanceFromStart(Double.POSITIVE_INFINITY);
+                        tmpNode.setParent(null);
+                        nodeVector.add(tmpNode);
+                    }
+                }
+            }
+            else { // startY > goalY
+                bufferStartY = startY + halfYRange;
+                bufferGoalY = goalY - halfYRange;
+                for (int y = bufferGoalY; y <= bufferStartY; y++) {
+                    for (int x = bufferStartX; x <= bufferGoalX; x++) {
+                        Coordinate tmpCoordinate = new Coordinate(x, y);
+                        DijkstraNode tmpNode = new DijkstraNode(tmpCoordinate);
+                        tmpNode.setDistanceFromStart(Double.POSITIVE_INFINITY);
+                        tmpNode.setParent(null);
+                        nodeVector.add(tmpNode);
+                    }
+                }
+            }
+        }
+        else { // startX > goalX
+            System.out.println("2");
+            bufferStartX = startX + halfXRange;
+            bufferGoalX = goalX - halfXRange;
+            if (startY < goalY) {
+                System.out.println("3");
+                bufferStartY = startY - halfYRange;
+                bufferGoalY = goalY + halfYRange;
+                for (int y = bufferStartY; y <= bufferGoalY; y++) {
+                    for (int x = bufferGoalX; x <= bufferStartX; x++) {
+                        Coordinate tmpCoordinate = new Coordinate(x, y);
+                        DijkstraNode tmpNode = new DijkstraNode(tmpCoordinate);
+                        tmpNode.setDistanceFromStart(Double.POSITIVE_INFINITY);
+                        tmpNode.setParent(null);
+                        nodeVector.add(tmpNode);
+                    }
+                }
+            }
+            else { // startY > goalY
+                bufferStartY = startY + halfYRange;
+                bufferGoalY = goalY - halfYRange;
+                for (int y = bufferGoalY; y <= bufferStartY; y++) {
+                    for (int x = bufferGoalX; x <= bufferStartX; x++) {
+                        Coordinate tmpCoordinate = new Coordinate(x, y);
+                        DijkstraNode tmpNode = new DijkstraNode(tmpCoordinate);
+                        tmpNode.setDistanceFromStart(Double.POSITIVE_INFINITY);
+                        tmpNode.setParent(null);
+                        nodeVector.add(tmpNode);
+                        System.out.println("1");
+                    }
+                }
             }
         }
 
@@ -82,6 +144,7 @@ public class Dijkstra extends Algorithm {
                     }
                 }
                 if (inVector) {
+                    System.out.println("hi");
                     // If current neighbor is in the vector, we're going to get the new distance for that node,
                     // check to see if it's traversable, and if so, set distance and parent for the node.
                     double totalDist = minNode.getDistanceFromStart() + minNode.distBetween(neighborList.get(i));
