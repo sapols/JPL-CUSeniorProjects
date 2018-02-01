@@ -128,12 +128,13 @@ public class DijkstraNode {
     /**
      * Constructs a path for A* by traversing nodes' parents.
      */
-    public void constructPath() {
+    public List<Coordinate> constructPath() {
         DijkstraNode currentNode = this;
         while (currentNode != null) {
             fullPath.add(currentNode.getPosition());
             currentNode = currentNode.getParent();
         }
+        return fullPath;
     }
 
     /**

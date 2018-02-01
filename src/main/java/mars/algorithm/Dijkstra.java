@@ -4,11 +4,11 @@ import mars.coordinate.Coordinate;
 import mars.coordinate.DijkstraNode;
 import mars.out.TerminalOutput;
 import mars.rover.MarsRover;
-
-import javax.sound.midi.SysexMessage;
 import java.util.*;
 
 public class Dijkstra extends Algorithm {
+
+    List<Coordinate> fullPath = new ArrayList<Coordinate>();
 
     /*
      * Default constructor for an Dijkstra.
@@ -21,14 +21,14 @@ public class Dijkstra extends Algorithm {
         map = rover.getMap();
     }
 
-    public void findPath() throws Exception {
-        Set<DijkstraNode> nodeSet = new HashSet<DijkstraNode>();
+    public void findPath(){
+        Vector<DijkstraNode> nodeVector = new Vector<DijkstraNode>();
 
         DijkstraNode startNode = new DijkstraNode(rover.getStartPosition());
         DijkstraNode goalNode = new DijkstraNode(rover.getEndPosition());
 
-        double heightOfMap = map.getHeight();
-        double widthOfMap = map.getWidth();
+        int startX = startNode.getPosition().getX();
+        int startY = startNode.getPosition().getY();
 
         int goalX = goalNode.getPosition().getX();
         int goalY = goalNode.getPosition().getY();
@@ -37,43 +37,115 @@ public class Dijkstra extends Algorithm {
         // Instead of loading entire map, let's try only loading the square from start to goal.
         // For example, if start is 10, 10 and goal is 20, 20, the rectangle will have:
         // x vals from 10 - 20, and y vals from 10 - 20.
-        for (int y = 1; y <= goalY; y++) {
-            for (int x = 1; x <= goalX; x++) {
+        for (int y = startY; y <= goalY; y++) {
+            for (int x = startX; x <= goalX; x++) {
                 Coordinate tmpCoordinate = new Coordinate(x,y);
                 DijkstraNode tmpNode = new DijkstraNode(tmpCoordinate);
                 tmpNode.setDistanceFromStart(Double.POSITIVE_INFINITY);
                 tmpNode.setParent(null);
-                nodeSet.add(tmpNode);
+                nodeVector.add(tmpNode);
             }
         }
 
-        startNode.setDistanceFromStart(0);
-
-        // Add start node to nodeSet.
-        nodeSet.add(startNode);
-
-        double currentMin = Double.POSITIVE_INFINITY;
-        for (DijkstraNode n : nodeSet) {
-            System.out.println(n.getPosition().getX());
-            if (n.getDistanceFromStart() < currentMin) {
-                currentMin = n.getDistanceFromStart();
+        for (int i = 0; i < nodeVector.size(); i++) {
+            if (nodeVector.get(i).getPosition().getX() == startX && nodeVector.get(i).getPosition().getY() == startY) {
+                nodeVector.get(i).setDistanceFromStart(0);
             }
         }
-        System.out.println(currentMin);
 
-        /*
-        while (!nodeSet.isEmpty()) {
+        while (!nodeVector.isEmpty()) {
+            boolean goalFound = false;
 
-            double currentMin = Double.POSITIVE_INFINITY;
-            for (DijkstraNode n : nodeSet) {
-                if (n.getDistanceFromStart() < currentMin) {
-                    currentMin = n.getDistanceFromStart();
+            DijkstraNode minNode = getClosestNode(nodeVector);
+
+            if (minNode.getPosition().getX() == Integer.MAX_VALUE) {
+                // No path found?
+                break;
+            }
+
+            removeNodeFromVector(nodeVector, minNode);
+
+            List<DijkstraNode> neighborList = minNode.getNeighbors();
+            for (int i = 0; i < neighborList.size(); i++) {
+
+                DijkstraNode currentNode = neighborList.get(i);
+
+                int currentX = currentNode.getPosition().getX();
+                int currentY = currentNode.getPosition().getY();
+
+                // Checks to see if current neighbor is in the vector.
+                boolean inVector = false;
+                for (DijkstraNode nVec : nodeVector) {
+                    if (neighborList.get(i).getPosition().getX() == nVec.getPosition().getX() &&
+                            neighborList.get(i).getPosition().getY() == nVec.getPosition().getY()) {
+                        inVector = true;
+                    }
+                }
+                if (inVector) {
+                    // If current neighbor is in the vector, we're going to get the new distance for that node,
+                    // check to see if it's traversable, and if so, set distance and parent for the node.
+                    double totalDist = minNode.getDistanceFromStart() + minNode.distBetween(neighborList.get(i));
+                    if (totalDist < neighborList.get(i).getDistanceFromStart()) {
+
+                        for (int q = 0; q < nodeVector.size(); q++) {
+                            if (nodeVector.get(q).getPosition().getX() == currentX &&
+                                    nodeVector.get(q).getPosition().getY() == currentY) {
+                                // Alter node within vector.
+                                if (rover.canTraverse(minNode.getPosition(), currentNode.getPosition())) {
+                                    nodeVector.get(q).setDistanceFromStart(totalDist);
+                                    nodeVector.get(q).setParent(minNode);
+                                }
+                            }
+                        }
+                    }
+                }
+                if (neighborList.get(i).currentIsGoal(goalNode)) {
+                    // Goal node has been found.
+
+                    for (int q = 0; q < nodeVector.size(); q++) {
+                        if (nodeVector.get(q).getPosition().getX() == neighborList.get(i).getPosition().getX() &&
+                                nodeVector.get(q).getPosition().getY() == neighborList.get(i).getPosition().getY()) {
+                            // Alter node within vector.
+                            List<Coordinate> tmpList = nodeVector.get(q).constructPath();
+                            fullPath = tmpList;
+                            goalFound = true;
+                        }
+                    }
+
                 }
             }
-
-
+            if (goalFound) {
+                break;
+            }
         }
-        */
-
+        Collections.reverse(fullPath);
+        output = new TerminalOutput(fullPath);
     }
+
+    private void removeNodeFromVector(Vector<DijkstraNode> nodeVector, DijkstraNode minNode) {
+        int minNodeXPos = minNode.getPosition().getX();
+        int minNodeYPos = minNode.getPosition().getY();
+
+        for (int i = 0; i < nodeVector.size(); i++) {
+            DijkstraNode n = nodeVector.get(i);
+            if ((n.getPosition().getX() == minNodeXPos) && (n.getPosition().getY() == minNodeYPos)) {
+                nodeVector.remove(i);
+            }
+        }
+    }
+
+    private DijkstraNode getClosestNode(Vector<DijkstraNode> nodeVector) {
+        double currentMin = Double.POSITIVE_INFINITY;
+        DijkstraNode tmp = new DijkstraNode(new Coordinate(Integer.MAX_VALUE, Integer.MAX_VALUE));
+        for (int i = 0; i < nodeVector.size(); i++) {
+            DijkstraNode n = nodeVector.get(i);
+            if (n.getDistanceFromStart() < currentMin) {
+                currentMin = n.getDistanceFromStart();
+                tmp = n;
+            }
+        }
+        return tmp;
+    }
+
+
 }
