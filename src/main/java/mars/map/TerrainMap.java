@@ -13,4 +13,6 @@ public abstract class TerrainMap {
 
     public abstract double getMinValue() throws Exception;
 
+    public abstract String getMapPath();
+
 }
