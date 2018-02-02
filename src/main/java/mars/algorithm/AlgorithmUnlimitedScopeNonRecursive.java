@@ -30,6 +30,8 @@ public class AlgorithmUnlimitedScopeNonRecursive extends Algorithm {
      * Implementation of A*
      */
     public void findPath() {
+        // Main method to find path.
+
         Coordinate startPosition = rover.getStartPosition();
         Coordinate endPosition= rover.getEndPosition();
 
