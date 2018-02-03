@@ -31,7 +31,7 @@ public class MapFrame extends JFrame {
      */
     public MapFrame(java.util.List<? extends Coordinate> path, String mapImagePath) {
         try {
-            setTitle("Algorithm Path Viewer");
+            setTitle("MARS Path Viewer");
             this.path = path;
             Toolkit kit = Toolkit.getDefaultToolkit();
             Dimension screenSize = kit.getScreenSize();
