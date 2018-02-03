@@ -2,7 +2,6 @@ package mars.algorithm;
 
 import mars.coordinate.Coordinate;
 import mars.coordinate.AStarCoordinate;
-import mars.out.MapImageOutput;
 import mars.rover.MarsRover;
 import mars.out.TerminalOutput;
 import mars.map.TerrainMap;
@@ -59,8 +58,7 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
             AStarCoordinate thisCoord = unvisitedCoords.get(0);
             visitedCoords.add(thisCoord);
             if (thisCoord.equals(goal)) { //if we found the goal
-                //output = new TerminalOutput(constructPath(thisCoord));
-                output = new MapImageOutput(constructPath(thisCoord), map.getMapPath());
+                output = new TerminalOutput(constructPath(thisCoord));
             }
             else {
                 ArrayList<AStarCoordinate> unvisitedNeighbors = getReachableUnvisitedNeighbors(thisCoord);
@@ -140,6 +138,19 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
     }
 
     /**
+     * Check if there is a node matching ours in the visited set
+     * @param coord Coordinate to test for
+     * @return Boolean whether coord has been visited
+     */
+    private boolean coordHasBeenVisited(AStarCoordinate coord) {
+        for (AStarCoordinate c : visitedCoords) {
+            if (c.equals(coord))
+                return true;
+        }
+        return false;
+    }
+
+    /**
      * Check if there is a node matching ours in the given set
      * @param coord Coordinate to test for
      * @return Boolean whether coord has been visited
@@ -150,15 +161,6 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
                 return true;
         }
         return false;
-    }
-
-    /**
-     * Check if there is a node matching ours in the visited set
-     * @param coord Coordinate to test for
-     * @return Boolean whether coord has been visited
-     */
-    private boolean coordHasBeenVisited(AStarCoordinate coord) {
-        return coordIsInSet(coord, visitedCoords); //TODO: if this change causes merge conflict, nix it.
     }
 
     /**
