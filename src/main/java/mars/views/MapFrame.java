@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -41,8 +42,14 @@ public class MapFrame extends JFrame {
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
             //Add the (scrollable) map image to this frame
-            //TODO: use .jpg version instead of .tif to GREATLY shrink memory use
-            backgroundImage = ImageIO.read(new File(mapImagePath));
+            try {
+                //Try to use .jpg version instead of .tif(f) to greatly shrink memory use
+                String jpgImagePath = mapImagePath.substring(0, mapImagePath.indexOf('.')) + ".jpg";
+                backgroundImage = ImageIO.read(new File(jpgImagePath));
+            } catch (IOException ex) {
+                //Default to the actual GeoTIFF image
+                backgroundImage = ImageIO.read(new File(mapImagePath));
+            }
             MapPanel imagePanel = new MapPanel(this, path, backgroundImage);
             this.getContentPane().add(new ImageScroller(imagePanel));
             setVisible(true);
@@ -65,6 +72,7 @@ public class MapFrame extends JFrame {
             int firstX = path.get(0).getX() ;
             int firstY = path.get(0).getY(); //Note that all the Y's in "path" have been altered by MapPanel.convertPathXYtoJavaXY()
 
+            //Center the view position as much as possible
             if (firstX < frameWidth/2)
                 firstX = 0;
             else
