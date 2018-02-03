@@ -34,8 +34,8 @@ public class MapPanel extends JPanel {
         this.setLayout(new BorderLayout(10, 10));
 
         //Create components
-        mapBackgroundImage = convertColorModel(mapBackgroundImage, BufferedImage.TYPE_INT_ARGB); //needed to add non-greyscale colors
-        convertPathXYtoJavaXY(); //needed to account for differences in coordinate systems
+        mapBackgroundImage = convertColorModel(mapBackgroundImage, BufferedImage.TYPE_INT_ARGB); //Needed to add non-greyscale colors
+        convertPathXYtoJavaXY(); //Needed to account for differences in coordinate systems
         drawPathOnImage(mapBackgroundImage, path);
     }
 
@@ -49,7 +49,7 @@ public class MapPanel extends JPanel {
     public static BufferedImage convertColorModel(BufferedImage src, int bufImgType) {
         BufferedImage img = new BufferedImage(src.getWidth(), src.getHeight(), bufImgType);
         Graphics2D g2d = img.createGraphics();
-        g2d.drawImage(src, 0, 0, null); //transfer old image into the new one with correct color model
+        g2d.drawImage(src, 0, 0, null); //Transfer old image into the new one with correct color model
         g2d.dispose();
         return img;
     }
@@ -92,8 +92,8 @@ public class MapPanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         //TODO: DO NOT redraw maps so often... (find a good solution to this)
-        g.drawImage(mapBackgroundImage, 0, 0, this); //Sets the background image (poorly), not scaled (so zoomed in).
-//        g.drawImage(mapBackgroundImage, 0, 0, this.getWidth(), this.getHeight(), this); //Sets the background image (poorly), scaled to fit view.
+        g.drawImage(mapBackgroundImage, 0, 0, this); //Sets the background image, not scaled (so zoomed in).
+//        g.drawImage(mapBackgroundImage, 0, 0, this.getWidth(), this.getHeight(), this); //Sets the background image, scaled to fit view.
     }
 
 }
