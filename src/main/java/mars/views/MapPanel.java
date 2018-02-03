@@ -35,7 +35,7 @@ public class MapPanel extends JPanel {
 
         //Create components
         mapBackgroundImage = convertColorModel(mapBackgroundImage, BufferedImage.TYPE_INT_ARGB); //needed to add non-greyscale colors
-        convertPathXYtoJavaXY(); //need to account for differences in coordinate systems
+        convertPathXYtoJavaXY(); //needed to account for differences in coordinate systems
         drawPathOnImage(mapBackgroundImage, path);
     }
 
@@ -57,7 +57,7 @@ public class MapPanel extends JPanel {
     /**
      * Account for the disparity between Geotools' coordinate system and the one
      * used by Java images. In Java images, X grows normally but Y grows downward.
-     * So convert the "standard" (X, Y)'s in the path to the corresponding (X, Y)'s
+     * So convert the "standard" (X,Y)'s in the path to the corresponding (X,Y)'s
      * in Java image speak.
      */
     public void convertPathXYtoJavaXY() {
@@ -84,7 +84,7 @@ public class MapPanel extends JPanel {
     }
 
     /**
-     * Refreshes draws the components on panel.
+     * Refreshes the components on panel.
      * Overriding "paintComponent" is the idiomatic way to update views in Java Swing.
      *
      * @param g The Graphics object of this component
