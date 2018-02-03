@@ -15,4 +15,8 @@ public abstract class TerrainMap {
 
     public abstract String getMapPath();
 
+    public abstract double getHeight() throws Exception;
+
+    public abstract double getWidth() throws Exception;
+
 }

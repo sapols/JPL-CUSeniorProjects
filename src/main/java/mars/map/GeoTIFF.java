@@ -107,6 +107,21 @@ public class GeoTIFF extends TerrainMap {
         return minElevation;
     }
 
+    public double getWidth() throws Exception {
+        return gridData.getWidth();
+    }
+
+    public double getHeight() throws Exception {
+        return gridData.getHeight();
+    }
+  
+    /**
+     * Returns the file path which initialized this GeoTIFF.
+     */
+    public String getMapPath() {
+        return mapPath;
+    }
+  
     /**
      * Returns the elevations of pixels within a given
      * rectangular area, defined by an origin point and
@@ -140,13 +155,6 @@ public class GeoTIFF extends TerrainMap {
         }
 
         return elevations;
-    }
-
-    /*
-     * Returns the file path which initialized this GeoTIFF (as a String).
-     */
-    public String getMapPath() {
-        return mapPath;
     }
 
     /* leftover function from Route. Keeping here for now

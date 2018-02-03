@@ -8,6 +8,7 @@ import mars.map.TerrainMap;
 import java.util.Collections;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -18,9 +19,13 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
 
     ArrayList<AStarCoordinate> visitedCoords = new ArrayList<AStarCoordinate>();
     Coordinate goal;
+    AStarCoordinate targetCoord = new AStarCoordinate(rover.getStartPosition());
 
     /**
      * Default constructor for an AlgorithmUnlimitedScopeRecursive.
+     * rover - the rover being input
+     * map - the map being used
+     * goal - the end position the rover needs to get to
      *
      * @param r The rover
      */
@@ -44,6 +49,10 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
         }
     }
 
+    public ArrayList<AStarCoordinate> getPath() {
+        return constructPath(targetCoord);
+    }
+
     /**
      * Find a path from start to goal with A*. Then output it.
      * Throw an exception if a path cannot be found.
@@ -58,6 +67,7 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
             AStarCoordinate thisCoord = unvisitedCoords.get(0);
             visitedCoords.add(thisCoord);
             if (thisCoord.equals(goal)) { //if we found the goal
+                targetCoord = thisCoord; //for getPath to reference
                 output = new TerminalOutput(constructPath(thisCoord));
             }
             else {
