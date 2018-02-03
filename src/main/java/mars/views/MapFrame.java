@@ -1,7 +1,6 @@
 package mars.views;
 
 import mars.coordinate.Coordinate;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
