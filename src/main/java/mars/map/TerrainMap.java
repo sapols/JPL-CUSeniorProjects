@@ -13,4 +13,8 @@ public abstract class TerrainMap {
 
     public abstract double getMinValue() throws Exception;
 
+    public abstract double getHeight() throws Exception;
+
+    public abstract double getWidth() throws Exception;
+
 }

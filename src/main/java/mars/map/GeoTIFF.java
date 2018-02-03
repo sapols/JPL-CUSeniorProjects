@@ -104,6 +104,13 @@ public class GeoTIFF extends TerrainMap {
         return minElevation;
     }
 
+    public double getWidth() throws Exception {
+        return gridData.getWidth();
+    }
+
+    public double getHeight() throws Exception {
+        return gridData.getHeight();
+    }
     /**
      * Returns the elevations of pixels within a given
      * rectangular area, defined by an origin point and
