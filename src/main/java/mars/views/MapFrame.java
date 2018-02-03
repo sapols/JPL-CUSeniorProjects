@@ -64,6 +64,17 @@ public class MapFrame extends JFrame {
 
             int firstX = path.get(0).getX() ;
             int firstY = path.get(0).getY(); //Note that all the Y's in "path" have been altered by MapPanel.convertPathXYtoJavaXY()
+
+            if (firstX < frameWidth/2)
+                firstX = 0;
+            else
+                firstX = firstX - frameWidth/2;
+
+            if (firstY < frameHeight/2)
+                firstY = 0;
+            else
+                firstY = firstY - frameHeight/2;
+
             getViewport().setViewPosition(new Point(firstX, firstY));
         }
     }
