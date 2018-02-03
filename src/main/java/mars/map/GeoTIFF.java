@@ -146,6 +146,10 @@ public class GeoTIFF extends TerrainMap {
         return elevations;
     }
 
+    public double getWidth() throws Exception { return gridData.getWidth(); }
+
+    public double getHeight() throws Exception { return gridData.getHeight(); }
+
     /* leftover function from Route. Keeping here for now
     public void getLine(double x) throws Exception {
         double lastStat = -1;
