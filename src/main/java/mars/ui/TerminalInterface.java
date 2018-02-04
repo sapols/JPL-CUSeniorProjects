@@ -46,7 +46,8 @@ public class TerminalInterface extends UserInterface {
     public void promptForMap() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("\nPlease enter the file path for the map you would like to traverse. Example:");
-        System.out.println("src/main/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
+        //System.out.println("src/main/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
+        System.out.println("src/main/resources/Phobos_Viking_Mosaic_40ppd_DLRcontrol.tif");
 
         //TODO: Tell people what path their path will be relative to. Or possibly provide options to choose from.
         while(true) if(checkMap(scanner)) break;
