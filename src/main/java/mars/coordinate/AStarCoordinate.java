@@ -7,8 +7,9 @@ package mars.coordinate;
 public class AStarCoordinate extends Coordinate implements Comparable<AStarCoordinate> {
     private double costSoFar;
     private double distanceToGoal;
+    private AStarCoordinate parent;
 
-    /*
+    /**
      * Main constructor for an AStarCoordinate.
      */
     public AStarCoordinate(int x, int y) {
@@ -17,7 +18,7 @@ public class AStarCoordinate extends Coordinate implements Comparable<AStarCoord
         distanceToGoal = Double.POSITIVE_INFINITY; //initialize to infinity
     }
 
-    /*
+    /**
      * Second constructor for an AStarCoordinate which accepts a Coordinate.
      */
     public AStarCoordinate(Coordinate coord) {
@@ -42,10 +43,16 @@ public class AStarCoordinate extends Coordinate implements Comparable<AStarCoord
         distanceToGoal = d;
     }
 
+    public AStarCoordinate getParent() { return parent; }
+
+    public void setParent(AStarCoordinate p) { parent = p; }
+
+    public String toString() { return "(" + getX() + ", " + getY() + ")"; }
+
 
     //----For sorting based on A* heuristics--------------------------------------------------------------------------
 
-    /*
+    /**
      * compareTo should return < 0 if this is supposed to be
      * less than other, > 0 if this is supposed to be greater than
      * other and 0 if they are supposed to be equal.

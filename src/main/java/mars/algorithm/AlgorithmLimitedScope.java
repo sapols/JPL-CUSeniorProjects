@@ -25,6 +25,9 @@ public class AlgorithmLimitedScope extends Algorithm {
         map = r.getMap();
     }
 
+    /**
+     * TODO Describe findPath() here
+     */
     public void findPath() throws Exception {
         //Call the search algorithm method
         blankAlgorithm();
@@ -36,5 +39,9 @@ public class AlgorithmLimitedScope extends Algorithm {
         path.add(rover.getEndPosition());
 
         output = new TerminalOutput(path);
+    }
+
+    public ArrayList<Coordinate> getPath() {
+        return path;
     }
 }
