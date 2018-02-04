@@ -20,7 +20,7 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
 
     ArrayList<AStarCoordinate> visitedCoords = new ArrayList<AStarCoordinate>();
     Coordinate goal;
-    AStarCoordinate targetCoord = new AStarCoordinate(rover.getStartPosition());
+    AStarCoordinate targetCoord;
 
     /**
      * Default constructor for an AlgorithmUnlimitedScopeRecursive.
@@ -34,6 +34,7 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
         rover = r;
         map = r.getMap();
         goal = r.getEndPosition();
+        targetCoord = new AStarCoordinate(rover.getStartPosition());
     }
 
     /**
