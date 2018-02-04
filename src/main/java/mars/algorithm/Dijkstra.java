@@ -8,7 +8,7 @@ import java.util.*;
 
 public class Dijkstra extends Algorithm {
 
-    List<Coordinate> fullPath = new ArrayList<Coordinate>();
+    ArrayList<Coordinate> fullPath = new ArrayList<Coordinate>();
 
     /*
      * Default constructor for an Dijkstra.
@@ -174,7 +174,7 @@ public class Dijkstra extends Algorithm {
                                 nodeVector.get(q).getPosition().getY() == neighborList.get(i).getPosition().getY()) {
                             // Alter node within vector.
                             List<Coordinate> tmpList = nodeVector.get(q).constructPath();
-                            fullPath = tmpList;
+                            fullPath = new ArrayList<Coordinate>(tmpList);
                             goalFound = true;
                         }
                     }
