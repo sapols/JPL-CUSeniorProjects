@@ -25,6 +25,10 @@ public class Dijkstra extends Algorithm {
         return fullPath;
     }
 
+    public ArrayList<Coordinate> getPath() {
+        return fullPath;
+    }
+
     public void findPath(){
         Vector<DijkstraNode> nodeVector = new Vector<DijkstraNode>();
 
