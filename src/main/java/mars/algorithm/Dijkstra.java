@@ -20,6 +20,10 @@ public class Dijkstra extends Algorithm {
         rover = r;
         map = rover.getMap();
     }
+    
+    public ArrayList<Coordinate> getPath() {
+        return fullPath;
+    }
 
     public void findPath(){
         Vector<DijkstraNode> nodeVector = new Vector<DijkstraNode>();
