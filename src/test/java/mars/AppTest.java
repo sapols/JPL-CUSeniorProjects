@@ -6,6 +6,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import mars.algorithm.Algorithm;
 import mars.algorithm.AlgorithmGreedy;
+import mars.algorithm.AlgorithmLimitedScopeAStar;
 import mars.coordinate.Coordinate;
 import mars.coordinate.GreedyCoordinate;
 import mars.map.GeoTIFF;
@@ -351,6 +352,21 @@ public class AppTest extends TestCase {
         assertTrue("Stronger rovers aren't performing better",check);
     }
     */
+
+    public void testAStarAlgorithmLimited() throws Exception{
+        Coordinate startCoord = new Coordinate(538,191);
+        Coordinate endCoord = new Coordinate(208,210);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(90,startCoord,endCoord,mapPath,20);
+        Algorithm algorithm = new AlgorithmLimitedScopeAStar(rover);
+        try {
+            algorithm.findPath();
+        } catch (Exception expectedException) {
+            assertTrue("Failed to find a route it should have",false);
+        }
+        boolean check = true;
+        assertTrue(check);
+    }
 
     public void testGreedyAlgorithmUnlimitedNoBacktrack() throws Exception{
         Coordinate startCoord = new Coordinate(538,191);

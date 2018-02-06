@@ -18,6 +18,7 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
     ArrayList<AStarCoordinate> visitedCoords = new ArrayList<AStarCoordinate>();
     ArrayList<AStarCoordinate> path = new ArrayList<AStarCoordinate>();
     Coordinate goal;
+    Coordinate interimGoal;
     AStarCoordinate targetCoord;
     double fieldOfView;
 
@@ -56,18 +57,17 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
     public void AStarSearch(ArrayList<AStarCoordinate> coords) throws Exception {
         AStarCoordinate thisCoord = coords.get(0);
         double goalAngle;
-        Coordinate interimGoal;
         ArrayList<AStarCoordinate> tempPath = new ArrayList<AStarCoordinate>();
         while(!thisCoord.equals(goal)){
             goalAngle = getAngleToGoal(thisCoord, goal);
             if(getDistanceToPoint(thisCoord,goal) > fieldOfView) {
-                interimGoal = new Coordinate((int) (thisCoord.getX() + (fieldOfView * Math.cos(goalAngle))),
-                        (int) (thisCoord.getY() + (fieldOfView * Math.sin(goalAngle)))); //get next waypoint for A*
+                interimGoal = new Coordinate((int) (thisCoord.getX() + ((fieldOfView-1) * Math.cos(Math.toRadians(goalAngle)))),
+                        (int) (thisCoord.getY() + ((fieldOfView-1) * Math.sin(Math.toRadians(goalAngle))))); //get next waypoint for A*
             }else{
                 interimGoal = goal; //we're close enough to use the regular goal!
             }
             tempPath.clear();
-            tempPath.add(thisCoord);
+            tempPath.add(new AStarCoordinate(thisCoord.getX(), thisCoord.getY())); // we need a fresh AStarCoordinate to keep the iterations from seeing each other
             try {
                 tempPath = AStar(tempPath,interimGoal);
             } catch (Exception e) {
@@ -95,7 +95,7 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
             AStarCoordinate thisCoord = unvisitedCoords.get(0);
             visitedCoords.add(thisCoord);
 
-            if (thisCoord.equals(goal)) { //if we found the goal
+            if (thisCoord.equals(currentGoal)) { //if we found the goal
                 //targetCoord = thisCoord; //for getPath to reference
                 return constructPath(thisCoord);
             }
@@ -189,7 +189,7 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
      */
     public void sortCoordinatesByCost(ArrayList<AStarCoordinate> coords) {
         for (AStarCoordinate c : coords) {
-            c.setDistanceToGoal(getDistanceToPoint(c,goal));
+            c.setDistanceToGoal(getDistanceToPoint(c,interimGoal));
         }
 
         Collections.sort(coords); //Do the sort, per the "compareTo" method in AStarCoordinate
