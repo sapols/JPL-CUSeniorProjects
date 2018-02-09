@@ -38,6 +38,8 @@ public class AlgorithmTest extends TestCase {
             if(!desiredOutcome) assertTrue("Found a route it shouldn't have", false);
         } catch (java.lang.ArrayIndexOutOfBoundsException expectedException) {
             if(!desiredOutcome) assertTrue("Found a route it shouldn't have", false);
+        } catch (java.awt.HeadlessException expectedException) { //for travis ci
+            if(!desiredOutcome) assertTrue("Found a route it shouldn't have", false);
         } catch (Exception expectedException) {
             if(desiredOutcome) assertTrue(expectedException.getClass().getName(),false);
         }
