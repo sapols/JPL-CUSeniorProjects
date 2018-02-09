@@ -1,14 +1,15 @@
 package mars.ui;
-import com.sun.corba.se.impl.io.TypeMismatchException;
 
+import com.sun.corba.se.impl.io.TypeMismatchException;
 import mars.coordinate.Coordinate;
 import mars.algorithm.AlgorithmLimitedScope;
 import mars.algorithm.*;
 import mars.map.GeoTIFF;
 import mars.map.TerrainMap;
 import mars.rover.MarsRover;
-
-import java.util.Scanner;
+import java.util.Map;
+import java.util.*;
+import java.io.*;
 
 /**
  * Class through which users interact with out project.
@@ -17,6 +18,7 @@ import java.util.Scanner;
  * A rover with those specifications is then started and the program runs until completed.
  */
 public class TerminalInterface extends UserInterface {
+    //TODO: allow command-line arguments
 
     double slope = 0;
     Coordinate startCoords;
@@ -35,6 +37,7 @@ public class TerminalInterface extends UserInterface {
         System.out.println("**==================================================**");
         System.out.println("*  Welcome to the Martian Autonomous Routing System. *");
         System.out.println("**==================================================**\n");
+        //TODO: Print basic description of prompts to follow?
 
         promptForMap();
         promptForSlope();
@@ -44,34 +47,51 @@ public class TerminalInterface extends UserInterface {
     }
 
     public void promptForMap() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("\nPlease enter the file path for the map you would like to traverse. Example:");
-        //System.out.println("src/main/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
-        System.out.println("src/main/resources/Phobos_Viking_Mosaic_40ppd_DLRcontrol.tif");
+        System.out.println("Please choose the map you would like to traverse:\n");
+        String resourceDir = "src/main/resources/";
+        Map<Integer, String> maps = findMaps(resourceDir);
 
-        //TODO: Tell people what path their path will be relative to. Or possibly provide options to choose from.
-        while(true) if(checkMap(scanner)) break;
+        for (Integer index : maps.keySet()) {
+            System.out.println("("+index+") " + maps.get(index));
+        }
+        System.out.println(); //New line
 
-
-    }
-
-    public Boolean checkMap(Scanner scan)
-    {
-        try {
-            mapPath = scan.next();
-            map.initMap(mapPath);
-            return true;
-        } catch(TypeMismatchException e) {
-            System.out.println("Warning: Please enter the file path as a string.");
-            scan.nextLine();
-            return false;
-
-        } catch(Exception e) {
-            System.out.println("Warning: Make sure the path you are entering is correct (path is relative to project root).");
-            scan.nextLine();
-            return false;
+        Scanner scan = new Scanner(System.in);
+        while (true) {
+            try {
+                int mapNum = new Integer(scan.next());
+                String mapChoice = maps.get(mapNum);
+                if (mapChoice != null) {
+                    mapPath = resourceDir + mapChoice;
+                    map.initMap(mapPath);
+                    break;
+                } else {
+                    throw new Exception("Please only select from the given options.");
+                }
+            } catch (Exception ex) {
+                System.out.println("Please only select from the given options. Try again:");
+            }
         }
     }
+
+//    public Boolean checkMap(Scanner scan)
+//    {
+//        try {
+//            int mapChoice = scan.nextInt();
+//            mapPath = scan.next(
+//            map.initMap(mapPath);
+//            return true;
+//        } catch(TypeMismatchException e) {
+//            System.out.println("Warning: Please enter the file path as a string.");
+//            scan.nextLine();
+//            return false;
+//
+//        } catch(Exception e) {
+//            System.out.println("Warning: Make sure the path you are entering is correct (path is relative to project root).");
+//            scan.nextLine();
+//            return false;
+//        }
+//    }
 
     public void promptForSlope() {
         Scanner scanner = new Scanner(System.in);
@@ -145,6 +165,11 @@ public class TerminalInterface extends UserInterface {
     }
 
     public void promptForAlgorithm() {
+        //TODO: Use AlgorithmFactory
+        //TODO: Call to method which returns a map of (index) -> (name of .java in src/main/java/mars/algorithm)
+        //TODO: Consider Unlimited/Limited (return different options depending (use unlimited/limited subdirectories))
+        //TODO: List options in map
+        //TODO: Call to AlgorithmFactory to get Algorithm from name
         Scanner scanner = new Scanner(System.in);
 
         while(true) {
@@ -177,10 +202,13 @@ public class TerminalInterface extends UserInterface {
         }
     }
 
+    //TODO: Prompt for ouput type!
+
     /**
      * Function to run the requested algorithm with user-prompted variables.
      */
     public void startAlgorithm() {
+        //TODO: Give algorithm straight from Algorithm object return from ALgorithmFactory.
         //Start Rover then run its algorithm until the output file is populated with results.
         if (alg.equalsIgnoreCase("U")) {
             MarsRover r = new MarsRover(slope, startCoords, endCoords, mapPath);
@@ -205,6 +233,26 @@ public class TerminalInterface extends UserInterface {
         else {
             System.out.println("Error: No algorithm selected.");
         }
+    }
+
+    //----Resource scanning methods-------------------------------------------------------------------------------------
+
+    /**
+     * Returns a Map of [index] -> [name of .tif(f) in src/main/resources/]
+     */
+    public Map<Integer, String> findMaps(String dir) {
+        File[] files = new File(dir).listFiles(new FilenameFilter() {
+            public boolean accept(File dir, String name) {
+                return name.endsWith(".tif") || name.endsWith(".tiff");
+            }
+        });
+        Map<Integer, String> elevationMaps = new HashMap<Integer, String>();
+
+        for (int i = 0; i < files.length; i++) {
+            elevationMaps.put(i+1, files[i].getName());
+        }
+
+        return elevationMaps;
     }
 
 }
