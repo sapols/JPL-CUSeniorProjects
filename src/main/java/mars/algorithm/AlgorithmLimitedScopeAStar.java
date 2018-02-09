@@ -23,10 +23,11 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
     double fieldOfView;
 
     /**
-     * Default constructor for an AlgorithmUnlimitedScopeRecursive.
+     * Default constructor for an AlgorithmLimitedScopeAStar.
      * rover - the rover being input
      * map - the map being used
      * goal - the end position the rover needs to get to
+     * fieldOfView - field of view of rover
      *
      * @param r The rover
      */
@@ -34,7 +35,6 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
         rover = r;
         map = r.getMap();
         goal = r.getEndPosition();
-        targetCoord = new AStarCoordinate(rover.getStartPosition());
         fieldOfView = r.getFieldOfView();
     }
 
@@ -42,7 +42,8 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
      * Method which starts this search algorithm.
      */
     public void findPath() throws Exception {
-        path.add(new AStarCoordinate(rover.getStartPosition()));
+        if(fieldOfView < 3) throw new Exception("WARNING: Field of view should be set to 3 or higher."); //interim goal calculations don't work with 1 or 2
+        path.add(new AStarCoordinate(rover.getStartPosition())); //start coord
         try {
             AStarSearch(path);
         } catch (Exception e) {
@@ -54,79 +55,79 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
         return path;
     }
 
+    /**
+     * the primary function for limited a*. manages a* searches
+     * @param coords arraylist to store the path
+     * @throws Exception n/a
+     */
     public void AStarSearch(ArrayList<AStarCoordinate> coords) throws Exception {
-        AStarCoordinate thisCoord = coords.get(0);
-        AStarCoordinate backCoord;
-        int backtrackDistance = 0;
+        AStarCoordinate thisCoord = coords.get(0); //stores current location. inits as start coord
+        AStarCoordinate backCoord; //used for backtracking
+        int backtrackDistance = 0; //used to track where to backtrack to
         double goalAngle;
-        ArrayList<AStarCoordinate> tempPath = new ArrayList<AStarCoordinate>();
-        while(!thisCoord.equals(goal)){
+        ArrayList<AStarCoordinate> tempPath = new ArrayList<AStarCoordinate>(); //temporary path to store a* iterations
+        while(!thisCoord.equals(goal)){ //while we haven't reached the goal yet
             goalAngle = getAngleToGoal(thisCoord, goal);
-            if(getDistanceToPoint(thisCoord,goal) > fieldOfView) {
+            if(getDistanceToPoint(thisCoord,goal) > fieldOfView){ //if the rover can't see the goal...
                 interimGoal = new Coordinate((int) (thisCoord.getX() + ((fieldOfView) * Math.cos(Math.toRadians(goalAngle)))),
-                        (int) (thisCoord.getY() + ((fieldOfView) * Math.sin(Math.toRadians(goalAngle))))); //get next waypoint for A*
-            }else{
-                interimGoal = goal; //we're close enough to use the regular goal!
+                        (int) (thisCoord.getY() + ((fieldOfView) * Math.sin(Math.toRadians(goalAngle))))); //then come up with a waypoint it can see in the right direction
+            }else{ //if we're close enough to see the goal just use that
+                interimGoal = goal;
             }
-            tempPath.clear();
+            tempPath.clear(); //wipe last a* iteration
             visitedCoords.clear();
             tempPath.add(new AStarCoordinate(thisCoord.getX(), thisCoord.getY())); // we need a fresh AStarCoordinate to keep the iterations from seeing each other
-            tempPath.get(0).setCostSoFar(0);
+            tempPath.get(0).setCostSoFar(0); //set our new start point as such
             try {
-                tempPath = AStar(tempPath,interimGoal);
-                if(tempPath.get(tempPath.size()-1).equals(goal)){
-                    coords.addAll(tempPath.subList(1,tempPath.size()));
+                tempPath = AStar(tempPath,interimGoal); //try a* from our current location to the next waypoint
+                coords.addAll(tempPath.subList(1,tempPath.size())); //if we got this far, a* worked. add the a* path to the overall path
+                backtrackDistance = 0; //reset backtrack distance
+            } catch (Exception e) { //if a* failed
+                if(coords.get(0).equals(thisCoord)){ //if we've backtracked to the start
+                    throw e; //give up
                 }else{
-                    coords.addAll(tempPath.subList(1,tempPath.size()));
-                }
-                backtrackDistance = 0;
-            } catch (Exception e) {
-                if(coords.get(0).equals(thisCoord)){
-                    throw e;
-                }else{
-                    System.out.printf("bt");
-                    backtrackDistance++;
+                    //System.out.printf("bt"); //backtrack by one. it can't visit thisCoord anymore since it already visited it
+                    backtrackDistance++; //first backtrackDistance to get the next backtrack
                     backCoord = coords.get(coords.size()-1-backtrackDistance);
-                    coords.add(backCoord);
-                    backtrackDistance++;
+                    coords.add(backCoord); //add the backtrack coordinate as the next place.
+                    backtrackDistance++; //and a second one to account for the new entry to the overall path
                 }
             }
 
-            thisCoord = coords.get(coords.size()-1);
-            System.out.println((thisCoord.getX()) + "," + (thisCoord.getY()));
+            thisCoord = coords.get(coords.size()-1); //set current location to the latest position in the path
+            //System.out.println((thisCoord.getX()) + "," + (thisCoord.getY())); //debug
         }
-        output = new TerminalOutput(path);
+        output = new TerminalOutput(path); //if we reached here, we got out of the while loop. we're done!
         output = new MapImageOutput(path, map.getMapPath());
     }
 
 
 
     /**
-     * Find a path from start to goal with A*. Then output it.
+     * Formal implementation of A* that we use for getting from point a to point b.
      * Throw an exception if a path cannot be found.
+     * Modified from AlgorithmUnlimitedScopeRecursive
      *
      * @param unvisitedCoords The list of coordinates being considered by the algorithm.
      */
-    public ArrayList<AStarCoordinate> AStar(ArrayList<AStarCoordinate> unvisitedCoords, Coordinate currentGoal) throws Exception {
-        if (unvisitedCoords.isEmpty()) {
+    public ArrayList<AStarCoordinate> AStar(ArrayList<AStarCoordinate> unvisitedCoords, Coordinate currentGoal) throws Exception { //the goal varies, so we take that in as an argument
+        if (unvisitedCoords.isEmpty()) { //since we're limited, not making the goal doesn't mean we lose
             AStarCoordinate targetCoord = new AStarCoordinate(0,0);
-            for(AStarCoordinate n : visitedCoords){
+            for(AStarCoordinate n : visitedCoords){ //find the coord closest to the goal
                 if(n.getDistanceToGoal() < targetCoord.getDistanceToGoal()){
                     targetCoord = n;
                 }
             }
-            if(targetCoord.getDistanceToGoal() < (fieldOfView-1)) {
+            if(targetCoord.getDistanceToGoal() < (fieldOfView-1)) { //if we made at least a bit of progress, take it
                 return constructPath(targetCoord);
-            }else{
+            }else{ //if we didn't even get close, give up
                 throw new Exception("WARNING: A path to the goal could not be found.");
             }
-        }
-        else {
+        } else {
             AStarCoordinate thisCoord = unvisitedCoords.get(0);
             visitedCoords.add(thisCoord);
 
             if (thisCoord.equals(currentGoal)) { //if we found the goal
-                //targetCoord = thisCoord; //for getPath to reference
                 return constructPath(thisCoord);
             }
             else {
@@ -160,16 +161,16 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
 
     /**
      * boolean to check if a given coordinate is unique and in range of what the rover has seen by this point
-     * @param target
-     * @return
+     * @param target coord to check
+     * @return boolean if acceptable
      */
     public boolean checkIfViewed(Coordinate target){
         boolean viewed = false;
-        for(AStarCoordinate item : path){
-            if(target.equals(item)){
+        for(AStarCoordinate item : path){ //for each item in the overall path (not just for the iteration!)
+            if(target.equals(item)){ //if we're considering a coord that's unvisited for the iteration but not the overall run, then fail
                 return false; //no repeats allowed
             }
-            if(getDistanceToPoint(target,item) <= fieldOfView){
+            if(getDistanceToPoint(target,item) <= fieldOfView){ //and if we've seen this coord, it's acceptable
                 viewed = true; //we now know it's in range, but still have to check for repeats
             }
         }
@@ -219,7 +220,7 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
      */
     public void sortCoordinatesByCost(ArrayList<AStarCoordinate> coords) {
         for (AStarCoordinate c : coords) {
-            c.setDistanceToGoal(getDistanceToPoint(c,interimGoal));
+            c.setDistanceToGoal(getDistanceToPoint(c,interimGoal)); //use the interim goal since this function is used on an iteration basis
         }
 
         Collections.sort(coords); //Do the sort, per the "compareTo" method in AStarCoordinate
