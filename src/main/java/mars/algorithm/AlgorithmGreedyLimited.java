@@ -1,7 +1,7 @@
 package mars.algorithm;
 
-import mars.coordinate.GreedyCoordinate;
 import mars.coordinate.Coordinate;
+import mars.coordinate.GreedyCoordinate;
 import mars.out.MapImageOutput;
 import mars.out.TerminalOutput;
 import mars.rover.MarsRover;
@@ -16,12 +16,12 @@ import static java.lang.Math.abs;
  * Class which implements the path-finding algorithm without a limited field of view.
  * Uses an A* search.
  */
-public class AlgorithmGreedy extends Algorithm {
+public class AlgorithmGreedyLimited extends Algorithm {
 
 
     ArrayList<GreedyCoordinate> path = new ArrayList<GreedyCoordinate>();
     Coordinate goal;
-    String mode;
+    //String mode;
 
     /*
      * Default constructor for an AlgorithmGreedy.
@@ -29,11 +29,10 @@ public class AlgorithmGreedy extends Algorithm {
      * @param map The terrain map
      * @param rover The rover
      */
-    public AlgorithmGreedy(MarsRover r, String _mode) {
+    public AlgorithmGreedyLimited(MarsRover r) {
         rover = r;
         map = r.getMap();
         goal = r.getEndPosition();
-        mode = _mode;
     }
 
     /*
@@ -125,7 +124,7 @@ public class AlgorithmGreedy extends Algorithm {
                         coords.remove(checkArray(currentNode,coords));
                         currentNode = coords.get(coords.size() - 1);
                         currentNode.setVisited(true);
-                        if(mode.equals("limited")) fullcoords.add(currentNode);
+                        fullcoords.add(currentNode);
                         stepped = false;
                     }else{ //if we can't backtrack, we lose
                         throw new Exception("WARNING: A path to the goal could not be found.");
@@ -135,14 +134,9 @@ public class AlgorithmGreedy extends Algorithm {
             preferences.clear(); //abandon the leftover candidates
 
             if(currentNode.equals(goal)){ //and if we reached the goal, stop
-                if(mode.equals("limited")){
-                    output = new TerminalOutput(fullcoords);
-                    output = new MapImageOutput(fullcoords, map.getMapPath());
-                    coords = fullcoords;
-                }else{
-                    output = new TerminalOutput(coords);
-                    output = new MapImageOutput(coords, map.getMapPath());
-                }
+                output = new TerminalOutput(fullcoords);
+                output = new MapImageOutput(fullcoords, map.getMapPath());
+                coords = fullcoords;
                 working = false;
             }
         }

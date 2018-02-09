@@ -16,9 +16,8 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
 
     ArrayList<AStarCoordinate> visitedCoords = new ArrayList<AStarCoordinate>();
     ArrayList<AStarCoordinate> path = new ArrayList<AStarCoordinate>();
-    Coordinate goal;
-    Coordinate interimGoal;
-    AStarCoordinate targetCoord;
+    Coordinate goal; //ultimate goal
+    Coordinate interimGoal; //goal used to handle iterations of a*
     double fieldOfView;
 
     /**
@@ -112,7 +111,7 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
     public ArrayList<AStarCoordinate> AStar(ArrayList<AStarCoordinate> unvisitedCoords, Coordinate currentGoal) throws Exception { //the goal varies, so we take that in as an argument
         if (unvisitedCoords.isEmpty()) { //since we're limited, not making the goal doesn't mean we lose
             AStarCoordinate targetCoord = new AStarCoordinate(0,0);
-            for(AStarCoordinate n : visitedCoords){ //find the coord closest to the goal
+            for(AStarCoordinate n : visitedCoords){ //find the coord closest to the goal, faster than sorting
                 if(n.getDistanceToGoal() < targetCoord.getDistanceToGoal()){
                     targetCoord = n;
                 }

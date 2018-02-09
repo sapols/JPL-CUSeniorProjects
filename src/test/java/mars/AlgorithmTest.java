@@ -116,10 +116,55 @@ public class AlgorithmTest extends TestCase {
         Coordinate startCoord = new Coordinate(10,10);
         Coordinate endCoord = new Coordinate(10,20);
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
-        MarsRover rover = new MarsRover(0,startCoord,endCoord,mapPath,0);
+        MarsRover rover = new MarsRover(45,startCoord,endCoord,mapPath,0);
         Algorithm algorithm = new AlgorithmLimitedScopeAStar(rover);
         tryAlgorithm(algorithm,false);
     }
+
+    //Test that algorithm handles field of view properly (1)
+    public void testAstarAlgorithmLimitedCheckIfViewedGood() throws Exception{
+        Coordinate startCoord = new Coordinate(10,10);
+        Coordinate endCoord = new Coordinate(10,20);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(45,startCoord,endCoord,mapPath,3);
+        AlgorithmLimitedScopeAStar algorithm = new AlgorithmLimitedScopeAStar(rover);
+        tryAlgorithm(algorithm,true);
+        assertTrue("good coordinate was treated as bad", algorithm.checkIfViewed(new Coordinate(11,10)));
+    }
+
+    //Test that algorithm handles field of view properly (2)
+    public void testAstarAlgorithmLimitedCheckIfViewedBad() throws Exception{
+        Coordinate startCoord = new Coordinate(10,10);
+        Coordinate endCoord = new Coordinate(10,20);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(45,startCoord,endCoord,mapPath,3);
+        AlgorithmLimitedScopeAStar algorithm = new AlgorithmLimitedScopeAStar(rover);
+        tryAlgorithm(algorithm,true);
+        assertTrue("bad coordinate treated as good", !algorithm.checkIfViewed(new Coordinate(21,10)));
+    }
+
+    //Test that algorithm handles field of view properly (3)
+    public void testAstarAlgorithmLimitedCheckIfViewedRepeated() throws Exception{
+        Coordinate startCoord = new Coordinate(10,10);
+        Coordinate endCoord = new Coordinate(10,20);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(45,startCoord,endCoord,mapPath,3);
+        AlgorithmLimitedScopeAStar algorithm = new AlgorithmLimitedScopeAStar(rover);
+        tryAlgorithm(algorithm,true);
+        assertTrue("bad coordinate treated as good", !algorithm.checkIfViewed(new Coordinate(10,15)));
+    }
+
+    //Test that algorithm angle calculation is correct
+    public void testAstarAlgorithmLimitedGetAngleToGoal() throws Exception{
+        Coordinate startCoord = new Coordinate(10,10);
+        Coordinate endCoord = new Coordinate(10,20);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(45,startCoord,endCoord,mapPath,3);
+        AlgorithmLimitedScopeAStar algorithm = new AlgorithmLimitedScopeAStar(rover);
+        assertTrue("wrong angle returned", 0 == algorithm.getAngleToGoal(new Coordinate(10,10),new Coordinate(11,10)));
+    }
+
+
 
 
     // Tests for AlgorithmUnlimitedScopeRecursive
@@ -152,7 +197,7 @@ public class AlgorithmTest extends TestCase {
         Coordinate endCoord = new Coordinate(10,20);
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         MarsRover rover = new MarsRover(1,startCoord,endCoord,mapPath);
-        Algorithm algorithm = new AlgorithmGreedy(rover,"unlimited");
+        Algorithm algorithm = new AlgorithmGreedyUnlimited(rover);
         tryAlgorithm(algorithm,true);
     }
 
@@ -162,7 +207,7 @@ public class AlgorithmTest extends TestCase {
         Coordinate endCoord = new Coordinate(10,20);
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         MarsRover rover = new MarsRover(1,startCoord,endCoord,mapPath);
-        Algorithm algorithm = new AlgorithmGreedy(rover,"limited");
+        Algorithm algorithm = new AlgorithmGreedyLimited(rover);
         tryAlgorithm(algorithm,true);
     }
 
@@ -172,8 +217,8 @@ public class AlgorithmTest extends TestCase {
         Coordinate endCoord = new Coordinate(10,20);
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         MarsRover rover = new MarsRover(1,startCoord,endCoord,mapPath);
-        Algorithm algorithmUnlimited = new AlgorithmGreedy(rover,"unlimited");
-        Algorithm algorithmLimited = new AlgorithmGreedy(rover,"limited");
+        Algorithm algorithmUnlimited = new AlgorithmGreedyUnlimited(rover);
+        Algorithm algorithmLimited = new AlgorithmGreedyLimited(rover);
         int unlimitedLength = (tryAlgorithm(algorithmUnlimited,true)).size();
         int limitedLength = (tryAlgorithm(algorithmLimited,true)).size();
         boolean check = unlimitedLength == limitedLength;
@@ -186,7 +231,7 @@ public class AlgorithmTest extends TestCase {
         Coordinate endCoord = new Coordinate(208,210);
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         MarsRover rover = new MarsRover(45,startCoord,endCoord,mapPath);
-        Algorithm algorithm = new AlgorithmGreedy(rover,"unlimited");
+        Algorithm algorithm = new AlgorithmGreedyUnlimited(rover);
         tryAlgorithm(algorithm,true);
     }
 
@@ -196,7 +241,7 @@ public class AlgorithmTest extends TestCase {
         Coordinate endCoord = new Coordinate(208,210);
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         MarsRover rover = new MarsRover(45,startCoord,endCoord,mapPath);
-        Algorithm algorithm = new AlgorithmGreedy(rover,"unlimited");
+        Algorithm algorithm = new AlgorithmGreedyUnlimited(rover);
         ArrayList<? extends Coordinate> out = tryAlgorithm(algorithm,true);
         Coordinate oldItem;
         Coordinate item = startCoord;
@@ -216,7 +261,7 @@ public class AlgorithmTest extends TestCase {
         Coordinate endCoord = new Coordinate(208,210);
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         MarsRover rover = new MarsRover(45,startCoord,endCoord,mapPath);
-        Algorithm algorithm = new AlgorithmGreedy(rover,"unlimited");
+        Algorithm algorithm = new AlgorithmGreedyUnlimited(rover);
         ArrayList<? extends Coordinate> path = tryAlgorithm(algorithm,true);
         Set<Coordinate> pathSet = new HashSet<Coordinate>(path);
         boolean check = path.size() == pathSet.size();
@@ -229,7 +274,7 @@ public class AlgorithmTest extends TestCase {
         Coordinate endCoord = new Coordinate(-1,-1);
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         MarsRover rover = new MarsRover(0,startCoord,endCoord,mapPath);
-        Algorithm algorithm = new AlgorithmGreedy(rover,"unlimited");
+        Algorithm algorithm = new AlgorithmGreedyUnlimited(rover);
         tryAlgorithm(algorithm,false);
     }
 
@@ -240,8 +285,8 @@ public class AlgorithmTest extends TestCase {
         Coordinate endCoord = new Coordinate(450,154);
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         MarsRover rover = new MarsRover(25,startCoord,endCoord,mapPath);
-        Algorithm algorithmUnlimited = new AlgorithmGreedy(rover,"unlimited");
-        Algorithm algorithmLimited = new AlgorithmGreedy(rover,"limited");
+        Algorithm algorithmUnlimited = new AlgorithmGreedyUnlimited(rover));
+        Algorithm algorithmLimited = new AlgorithmGreedyLimited(rover));
         int unlimitedLength = (tryAlgorithm(algorithmUnlimited,true)).size();
         int limitedLength = (tryAlgorithm(algorithmLimited,true)).size();
         boolean check = unlimitedLength != limitedLength;
@@ -282,8 +327,8 @@ public class AlgorithmTest extends TestCase {
         Coordinate endCoord = new Coordinate(7436,3927);
         String mapPath = "src/main/resources/Phobos_Viking_Mosaic_40ppd_DLRcontrol.tif";
         MarsRover rover = new MarsRover(30,startCoord,endCoord,mapPath);
-        Algorithm algorithmUnlimited = new AlgorithmGreedy(rover,"unlimited");
-        Algorithm algorithmLimited = new AlgorithmGreedy(rover,"limited");
+        Algorithm algorithmUnlimited = new AlgorithmGreedyUnlimited(rover));
+        Algorithm algorithmLimited = new AlgorithmGreedyLimited(rover));
         int unlimitedLength = (tryAlgorithm(algorithmUnlimited,true)).size();
         int limitedLength = (tryAlgorithm(algorithmLimited,true)).size();
         boolean check = unlimitedLength == limitedLength;
