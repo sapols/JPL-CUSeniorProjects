@@ -1,6 +1,7 @@
 package mars.algorithm;
 
 import mars.coordinate.Coordinate;
+import mars.out.MapImageOutput;
 import mars.rover.MarsRover;
 import mars.out.TerminalOutput;
 import mars.map.TerrainMap;
@@ -104,6 +105,7 @@ public class AlgorithmUnlimitedScopeNonRecursive extends Algorithm {
 
         Collections.reverse(fullPath);
         output = new TerminalOutput(fullPath);
+        output = new MapImageOutput(fullPath,map.getMapPath());
     }
 
     /**

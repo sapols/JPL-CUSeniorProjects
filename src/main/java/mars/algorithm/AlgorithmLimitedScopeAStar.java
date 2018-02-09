@@ -56,27 +56,47 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
 
     public void AStarSearch(ArrayList<AStarCoordinate> coords) throws Exception {
         AStarCoordinate thisCoord = coords.get(0);
+        AStarCoordinate backCoord;
+        int backtrackDistance = 0;
         double goalAngle;
         ArrayList<AStarCoordinate> tempPath = new ArrayList<AStarCoordinate>();
         while(!thisCoord.equals(goal)){
             goalAngle = getAngleToGoal(thisCoord, goal);
             if(getDistanceToPoint(thisCoord,goal) > fieldOfView) {
-                interimGoal = new Coordinate((int) (thisCoord.getX() + ((fieldOfView-1) * Math.cos(Math.toRadians(goalAngle)))),
-                        (int) (thisCoord.getY() + ((fieldOfView-1) * Math.sin(Math.toRadians(goalAngle))))); //get next waypoint for A*
+                interimGoal = new Coordinate((int) (thisCoord.getX() + ((fieldOfView) * Math.cos(Math.toRadians(goalAngle)))),
+                        (int) (thisCoord.getY() + ((fieldOfView) * Math.sin(Math.toRadians(goalAngle))))); //get next waypoint for A*
             }else{
                 interimGoal = goal; //we're close enough to use the regular goal!
             }
             tempPath.clear();
+            visitedCoords.clear();
             tempPath.add(new AStarCoordinate(thisCoord.getX(), thisCoord.getY())); // we need a fresh AStarCoordinate to keep the iterations from seeing each other
+            tempPath.get(0).setCostSoFar(0);
             try {
                 tempPath = AStar(tempPath,interimGoal);
+                if(tempPath.get(tempPath.size()-1).equals(goal)){
+                    coords.addAll(tempPath.subList(1,tempPath.size()));
+                }else{
+                    coords.addAll(tempPath.subList(1,tempPath.size()));
+                }
+                backtrackDistance = 0;
             } catch (Exception e) {
-                throw e;
+                if(coords.get(0).equals(thisCoord)){
+                    throw e;
+                }else{
+                    System.out.printf("bt");
+                    backtrackDistance++;
+                    backCoord = coords.get(coords.size()-1-backtrackDistance);
+                    coords.add(backCoord);
+                    backtrackDistance++;
+                }
             }
-            coords.addAll(tempPath); //todo add a step size so only the first N entries are added to coords
+
             thisCoord = coords.get(coords.size()-1);
+            System.out.println((thisCoord.getX()) + "," + (thisCoord.getY()));
         }
         output = new TerminalOutput(path);
+        output = new MapImageOutput(path, map.getMapPath());
     }
 
 
@@ -89,7 +109,17 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
      */
     public ArrayList<AStarCoordinate> AStar(ArrayList<AStarCoordinate> unvisitedCoords, Coordinate currentGoal) throws Exception {
         if (unvisitedCoords.isEmpty()) {
-            throw new Exception("WARNING: A path to the goal could not be found.");
+            AStarCoordinate targetCoord = new AStarCoordinate(0,0);
+            for(AStarCoordinate n : visitedCoords){
+                if(n.getDistanceToGoal() < targetCoord.getDistanceToGoal()){
+                    targetCoord = n;
+                }
+            }
+            if(targetCoord.getDistanceToGoal() < (fieldOfView-1)) {
+                return constructPath(targetCoord);
+            }else{
+                throw new Exception("WARNING: A path to the goal could not be found.");
+            }
         }
         else {
             AStarCoordinate thisCoord = unvisitedCoords.get(0);

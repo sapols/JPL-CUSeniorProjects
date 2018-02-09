@@ -2,6 +2,7 @@ package mars.algorithm;
 
 import mars.coordinate.Coordinate;
 import mars.coordinate.DijkstraNode;
+import mars.out.MapImageOutput;
 import mars.out.TerminalOutput;
 import mars.rover.MarsRover;
 import java.util.*;
@@ -187,6 +188,7 @@ public class Dijkstra extends Algorithm {
         }
         Collections.reverse(fullPath);
         output = new TerminalOutput(fullPath);
+        output = new MapImageOutput(fullPath, map.getMapPath());
     }
 
     private void removeNodeFromVector(Vector<DijkstraNode> nodeVector, DijkstraNode minNode) {

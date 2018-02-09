@@ -7,6 +7,7 @@ import junit.framework.TestSuite;
 import mars.algorithm.Algorithm;
 import mars.algorithm.AlgorithmGreedy;
 import mars.algorithm.AlgorithmLimitedScopeAStar;
+import mars.algorithm.AlgorithmUnlimitedScopeRecursive;
 import mars.coordinate.Coordinate;
 import mars.coordinate.GreedyCoordinate;
 import mars.map.GeoTIFF;
@@ -39,7 +40,7 @@ public class AppTest extends TestCase {
     }
 
     //@Test
-    public void testRover_initialize() {
+    public void testRoverInitialize() {
         Coordinate starts = new Coordinate(10,10);
         Coordinate ends = new Coordinate(20, 20);
         MarsRover newRover = new MarsRover(0,starts,ends,"");
@@ -55,7 +56,7 @@ public class AppTest extends TestCase {
     }
 
     //@Test
-    public void testTIFF_getValue_valid() throws Exception {
+    public void testTIFFGetValueValid() throws Exception {
         GeoTIFF newMap = new GeoTIFF();
         newMap.initMap("src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
         Double result = newMap.getValue(200,200);
@@ -63,7 +64,7 @@ public class AppTest extends TestCase {
     }
 
     //@Test
-    public void testTIFF_getValue_bad() throws Exception {
+    public void testTIFFGetValueBad() throws Exception {
         GeoTIFF newMap = new GeoTIFF();
         newMap.initMap("src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
         try {
@@ -74,7 +75,7 @@ public class AppTest extends TestCase {
     }
 
     //@Test
-    public void testRover_getSlope_zero() throws Exception {
+    public void testRoverGetSlopeZero() throws Exception {
         Coordinate starts = new Coordinate(10,10);
         Coordinate ends = new Coordinate(20, 20);
         MarsRover newRover = new MarsRover(0,starts,ends,"src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
@@ -82,7 +83,7 @@ public class AppTest extends TestCase {
     }
 
     //@Test
-    public void testRover_testSlope_valid() throws Exception {
+    public void testRoverTestSlopeValid() throws Exception {
         Coordinate starts = new Coordinate(10,10);
         Coordinate ends = new Coordinate(20, 20);
         MarsRover newRover = new MarsRover(0,starts,ends,"src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
@@ -327,6 +328,64 @@ public class AppTest extends TestCase {
         }
     }
 
+    public void testAstarAlgorithmLimitedSlopedCase() throws Exception{
+        Coordinate startCoord = new Coordinate(538,191);
+        Coordinate endCoord = new Coordinate(208,210);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(45,startCoord,endCoord,mapPath,3);
+        Algorithm algorithm = new AlgorithmLimitedScopeAStar(rover);
+        try {
+            algorithm.findPath();
+        } catch (Exception expectedException) {
+            assertTrue("Failed to find a route it should have",false);
+        }
+    }
+
+    public void testAstarAlgorithmComparedSlopedCase() throws Exception{
+        Coordinate startCoord = new Coordinate(538,191);
+        Coordinate endCoord = new Coordinate(208,210);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(45,startCoord,endCoord,mapPath,3);
+        Algorithm limitedAlgorithm = new AlgorithmLimitedScopeAStar(rover);
+        Algorithm unlimitedAlgorithm = new AlgorithmUnlimitedScopeRecursive(rover);
+        try {
+            limitedAlgorithm.findPath();
+            unlimitedAlgorithm.findPath();
+        } catch (Exception expectedException) {
+            assertTrue("Failed to find a route it should have",false);
+        }
+        int limitedLength = (limitedAlgorithm.getPath()).size();
+        int unlimitedLength = (unlimitedAlgorithm.getPath()).size();
+        boolean check = unlimitedLength < limitedLength;
+        assertTrue("Limited algorithm performed better",check);
+    }
+
+    public void testAstarAlgorithmLimitedFlatCase() throws Exception{
+        Coordinate startCoord = new Coordinate(10,10);
+        Coordinate endCoord = new Coordinate(10,20);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(1,startCoord,endCoord,mapPath,3);
+        Algorithm algorithm = new AlgorithmLimitedScopeAStar(rover);
+        try {
+            algorithm.findPath();
+        } catch (Exception expectedException) {
+            assertTrue("Failed to find a route it should have",false);
+        }
+    }
+
+    public void testAstarAlgorithmUnliimitedFlatCase() throws Exception{
+        Coordinate startCoord = new Coordinate(10,10);
+        Coordinate endCoord = new Coordinate(10,20);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(1,startCoord,endCoord,mapPath);
+        Algorithm algorithm = new AlgorithmUnlimitedScopeRecursive(rover);
+        try {
+            algorithm.findPath();
+        } catch (Exception expectedException) {
+            assertTrue("Failed to find a route it should have",false);
+        }
+    }
+
     /*
     public void testGreedyAlgorithmUnlimitedRoverSlopeMatters() throws Exception{
         Coordinate startCoord = new Coordinate(7568,1507);
@@ -353,11 +412,15 @@ public class AppTest extends TestCase {
     }
     */
 
+    /*
     public void testAStarAlgorithmLimited() throws Exception{
-        Coordinate startCoord = new Coordinate(538,191);
-        Coordinate endCoord = new Coordinate(208,210);
-        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
-        MarsRover rover = new MarsRover(90,startCoord,endCoord,mapPath,20);
+        Coordinate startCoord = new Coordinate(7568,1507);
+        Coordinate endCoord = new Coordinate(7467,2625);
+        //Coordinate startCoord = new Coordinate(538,191);
+        //Coordinate endCoord = new Coordinate(208,210);
+        //String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        String mapPath = "src/main/resources/Phobos_Viking_Mosaic_40ppd_DLRcontrol.tif";
+        MarsRover rover = new MarsRover(90 ,startCoord,endCoord,mapPath,20);
         Algorithm algorithm = new AlgorithmLimitedScopeAStar(rover);
         try {
             algorithm.findPath();
@@ -367,6 +430,7 @@ public class AppTest extends TestCase {
         boolean check = true;
         assertTrue(check);
     }
+    */
 
     public void testGreedyAlgorithmUnlimitedNoBacktrack() throws Exception{
         Coordinate startCoord = new Coordinate(538,191);
