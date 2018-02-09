@@ -1,7 +1,6 @@
 package mars.algorithm;
 
 import mars.coordinate.Coordinate;
-import mars.coordinate.AStarCoordinate;
 import mars.rover.MarsRover;
 import mars.out.Output;
 import mars.map.TerrainMap;

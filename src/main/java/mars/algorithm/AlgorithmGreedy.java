@@ -9,10 +9,8 @@ import mars.rover.MarsRover;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 
 import static java.lang.Math.abs;
-import static jdk.nashorn.internal.objects.NativeMath.min;
 
 /**
  * Class which implements the path-finding algorithm without a limited field of view.

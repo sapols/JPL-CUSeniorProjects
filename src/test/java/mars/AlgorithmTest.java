@@ -1,20 +1,11 @@
 package mars;
 
-import com.vividsolutions.jts.geom.CoordinateList;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import mars.algorithm.Algorithm;
-import mars.algorithm.AlgorithmGreedy;
-import mars.algorithm.AlgorithmLimitedScopeAStar;
-import mars.algorithm.AlgorithmUnlimitedScopeRecursive;
+import mars.algorithm.*;
 import mars.coordinate.Coordinate;
-import mars.coordinate.GreedyCoordinate;
-import mars.map.GeoTIFF;
-import mars.out.FileOutput;
 import mars.rover.MarsRover;
-import mars.ui.TerminalInterface;
 
 import java.util.*;
 

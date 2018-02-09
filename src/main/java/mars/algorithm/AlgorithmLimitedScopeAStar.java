@@ -5,7 +5,6 @@ import mars.coordinate.Coordinate;
 import mars.out.MapImageOutput;
 import mars.out.TerminalOutput;
 import mars.rover.MarsRover;
-
 import java.util.ArrayList;
 import java.util.Collections;
 

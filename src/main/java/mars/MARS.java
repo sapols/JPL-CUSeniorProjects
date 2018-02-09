@@ -1,8 +1,5 @@
 package mars;
 
-import mars.algorithm.*;
-import mars.coordinate.Coordinate;
-import mars.rover.MarsRover;
 import mars.ui.TerminalInterface;
 
 /**

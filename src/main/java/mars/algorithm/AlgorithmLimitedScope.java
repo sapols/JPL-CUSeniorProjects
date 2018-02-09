@@ -3,7 +3,6 @@ package mars.algorithm;
 import mars.coordinate.*;
 import mars.rover.MarsRover;
 import mars.out.TerminalOutput;
-import mars.map.TerrainMap;
 
 import java.util.ArrayList;
 
