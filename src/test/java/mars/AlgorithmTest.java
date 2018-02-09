@@ -39,7 +39,7 @@ public class AlgorithmTest extends TestCase {
         } catch (java.lang.ArrayIndexOutOfBoundsException expectedException) {
             if(!desiredOutcome) assertTrue("Found a route it shouldn't have", false);
         } catch (Exception expectedException) {
-            if(desiredOutcome) assertTrue(expectedException.getMessage(),false);
+            if(desiredOutcome) assertTrue(expectedException.getStackTrace().toString(),false);
         }
         return algorithm.getPath();
     }
