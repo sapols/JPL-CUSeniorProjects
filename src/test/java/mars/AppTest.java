@@ -237,50 +237,50 @@ public class AppTest extends TestCase {
         assertEquals(45,neighbors.get(7).getDirection());
     }
 
-    public void testGreedyAlgorithmUnlimitedFlatCase() throws Exception{
-        Coordinate startCoord = new Coordinate(10,10);
-        Coordinate endCoord = new Coordinate(10,20);
-        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
-        MarsRover rover = new MarsRover(1,startCoord,endCoord,mapPath);
-        Algorithm algorithm = new AlgorithmGreedy(rover,"unlimited");
-        try {
-            algorithm.findPath();
-        } catch (Exception expectedException) {
-            assertTrue("Failed to find a route it should have",false);
-        }
-    }
-
-    public void testGreedyAlgorithmLimitedFlatCase() throws Exception{
-        Coordinate startCoord = new Coordinate(10,10);
-        Coordinate endCoord = new Coordinate(10,20);
-        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
-        MarsRover rover = new MarsRover(1,startCoord,endCoord,mapPath);
-        Algorithm algorithm = new AlgorithmGreedy(rover,"limited");
-        try {
-            algorithm.findPath();
-        } catch (Exception expectedException) {
-            assertTrue("Failed to find a route it should have",false);
-        }
-    }
-
-    public void testGreedyAlgorithmComparedFlatCase() throws Exception{
-        Coordinate startCoord = new Coordinate(10,10);
-        Coordinate endCoord = new Coordinate(10,20);
-        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
-        MarsRover rover = new MarsRover(1,startCoord,endCoord,mapPath);
-        Algorithm algorithmUnlimited = new AlgorithmGreedy(rover,"unlimited");
-        Algorithm algorithmLimited = new AlgorithmGreedy(rover,"limited");
-        try {
-            algorithmUnlimited.findPath();
-            algorithmLimited.findPath();
-        } catch (Exception expectedException) {
-            assertTrue("Failed to find a route it should have",false);
-        }
-        int unlimitedLength = (algorithmUnlimited.getPath()).size();
-        int limitedLength = (algorithmLimited.getPath()).size();
-        boolean check = unlimitedLength == limitedLength;
-        assertTrue("Limited and unlimited routes are not the same",check);
-    }
+//    public void testGreedyAlgorithmUnlimitedFlatCase() throws Exception{
+//        Coordinate startCoord = new Coordinate(10,10);
+//        Coordinate endCoord = new Coordinate(10,20);
+//        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+//        MarsRover rover = new MarsRover(1,startCoord,endCoord,mapPath);
+//        Algorithm algorithm = new AlgorithmGreedy(rover,"unlimited");
+//        try {
+//            algorithm.findPath();
+//        } catch (Exception expectedException) {
+//            assertTrue("Failed to find a route it should have",false);
+//        }
+//    }
+//
+//    public void testGreedyAlgorithmLimitedFlatCase() throws Exception{
+//        Coordinate startCoord = new Coordinate(10,10);
+//        Coordinate endCoord = new Coordinate(10,20);
+//        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+//        MarsRover rover = new MarsRover(1,startCoord,endCoord,mapPath);
+//        Algorithm algorithm = new AlgorithmGreedy(rover,"limited");
+//        try {
+//            algorithm.findPath();
+//        } catch (Exception expectedException) {
+//            assertTrue("Failed to find a route it should have",false);
+//        }
+//    }
+//
+//    public void testGreedyAlgorithmComparedFlatCase() throws Exception{
+//        Coordinate startCoord = new Coordinate(10,10);
+//        Coordinate endCoord = new Coordinate(10,20);
+//        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+//        MarsRover rover = new MarsRover(1,startCoord,endCoord,mapPath);
+//        Algorithm algorithmUnlimited = new AlgorithmGreedy(rover,"unlimited");
+//        Algorithm algorithmLimited = new AlgorithmGreedy(rover,"limited");
+//        try {
+//            algorithmUnlimited.findPath();
+//            algorithmLimited.findPath();
+//        } catch (Exception expectedException) {
+//            assertTrue("Failed to find a route it should have",false);
+//        }
+//        int unlimitedLength = (algorithmUnlimited.getPath()).size();
+//        int limitedLength = (algorithmLimited.getPath()).size();
+//        boolean check = unlimitedLength == limitedLength;
+//        assertTrue("Limited and unlimited routes are not the same",check);
+//    }
 
     /* Requires viking map to run, which makes Travis sad
     public void testGreedyAlgorithmComparedComplexCase() throws Exception{
@@ -303,18 +303,18 @@ public class AppTest extends TestCase {
     }
     */
 
-    public void testGreedyAlgorithmUnlimitedSlopedCase() throws Exception{
-        Coordinate startCoord = new Coordinate(538,191);
-        Coordinate endCoord = new Coordinate(208,210);
-        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
-        MarsRover rover = new MarsRover(45,startCoord,endCoord,mapPath);
-        Algorithm algorithm = new AlgorithmGreedy(rover,"unlimited");
-        try {
-            algorithm.findPath();
-        } catch (Exception expectedException) {
-            assertTrue("Failed to find a route it should have",false);
-        }
-    }
+//    public void testGreedyAlgorithmUnlimitedSlopedCase() throws Exception{
+//        Coordinate startCoord = new Coordinate(538,191);
+//        Coordinate endCoord = new Coordinate(208,210);
+//        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+//        MarsRover rover = new MarsRover(45,startCoord,endCoord,mapPath);
+//        Algorithm algorithm = new AlgorithmGreedy(rover,"unlimited");
+//        try {
+//            algorithm.findPath();
+//        } catch (Exception expectedException) {
+//            assertTrue("Failed to find a route it should have",false);
+//        }
+//    }
 
     /*
     public void testGreedyAlgorithmUnlimitedRoverSlopeMatters() throws Exception{
@@ -342,46 +342,46 @@ public class AppTest extends TestCase {
     }
     */
 
-    public void testGreedyAlgorithmUnlimitedNoBacktrack() throws Exception{
-        Coordinate startCoord = new Coordinate(538,191);
-        Coordinate endCoord = new Coordinate(208,210);
-        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
-        MarsRover rover = new MarsRover(45,startCoord,endCoord,mapPath);
-        Algorithm algorithm = new AlgorithmGreedy(rover,"unlimited");
-        try {
-            algorithm.findPath();
-        } catch (Exception expectedException) {
-            assertTrue("Failed to find a route it should have",false);
-        }
-        ArrayList<? extends Coordinate> path = algorithm.getPath();
-        Set<Coordinate> pathSet = new HashSet<Coordinate>(path);
-        boolean check = path.size() == pathSet.size();
-        assertTrue("Path has duplicates",check);
-    }
-
-    public void testGreedyAlgorithmUnlimitedValidRoute() throws Exception{
-        Coordinate startCoord = new Coordinate(538,191);
-        Coordinate endCoord = new Coordinate(208,210);
-        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
-        MarsRover rover = new MarsRover(45,startCoord,endCoord,mapPath);
-        Algorithm algorithm = new AlgorithmGreedy(rover,"unlimited");
-        try {
-            algorithm.findPath();
-        } catch (Exception expectedException) {
-            assertTrue("Failed to find a route it should have",false);
-        }
-        ArrayList<? extends Coordinate> path = algorithm.getPath();
-        Coordinate oldItem;
-        Coordinate item = startCoord;
-        for (Coordinate aPath : path) { //foreach coordinate in list
-            oldItem = item;
-            item = aPath;
-            int diff = abs(oldItem.getX() - item.getX()) + abs(oldItem.getY() - item.getY());
-            if (diff > 2) {
-                assertTrue("Path points too far from each other", false);
-            }
-        }
-    }
+//    public void testGreedyAlgorithmUnlimitedNoBacktrack() throws Exception{
+//        Coordinate startCoord = new Coordinate(538,191);
+//        Coordinate endCoord = new Coordinate(208,210);
+//        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+//        MarsRover rover = new MarsRover(45,startCoord,endCoord,mapPath);
+//        Algorithm algorithm = new AlgorithmGreedy(rover,"unlimited");
+//        try {
+//            algorithm.findPath();
+//        } catch (Exception expectedException) {
+//            assertTrue("Failed to find a route it should have",false);
+//        }
+//        ArrayList<? extends Coordinate> path = algorithm.getPath();
+//        Set<Coordinate> pathSet = new HashSet<Coordinate>(path);
+//        boolean check = path.size() == pathSet.size();
+//        assertTrue("Path has duplicates",check);
+//    }
+//
+//    public void testGreedyAlgorithmUnlimitedValidRoute() throws Exception{
+//        Coordinate startCoord = new Coordinate(538,191);
+//        Coordinate endCoord = new Coordinate(208,210);
+//        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+//        MarsRover rover = new MarsRover(45,startCoord,endCoord,mapPath);
+//        Algorithm algorithm = new AlgorithmGreedy(rover,"unlimited");
+//        try {
+//            algorithm.findPath();
+//        } catch (Exception expectedException) {
+//            assertTrue("Failed to find a route it should have",false);
+//        }
+//        ArrayList<? extends Coordinate> path = algorithm.getPath();
+//        Coordinate oldItem;
+//        Coordinate item = startCoord;
+//        for (Coordinate aPath : path) { //foreach coordinate in list
+//            oldItem = item;
+//            item = aPath;
+//            int diff = abs(oldItem.getX() - item.getX()) + abs(oldItem.getY() - item.getY());
+//            if (diff > 2) {
+//                assertTrue("Path points too far from each other", false);
+//            }
+//        }
+//    }
 
     public void testGreedyAlgorithmUnlimitedFailure() throws Exception{
         Coordinate startCoord = new Coordinate(0,0); //this is on an island in the map that the rover can't escape
