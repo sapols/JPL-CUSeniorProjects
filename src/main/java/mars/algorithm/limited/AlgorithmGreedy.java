@@ -1,10 +1,12 @@
-package mars.algorithm;
+package mars.algorithm.limited;
 
+import mars.algorithm.Algorithm;
 import mars.coordinate.GreedyCoordinate;
 import mars.coordinate.Coordinate;
+import mars.out.MapImageOutput;
+import mars.out.OutputFactory;
 import mars.out.TerminalOutput;
 import mars.rover.MarsRover;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -14,8 +16,7 @@ import static java.lang.Math.abs;
 import static jdk.nashorn.internal.objects.NativeMath.min;
 
 /**
- * Class which implements the path-finding algorithm without a limited field of view.
- * Uses an A* search.
+ * Class which implements the path-finding algorithm using a greedy search.
  */
 public class AlgorithmGreedy extends Algorithm {
 
@@ -24,17 +25,31 @@ public class AlgorithmGreedy extends Algorithm {
     Coordinate goal;
     String mode;
 
-    /*
+    /**
      * Default constructor for an AlgorithmGreedy.
      *
-     * @param map The terrain map
-     * @param rover The rover
+     * @param _mode The mode ("limited" or not)
+     * @param r The rover
      */
     public AlgorithmGreedy(MarsRover r, String _mode) {
         rover = r;
         map = r.getMap();
         goal = r.getEndPosition();
         mode = _mode;
+    }
+
+    /**
+     * Temporary constructor to make this algorithm default to "limited" mode
+     *
+     * @param output The output type specified during this algorithm's instantiation
+     * @param r The rover
+     */
+    public AlgorithmGreedy(String output, MarsRover r) {
+        rover = r;
+        map = r.getMap();
+        goal = r.getEndPosition();
+        outputClass = output;
+        mode = "limited";
     }
 
     /*
@@ -137,10 +152,12 @@ public class AlgorithmGreedy extends Algorithm {
 
             if(currentNode.equals(goal)){ //and if we reached the goal, stop
                 if(mode.equals("limited")){
-                    output = new TerminalOutput(fullcoords);
+                    //Generates Output based on the type specified during this algorithm's instantiation
+                    OutputFactory.getOutputFromName(outputClass, fullcoords, map.getMapPath());
                     coords = fullcoords;
                 }else{
-                    output = new TerminalOutput(coords);
+                    //Generates Output based on the type specified during this algorithm's instantiation
+                    OutputFactory.getOutputFromName(outputClass, fullcoords, map.getMapPath());
                 }
                 working = false;
             }

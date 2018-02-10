@@ -13,9 +13,9 @@ import java.util.ArrayList;
  */
 public abstract class Algorithm {
 
-    TerrainMap map;
-    MarsRover rover;
-    Output output;
+    public TerrainMap map;
+    public MarsRover rover;
+    public String outputClass;
 
     public abstract void findPath() throws Exception;
 

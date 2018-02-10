@@ -1,7 +1,10 @@
-package mars.algorithm;
+package mars.algorithm.unlimited;
 
+import mars.algorithm.Algorithm;
 import mars.coordinate.Coordinate;
 import mars.coordinate.DijkstraNode;
+import mars.out.MapImageOutput;
+import mars.out.OutputFactory;
 import mars.out.TerminalOutput;
 import mars.rover.MarsRover;
 import java.util.*;
@@ -10,15 +13,16 @@ public class Dijkstra extends Algorithm {
 
     ArrayList<Coordinate> fullPath = new ArrayList<Coordinate>();
 
-    /*
+    /**
      * Default constructor for an Dijkstra.
      *
-     * @param map The terrain map
-     * @param rover The rover
+     * @param r The rover
+     * @param output The output type specified during this algorithm's instantiation
      */
-    public Dijkstra(MarsRover r) {
+    public Dijkstra(MarsRover r, String output) {
         rover = r;
         map = rover.getMap();
+        outputClass = output;
     }
     
     public ArrayList<Coordinate> getPath() {
@@ -148,7 +152,7 @@ public class Dijkstra extends Algorithm {
                     }
                 }
                 if (inVector) {
-                    System.out.println("hi");
+                    //System.out.println("hi");
                     // If current neighbor is in the vector, we're going to get the new distance for that node,
                     // check to see if it's traversable, and if so, set distance and parent for the node.
                     double totalDist = minNode.getDistanceFromStart() + minNode.distBetween(neighborList.get(i));
@@ -186,7 +190,9 @@ public class Dijkstra extends Algorithm {
             }
         }
         Collections.reverse(fullPath);
-        output = new TerminalOutput(fullPath);
+
+        //Generates Output based on the type specified during this algorithm's instantiation
+        OutputFactory.getOutputFromName(outputClass, fullPath, map.getMapPath());
     }
 
     private void removeNodeFromVector(Vector<DijkstraNode> nodeVector, DijkstraNode minNode) {

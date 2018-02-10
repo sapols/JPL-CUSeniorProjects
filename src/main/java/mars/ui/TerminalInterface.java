@@ -1,11 +1,16 @@
 package mars.ui;
 
-import com.sun.corba.se.impl.io.TypeMismatchException;
+import mars.algorithm.Algorithm;
+import mars.algorithm.AlgorithmFactory;
+import mars.algorithm.unlimited.AlgorithmUnlimitedScopeRecursive;
 import mars.coordinate.Coordinate;
-import mars.algorithm.AlgorithmLimitedScope;
-import mars.algorithm.*;
+import mars.algorithm.limited.AlgorithmLimitedScope;
 import mars.map.GeoTIFF;
 import mars.map.TerrainMap;
+import mars.out.FileOutput;
+import mars.out.MapImageOutput;
+import mars.out.Output;
+import mars.out.TerminalOutput;
 import mars.rover.MarsRover;
 import java.util.Map;
 import java.util.*;
@@ -24,9 +29,11 @@ public class TerminalInterface extends UserInterface {
     Coordinate startCoords;
     Coordinate endCoords;
     String mapPath = "";
-    String alg = ""; //used to determine Algorithm to use.
+    String algType = ""; //used to determine limited or unlimited.
+    String algorithmClass = ""; //used to instantiate the chosen algorithm by name
     double fieldOfView = 0;
     TerrainMap map = new GeoTIFF();
+    String outputClass = "";
     //other variables inherited from "UserInterface"
 
     /**
@@ -44,8 +51,13 @@ public class TerminalInterface extends UserInterface {
         promptForStartCoords();
         promptForEndCoords();
         promptForAlgorithm();
+        promptForOutput();
+        startAlgorithm();
     }
 
+    /**
+     * Prompts the user to select a map from the available tif(f)'s.
+     */
     public void promptForMap() {
         System.out.println("Please choose the map you would like to traverse:\n");
         String resourceDir = "src/main/resources/";
@@ -74,25 +86,9 @@ public class TerminalInterface extends UserInterface {
         }
     }
 
-//    public Boolean checkMap(Scanner scan)
-//    {
-//        try {
-//            int mapChoice = scan.nextInt();
-//            mapPath = scan.next(
-//            map.initMap(mapPath);
-//            return true;
-//        } catch(TypeMismatchException e) {
-//            System.out.println("Warning: Please enter the file path as a string.");
-//            scan.nextLine();
-//            return false;
-//
-//        } catch(Exception e) {
-//            System.out.println("Warning: Make sure the path you are entering is correct (path is relative to project root).");
-//            scan.nextLine();
-//            return false;
-//        }
-//    }
-
+    /**
+     * Asks the user for the maximum slope that their rover can handle.
+     */
     public void promptForSlope() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("\nPlease enter the maximum slope your rover can handle (in degrees):");
@@ -116,6 +112,9 @@ public class TerminalInterface extends UserInterface {
         }
     }
 
+    /**
+     * Asks the user for their start coordinates.
+     */
     public void promptForStartCoords() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("\nEnter start coordinates (pressing enter between each number): ");
@@ -124,6 +123,9 @@ public class TerminalInterface extends UserInterface {
     }
 
 
+    /**
+     * Asks the user for their goal coordinates.
+     */
     public void promptForEndCoords() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("\nEnter end coordinates (pressing enter between each number):");
@@ -131,24 +133,8 @@ public class TerminalInterface extends UserInterface {
 
     }
 
-    public Boolean checkEndCoords(Scanner scan)
-    {   int x;
-        int y;
-        try {
-            System.out.print("X: ");
-            x = scan.nextInt();
-            System.out.print("Y: ");
-            y = scan.nextInt();
-            endCoords = new Coordinate(x, y);
-            return true;
-        } catch (Exception e) {
-            System.out.println("Warning: Enter coordinates as whole numbers only.");
-            scan.nextLine();
-            return false;
-        }
-    }
-    public Boolean checkStartCoords(Scanner scan)
-    {   int x;
+    public Boolean checkStartCoords(Scanner scan) {
+        int x;
         int y;
         try {
             System.out.print("X: ");
@@ -163,23 +149,36 @@ public class TerminalInterface extends UserInterface {
             return false;
         }
     }
+    public Boolean checkEndCoords(Scanner scan) {
+        int x;
+        int y;
+        try {
+            System.out.print("X: ");
+            x = scan.nextInt();
+            System.out.print("Y: ");
+            y = scan.nextInt();
+            endCoords = new Coordinate(x, y);
+            return true;
+        } catch (Exception e) {
+            System.out.println("Warning: Enter coordinates as whole numbers only.");
+            scan.nextLine();
+            return false;
+        }
+    }
 
-    public void promptForAlgorithm() {
-        //TODO: Use AlgorithmFactory
-        //TODO: Call to method which returns a map of (index) -> (name of .java in src/main/java/mars/algorithm)
-        //TODO: Consider Unlimited/Limited (return different options depending (use unlimited/limited subdirectories))
-        //TODO: List options in map
-        //TODO: Call to AlgorithmFactory to get Algorithm from name
+    /**
+     * Asks the user if they want to use an algorithm with an unlimited or limited field of view.
+     */
+    public void promptForAlgorithmType() {
         Scanner scanner = new Scanner(System.in);
 
         while(true) {
-            System.out.println("\nWhich algorithm would you like to use? (U)nlimited scope or (L)imited Scope:");
-            alg = scanner.next();
-            if(alg.equalsIgnoreCase("U")) {
-                startAlgorithm();
+            System.out.println("\nWould you like to use an algorithm with (U)nlimited scope or (L)imited Scope?");
+            algType = scanner.next();
+            if(algType.equalsIgnoreCase("U")) {
                 break;
             }
-            else if(alg.equalsIgnoreCase("L")) {
+            else if(algType.equalsIgnoreCase("L")) {
                 scanner.nextLine();
                 //TODO: say what the units are here.
                 System.out.println("\nEnter the Field of View radius of your rover:");
@@ -188,57 +187,112 @@ public class TerminalInterface extends UserInterface {
                         fieldOfView = scanner.nextDouble();
                         break;
                     } catch (Exception e) {
-                        System.out.println("Warning: please enter number for the Field of View Radius");
+                        System.out.println("Warning: please enter a number for the Field of View radius");
                         scanner.nextLine();
                     }
                 }
-                startAlgorithm();
                 break;
             }
             else {
-                System.out.println("Warning: Enter 'U' for Unlimited Scope or 'L' for limited scope");
+                System.out.println("Warning: Enter 'U' for unlimited scope or 'L' for limited scope");
                 scanner.nextLine();
             }
         }
     }
 
-    //TODO: Prompt for ouput type!
+    /**
+     * Prompts the user to select an algorithm from the available classes.
+     */
+    public void promptForAlgorithm() {
+        promptForAlgorithmType();
+
+        String algDir = "";
+        Map<Integer, String> algorithms;
+
+        //Note: promptForAlgorithmType() will only allow "U" or "L" to get here
+        if (algType.equalsIgnoreCase("U"))
+            algDir = "src/main/java/mars/algorithm/unlimited/";
+        else if (algType.equalsIgnoreCase("L"))
+            algDir = "src/main/java/mars/algorithm/limited/";
+
+        algorithms = findAlgorithms(algDir);
+
+        System.out.println("\nPlease choose your algorithm:\n");
+        for (Integer index : algorithms.keySet()) {
+            System.out.println("("+index+") " + algorithms.get(index));
+        }
+        System.out.println(); //New line
+
+        Scanner scan = new Scanner(System.in);
+        while (true) {
+            try {
+                int algNum = new Integer(scan.next());
+                String algChoice = algorithms.get(algNum);
+                if (algChoice != null) {
+                    algorithmClass = algChoice;
+                    break;
+                } else {
+                    throw new Exception("Please only select from the given options.");
+                }
+            } catch (Exception ex) {
+                System.out.println("Please only select from the given options. Try again:");
+            }
+        }
+    }
+
+    /**
+     * Prompts the user to select an output type from the available classes.
+     */
+    public void promptForOutput() {
+        String outputDir = "src/main/java/mars/out/";
+        Map<Integer, String> outputs = findOutputs(outputDir);
+
+        System.out.println("\nLast question, please choose your output type:\n");
+        for (Integer index : outputs.keySet()) {
+            System.out.println("("+index+") " + outputs.get(index));
+        }
+        System.out.println(); //New line
+
+        Scanner scan = new Scanner(System.in);
+        while (true) {
+            try {
+                int outputNum = new Integer(scan.next());
+                String outputChoice = outputs.get(outputNum);
+                if (outputChoice != null) {
+                    outputClass = outputChoice;
+                    break;
+                } else {
+                    throw new Exception("Please only select from the given options.");
+                }
+            } catch (Exception ex) {
+                System.out.println("Please only select from the given options. Try again:");
+            }
+        }
+    }
 
     /**
      * Function to run the requested algorithm with user-prompted variables.
      */
     public void startAlgorithm() {
-        //TODO: Give algorithm straight from Algorithm object return from ALgorithmFactory.
-        //Start Rover then run its algorithm until the output file is populated with results.
-        if (alg.equalsIgnoreCase("U")) {
-            MarsRover r = new MarsRover(slope, startCoords, endCoords, mapPath);
-            algorithm = new AlgorithmUnlimitedScopeRecursive(r);
+        MarsRover r;
+        if (algType.equalsIgnoreCase("L"))
+            r = new MarsRover(slope, startCoords, endCoords, mapPath, fieldOfView);
+        else
+            r = new MarsRover(slope, startCoords, endCoords, mapPath);
 
-            try {
-                algorithm.findPath();
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        else if (alg.equalsIgnoreCase("L")) {
-            MarsRover r = new MarsRover(slope, startCoords, endCoords, mapPath, fieldOfView);
-            algorithm = new AlgorithmLimitedScope(r);
+        Algorithm algorithm = AlgorithmFactory.getAlgorithm(algorithmClass, r, outputClass);
 
-            try {
-                algorithm.findPath();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        else {
-            System.out.println("Error: No algorithm selected.");
+        try {
+            algorithm.findPath();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     //----Resource scanning methods-------------------------------------------------------------------------------------
 
     /**
-     * Returns a Map of [index] -> [name of .tif(f) in src/main/resources/]
+     * Returns a Map of [index] -> [name of .tif(f)]
      */
     public Map<Integer, String> findMaps(String dir) {
         File[] files = new File(dir).listFiles(new FilenameFilter() {
@@ -253,6 +307,50 @@ public class TerminalInterface extends UserInterface {
         }
 
         return elevationMaps;
+    }
+
+    /**
+     * Returns a Map of [index] -> [name of algorithm]
+     */
+    public Map<Integer, String> findAlgorithms(String dir) {
+        File[] files = new File(dir).listFiles(new FilenameFilter() {
+            public boolean accept(File dir, String name) {
+                return name.endsWith(".java");
+            }
+        });
+        Map<Integer, String> algorithms = new HashMap<Integer, String>();
+
+        for (int i = 0; i < files.length; i++) {
+            String algorithmName = files[i].getName();
+            algorithms.put(i+1, algorithmName.substring(0, algorithmName.indexOf('.'))); //drop ".java"
+        }
+
+        return algorithms;
+    }
+
+    /**
+     * Returns a Map of [index] -> [type of output]
+     */
+    public Map<Integer, String> findOutputs(String dir) {
+        File[] files = new File(dir).listFiles(new FilenameFilter() {
+            public boolean accept(File dir, String name) {
+                return name.endsWith(".java");
+            }
+        });
+        Map<Integer, String> outputs = new HashMap<Integer, String>();
+
+        int i = 1;
+        for (File file : files) {
+            String outputName = file.getName();
+            //Don't include the parent class or OutputFactory
+            if (!outputName.equalsIgnoreCase("Output.java") && !outputName.equalsIgnoreCase("OutputFactory.java")) {
+                outputs.put(i, outputName.substring(0, outputName.indexOf('.'))); //drop ".java"
+                i++;
+            }
+
+        }
+
+        return outputs;
     }
 
 }

@@ -5,7 +5,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import mars.algorithm.Algorithm;
-import mars.algorithm.AlgorithmGreedy;
+import mars.algorithm.limited.AlgorithmGreedy;
 import mars.coordinate.Coordinate;
 import mars.coordinate.GreedyCoordinate;
 import mars.map.GeoTIFF;

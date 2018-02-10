@@ -1,8 +1,10 @@
-package mars.algorithm;
+package mars.algorithm.unlimited;
 
+import mars.algorithm.Algorithm;
 import mars.coordinate.Coordinate;
 import mars.coordinate.AStarCoordinate;
 import mars.out.MapImageOutput;
+import mars.out.OutputFactory;
 import mars.rover.MarsRover;
 import mars.out.TerminalOutput;
 import mars.map.TerrainMap;
@@ -29,11 +31,13 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
      * goal - the end position the rover needs to get to
      *
      * @param r The rover
+     * @param output The output type specified during this algorithm's instantiation
      */
-    public AlgorithmUnlimitedScopeRecursive(MarsRover r) {
+    public AlgorithmUnlimitedScopeRecursive(MarsRover r, String output) {
         rover = r;
         map = r.getMap();
         goal = r.getEndPosition();
+        outputClass = output;
         targetCoord = new AStarCoordinate(rover.getStartPosition());
     }
 
@@ -70,8 +74,9 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
             visitedCoords.add(thisCoord);
             if (thisCoord.equals(goal)) { //if we found the goal
                 targetCoord = thisCoord; //for getPath to reference
-                output = new TerminalOutput(constructPath(thisCoord));
-                output = new MapImageOutput(constructPath(thisCoord), map.getMapPath());
+
+                //Generates Output based on the type specified during this algorithm's instantiation
+                OutputFactory.getOutputFromName(outputClass, constructPath(thisCoord), map.getMapPath());
             }
             else {
                 ArrayList<AStarCoordinate> unvisitedNeighbors = getReachableUnvisitedNeighbors(thisCoord);
