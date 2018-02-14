@@ -6,6 +6,8 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import mars.algorithm.Algorithm;
 import mars.algorithm.AlgorithmGreedy;
+import mars.algorithm.AlgorithmIDAStar;
+import mars.coordinate.AStarCoordinate;
 import mars.coordinate.Coordinate;
 import mars.coordinate.GreedyCoordinate;
 import mars.map.GeoTIFF;
@@ -429,6 +431,21 @@ public class AppTest extends TestCase {
         assertTrue("Limited and unlimited routes are the same",check);
     }
     */
+
+    public void testAStarCoordinateInstantiate() throws Exception{
+        Coordinate testCoordinate = new Coordinate(20,20);
+        AStarCoordinate testNode = new AStarCoordinate(testCoordinate);
+        assertTrue(testNode.getX() == testCoordinate.getX());
+    }
+
+    public void testAlgorithmIDAStarInstantiate() throws Exception{
+        Coordinate startCoord = new Coordinate(10, 10);
+        Coordinate endCoord = new Coordinate(20, 20);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(20, startCoord, endCoord, mapPath);
+        AlgorithmIDAStar testAlg = new AlgorithmIDAStar(rover);
+        assertNotNull(testAlg);
+    }
 
     /*
     //@Test
