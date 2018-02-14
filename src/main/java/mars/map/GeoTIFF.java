@@ -1,5 +1,6 @@
 package mars.map;
 
+import mars.coordinate.Coordinate;
 import org.geotools.coverage.grid.GridCoordinates2D;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -100,6 +101,75 @@ public class GeoTIFF extends TerrainMap {
         }
         System.out.println("Minimum Elevation:  "+ minElevation);
         return minElevation;
+    }
+
+    public double getHeight() throws Exception {
+        return gridData.getHeight();
+    }
+
+    public double getWidth() throws Exception {
+        return gridData.getWidth();
+    }
+
+
+    public Coordinate coordinate2LatLong(Coordinate coord) {
+        if(coord.getUnits() != "pixels") {
+            //return original cooridinate
+            return coord;
+        }
+
+        //get x and y coordinate
+        int x = coord.getX();
+        int y = coord.getY();
+
+        //declare lat/long variables
+        double latitude, longitude;
+
+        //Mars Radius in meters
+        int marsRadius = 3390000;
+
+        //declare negative value degrees
+        boolean isSouth = false;
+        boolean isWest = false;
+
+        //defines pixel height for equator
+        double equator = gridData.getHeight() / 2;
+
+        //defines pixel height for prime meridean
+        double primeMeridean = gridData.getWidth() / 2;
+
+        double arcLengthLatitude = (y - equator) * 5;
+        double arcLengthLongitude = (x - primeMeridean) * 5;
+
+        if(arcLengthLatitude < 0) {
+            arcLengthLatitude = arcLengthLatitude * -1;
+            isSouth = true;
+        }
+
+        if(arcLengthLongitude < 0) {
+            arcLengthLongitude = arcLengthLongitude * -1;
+            isWest = true;
+        }
+
+        double circumference = 2 * Math.PI * marsRadius;
+        latitude = 360 * (arcLengthLatitude / circumference);
+        longitude = 360 * (arcLengthLongitude / circumference);
+
+        if(isSouth) {
+            latitude = latitude * -1;
+        }
+
+        if(isWest) {
+            longitude = longitude * -1;
+        }
+
+        int latitudeint = (int) latitude;
+        int longitudeint = (int) longitude;
+
+        Coordinate newCoord = new Coordinate(latitudeint, longitudeint);
+        newCoord.setUnits("latLong");
+        return newCoord;
+
     }
 
     /* leftover function from Route. Keeping here for now
