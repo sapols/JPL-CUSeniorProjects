@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class AlgorithmUnlimitedScopeNonRecursive extends Algorithm {
 
-    List<Coordinate> fullPath = new ArrayList<Coordinate>();
+    ArrayList<Coordinate> fullPath = new ArrayList<Coordinate>();
 
     /*
      * Default constructor for an AlgorithmUnlimitedScopeNonRecursive.
@@ -26,10 +26,16 @@ public class AlgorithmUnlimitedScopeNonRecursive extends Algorithm {
         map = rover.getMap();
     }
 
+    public ArrayList<Coordinate> getPath() {
+        return fullPath;
+    }
+
     /**
      * Implementation of A*
      */
     public void findPath() {
+        // Main method to find path.
+
         Coordinate startPosition = rover.getStartPosition();
         Coordinate endPosition= rover.getEndPosition();
 
@@ -62,26 +68,30 @@ public class AlgorithmUnlimitedScopeNonRecursive extends Algorithm {
             List<Node> neighborList = getNeighbors(currentNode);
             // For each neighbor node...
             for (Node neighbor: neighborList) {
+                double tentativeGScore = Double.POSITIVE_INFINITY;
                 // Ignore neighbors if it's too steep and we can't go there.
-                if (!rover.canTraverse(currentNode.getPosition(), neighbor.getPosition())) {
+                if (rover.canTraverse(currentNode.getPosition(), neighbor.getPosition())) {
+
+                    // Ignore neighbors if we've already evaluated them.
+                    if (isNodeInList(neighbor, closedList)) {
+                        continue;
+                    }
+                    // If we're at an undiscovered node...
+                    if (!isNodeInList(neighbor, openList)) {
+                        openList.add(neighbor);
+                    }
+
+                    // Gets tentative G score.
+                    tentativeGScore = currentNode.getGScore() + distBetween(currentNode, neighbor);
+
+                    // If the tentative G score is higher than the neighbor's G score, this is
+                    // not a better path.
+                    if (tentativeGScore >= neighbor.getGScore()) {
+                        continue;
+                    }
+                }
+                else {
                     closedList.add(currentNode);
-                }
-                // Ignore neighbors if we've already evaluated them.
-                if (isNodeInList(neighbor, closedList)) {
-                    continue;
-                }
-                // If we're at an undiscovered node...
-                if (!isNodeInList(neighbor, openList)) {
-                    openList.add(neighbor);
-                }
-
-                // Gets tentative G score.
-                double tentativeGScore = currentNode.getGScore() + distBetween(currentNode, neighbor);
-
-                // If the tentative G score is higher than the neighbor's G score, this is
-                // not a better path.
-                if (tentativeGScore >= neighbor.getGScore()) {
-                    continue;
                 }
 
                 // If we get to this point, the path is optimal up to this point.
@@ -233,7 +243,8 @@ public class AlgorithmUnlimitedScopeNonRecursive extends Algorithm {
         double goalX = goalNode.getPosition().getX();
         double goalY = goalNode.getPosition().getY();
 
-        return (currentX == goalX) && (currentY == goalY);
+        if ((currentX == goalX) && (currentY == goalY)) {return true;}
+        else {return false;}
     }
 
     public class Node {
