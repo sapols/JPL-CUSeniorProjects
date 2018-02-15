@@ -9,6 +9,7 @@ import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.geometry.DirectPosition2D;
 import mars.coordinate.*;
 
+import java.awt.*;
 import java.awt.image.PackedColorModel;
 import java.awt.image.Raster;
 import java.io.File;
@@ -160,39 +161,51 @@ public class GeoTIFF extends TerrainMap {
     }
 
 
-	public Coordinate coordinate2LatLong(Coordinate coord) {
-
-
-		if(coord.getUnits() != "pixels") {
+	public Coordinate coordinate2LatLong(Coordinate coord){
+    	if(coord.getUnits() != "pixels") {
 			//return original cooridinate
 			return coord;
 		}
 
 		//get x and y coordinate
-		int x = coord.getX();
-		int y = coord.getY();
+		double x = coord.getX();
+		double y = coord.getY();
 
-		System.out.println("")
-		System.out.println("here");
+		System.out.println(x);
+		System.out.println(y);
 
 		//declare lat/long variables
-		double latitude, longitude;
+		double latitude;
+		double longitude;
 
 		//Mars Radius in meters
-		int marsRadius = 3390000;
+		int marsRadius = 3396200;
 
 		//declare negative value degrees
 		boolean isSouth = false;
 		boolean isWest = false;
 
-		//defines pixel height for equator
-		double equator = gridData.getHeight() / 2;
+		double getEquator = gridData.getHeight()/2;
+		double getPrimeMeridean = gridData.getWidth()/2;
 
-		//defines pixel height for prime meridean
-		double primeMeridean = gridData.getWidth() / 2;
+		System.out.println(getEquator);
+		System.out.println(getPrimeMeridean);
 
-		double arcLengthLatitude = (y - equator) * 5;
-		double arcLengthLongitude = (x - primeMeridean) * 5;
+		double pixelDistanceLatitude = y - getEquator;
+		double pixelDistanceLongitude = x - getPrimeMeridean;
+
+		System.out.println(pixelDistanceLatitude);
+		System.out.println(pixelDistanceLongitude);
+
+		//Assuming that each pixel is 5mx5m using the viking phobos.
+		/**
+		 * TODO: Create a checks which map we are using and use correct scaling
+		 */
+		double arcLengthLatitude = pixelDistanceLatitude * 5;
+		double arcLengthLongitude = pixelDistanceLongitude * 5;
+
+		System.out.println(arcLengthLatitude);
+		System.out.println(arcLengthLongitude);
 
 		if(arcLengthLatitude < 0) {
 			arcLengthLatitude = arcLengthLatitude * -1;
@@ -205,8 +218,13 @@ public class GeoTIFF extends TerrainMap {
 		}
 
 		double circumference = 2 * Math.PI * marsRadius;
-		latitude = 360 * (arcLengthLatitude / circumference);
-		longitude = 360 * (arcLengthLongitude / circumference);
+
+		latitude = (360 * arcLengthLatitude) / circumference;
+		longitude = (360 * arcLengthLongitude) / circumference;
+
+		System.out.println(latitude);
+		System.out.println(longitude);
+
 
 		if(isSouth) {
 			latitude = latitude * -1;

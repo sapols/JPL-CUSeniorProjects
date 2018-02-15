@@ -411,9 +411,11 @@ public class AppTest extends TestCase {
 
 
     public void testpixeltoLatLong() throws Exception{
-        Coordinate currentCoord = new Coordinate(10,10);
-        GeoTIFF convert = new GeoTIFF();
-        Coordinate degrees = convert.coordinate2LatLong(currentCoord);
+        Coordinate currentCoord = new Coordinate(11000,5000);
+
+        GeoTIFF newMap = new GeoTIFF();
+        newMap.initMap("src/main/resources/Phobos_Viking_Mosaic_40ppd_DLRcontrol.tif");
+        Coordinate degrees = newMap.coordinate2LatLong(currentCoord);
         try {
             assertTrue(degrees.getX() != 0 && degrees.getY() != 0);
         }catch (Exception e){
