@@ -27,6 +27,15 @@ public class AlgorithmUnlimitedBestFirst extends Algorithm {
     }
 
     /*
+     *   Return path
+     */
+    public ArrayList<Coordinate> getPath() {
+        return fullPath;
+    }
+
+
+
+    /*
      * Implementation of Best First
      */
     public void findPath() {
