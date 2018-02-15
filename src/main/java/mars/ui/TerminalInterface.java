@@ -46,7 +46,7 @@ public class TerminalInterface extends UserInterface {
     public void promptForMap() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("\nPlease enter the file path for the map you would like to traverse. Example:");
-        System.out.println("src/main/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
+        System.out.println("src/main/resources/Phobos_Viking_Mosaic_40ppd_DLRcontrol.tif");
 
         //TODO: Tell people what path their path will be relative to. Or possibly provide options to choose from.
         while(true) if(checkMap(scanner)) break;
@@ -183,7 +183,7 @@ public class TerminalInterface extends UserInterface {
         //Start Rover then run its algorithm until the output file is populated with results.
         if (alg.equalsIgnoreCase("U")) {
             MarsRover r = new MarsRover(slope, startCoords, endCoords, mapPath);
-            algorithm = new AlgorithmUnlimitedScopeNonRecursive(r);
+            algorithm = new BreadthFirstSearch(r);
 
             try {
                 algorithm.findPath();
@@ -192,7 +192,7 @@ public class TerminalInterface extends UserInterface {
             }
         }
         else if (alg.equalsIgnoreCase("L")) {
-            MarsRover r = new MarsRover(slope,startCoords,endCoords,mapPath,fieldOfView);
+            MarsRover r = new MarsRover(slope, startCoords, endCoords, mapPath, fieldOfView);
             algorithm = new AlgorithmLimitedScope(r);
 
             try {
@@ -205,6 +205,5 @@ public class TerminalInterface extends UserInterface {
             System.out.println("Error: No algorithm selected.");
         }
     }
-    
-}
 
+}
