@@ -34,6 +34,8 @@ public class TerminalOutput extends Output {
             int y = resultList.get(i-1).getY();
 
             Coordinate latLongCoord = convert.coordinate2LatLong(new Coordinate(x,y));
+            //latLongCoord.getX()
+            //latLongCoord.getY()
 
             System.out.println(i + ". (" + latLongCoord.getX() + ", " + latLongCoord.getY() + ")");
         }
