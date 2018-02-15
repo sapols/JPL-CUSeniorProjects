@@ -40,8 +40,4 @@ public class AlgorithmLimitedScope extends Algorithm {
 
         output = new TerminalOutput(path);
     }
-
-    public ArrayList<Coordinate> getPath() {
-        return path;
-    }
 }
