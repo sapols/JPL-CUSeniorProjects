@@ -96,28 +96,68 @@ public class MarsRover extends Rover {
     }
 
     /**
-     * Test function to determine if the rover can traverse to a new point without encountering a slope too steep.
-     * @param point1 coordinate 1 (in pixels) of where the rover currently is
-     * @param point2 coordinate 2 (in pixels) of where the rover currently wants to go
-     * @return true if the rover can traverse to point2 safely, false otherwise
+     * gets angle between two coordinates
+     * @param current coord 1
+     * @param goal coord 2
+     * @return angle in degrees between the two coords
+     */
+    public double getAngle(Coordinate current, Coordinate goal) {
+        int xdiff = goal.getX() - current.getX();
+        int ydiff = goal.getY() - current.getY();
+        double result = Math.toDegrees(Math.atan2(ydiff,xdiff));
+        while(result < 0){result += 360;}
+        return result;
+    }
+
+    /**
+     * Main slope function. Derived from processSlope idea from Greedy Algorithm.
+     * given two points, does the following:
+     * 1. finds the angle between the two points (usually a cardinal direction or a diagonal)
+     * 2. adjusts the points away from each other along the line produced by that angle, until they would change elevation
+     * 3. finds the slope between the two adjusted points using their respective elevations and returns if it's traversable
+     *
+     * @param point1 first coord
+     * @param point2 second coord
+     * @return boolean if slope is acceptable
      */
     public boolean canTraverse(Coordinate point1, Coordinate point2) {
         try {
-            int x1 = point1.getX();
-            int y1 = point1.getY();
-            int x2 = point2.getX();
-            int y2 = point2.getY();
+            // step 1
+            double temp1x = point1.getX(); //manually get the components (makes the math a lot easier)
+            double temp1y = point1.getY();
+            double temp2x = point2.getX();
+            double temp2y = point2.getY();
 
-            double slope = getSlope(x1, y1, x2, y2); //traversal slope
+            double angle = getAngle(point1,point2);
 
-            if (Math.abs(slope) > maxSlope) {
+            // make sure the point we're looking at is actually valid. protects from unexpected exceptions from the map functions
+            if(temp1x < 0 || temp2x < 0 || temp1x > map.getWidth() || temp2x > map.getWidth()
+                    || temp1y < 0 || temp2y < 0 || temp1y > map.getHeight() | temp2y > map.getHeight() )
                 return false;
-            }
-            else {
-                return true;
-            }
+
+            // step 2
+            double point1height = map.getValue(point1.getX(),point1.getY()); //get the heights of the given points
+            double point2height = map.getValue(point2.getX(),point2.getY());
+            if(point1height != point2height){ //if the heights aren't the same
+                //while the current adjusted point height and original are the same, and points are in bounds
+                while(temp1x > 0 && temp1x < map.getWidth() && temp1y > 0 && temp1y < map.getHeight() ){
+                    if(point1height != map.getValue(temp1x,temp1y)) break;
+                    temp1x -= Math.cos(angle); //subtract one unit length in the desired angle. note we don't round until the end
+                    temp1y -= Math.sin(angle);
+                }
+                //then do the same for the second point
+                while(temp2x > 0 && temp2x < map.getWidth() && temp2y > 0 && temp2y < map.getHeight() ){
+                    if(point2height != map.getValue(temp2x,temp2y)) break;
+                    temp2x += Math.cos(angle);
+                    temp2y += Math.sin(angle);
+                }
+
+
+                // step 3. finds the slope of these points and compares to maxSlope
+                return Math.abs(getSlope((int)temp1x,(int)temp1y,(int)temp2x,(int)temp2y)) <= maxSlope;
+            }else return true; //if they're the same height, then it can just freely go there and we can skip the hard part
         }
-        catch(Exception e) {
+        catch(Exception e) { //if something breaks, then let's not go there
             return false;
         }
     }
