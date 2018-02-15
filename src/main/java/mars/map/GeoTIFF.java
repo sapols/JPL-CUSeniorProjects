@@ -197,34 +197,13 @@ public class GeoTIFF extends TerrainMap {
 		System.out.println(pixelDistanceLatitude);
 		System.out.println(pixelDistanceLongitude);
 
-		//Assuming that each pixel is 5mx5m using the viking phobos.
-		/**
-		 * TODO: Create a checks which map we are using and use correct scaling
-		 */
-		double arcLengthLatitude = pixelDistanceLatitude * 5;
-		double arcLengthLongitude = pixelDistanceLongitude * 5;
-
-		System.out.println(arcLengthLatitude);
-		System.out.println(arcLengthLongitude);
-
-		if(arcLengthLatitude < 0) {
-			arcLengthLatitude = arcLengthLatitude * -1;
-			isSouth = true;
-		}
-
-		if(arcLengthLongitude < 0) {
-			arcLengthLongitude = arcLengthLongitude * -1;
-			isWest = true;
-		}
-
-		double circumference = 2 * Math.PI * marsRadius;
-
-		latitude = (360 * arcLengthLatitude) / circumference;
-		longitude = (360 * arcLengthLongitude) / circumference;
+		//The conversion for the Viking map is 40ppd which equates to 40 pixels per degree.
+		//therefore once you find the equator and prime Meridean just take difference and divide by ppd ratio to get degrees.
+		latitude = pixelDistanceLatitude / 40;
+		longitude = pixelDistanceLongitude / 40;
 
 		System.out.println(latitude);
 		System.out.println(longitude);
-
 
 		if(isSouth) {
 			latitude = latitude * -1;
@@ -234,6 +213,9 @@ public class GeoTIFF extends TerrainMap {
 			longitude = longitude * -1;
 		}
 
+		System.out.println(latitude);
+		System.out.println(longitude);
+
 		int latitudeint = (int) latitude;
 		int longitudeint = (int) longitude;
 
@@ -242,6 +224,35 @@ public class GeoTIFF extends TerrainMap {
 		return newCoord;
 
 	}
+
+	//Left over logic keeping here for now
+	/*
+
+	 double arcLengthLatitude = pixelDistanceLatitude * 5;
+	 double arcLengthLongitude = pixelDistanceLongitude * 5;
+
+	 System.out.println(arcLengthLatitude);
+	 System.out.println(arcLengthLongitude);
+
+	 if(arcLengthLatitude < 0) {
+	 arcLengthLatitude = arcLengthLatitude * -1;
+	 isSouth = true;
+	 }
+
+	 if(arcLengthLongitude < 0) {
+	 arcLengthLongitude = arcLengthLongitude * -1;
+	 isWest = true;
+	 }
+
+	 double circumference = 2 * Math.PI * marsRadius;
+
+	 latitude = (360 * arcLengthLatitude) / circumference;
+	 longitude = (360 * arcLengthLongitude) / circumference;
+
+	 System.out.println(latitude);
+	 System.out.println(longitude);
+
+	 */
 
 
     /* leftover function from Route. Keeping here for now
