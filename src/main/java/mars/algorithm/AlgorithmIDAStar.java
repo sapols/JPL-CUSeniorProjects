@@ -53,6 +53,7 @@ public class AlgorithmIDAStar extends Algorithm {
      * @param thisNode The coordinate being considered by the algorithm.
      */
     public void IDAStarSearch(AStarCoordinate thisNode) throws Exception {
+        if (coordIsInSet(new AStarCoordinate(goal), fullPath)) { return; }
         if (thisNode == null) {
             throw new Exception("WARNING: A path to the goal could not be found.");
         }
