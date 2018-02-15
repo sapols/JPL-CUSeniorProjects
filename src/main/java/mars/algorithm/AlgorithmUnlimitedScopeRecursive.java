@@ -2,6 +2,7 @@ package mars.algorithm;
 
 import mars.coordinate.Coordinate;
 import mars.coordinate.AStarCoordinate;
+import mars.out.MapImageOutput;
 import mars.rover.MarsRover;
 import mars.out.TerminalOutput;
 import mars.map.TerrainMap;
@@ -70,6 +71,7 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
             if (thisCoord.equals(goal)) { //if we found the goal
                 targetCoord = thisCoord; //for getPath to reference
                 output = new TerminalOutput(constructPath(thisCoord));
+                output = new MapImageOutput(constructPath(thisCoord), map.getMapPath());
             }
             else {
                 ArrayList<AStarCoordinate> unvisitedNeighbors = getReachableUnvisitedNeighbors(thisCoord);
@@ -147,7 +149,8 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
 
         return Math.sqrt((Math.pow((x2-x1),2) + Math.pow((y2-y1),2)));
     }
-  /**
+
+    /**
      * Check if there is a node matching ours in the given set
      * @param coord Coordinate to test for
      * @return Boolean whether coord has been visited
@@ -183,4 +186,5 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
         Collections.reverse(path);
         return path;
     }
+
 }
