@@ -161,6 +161,8 @@ public class GeoTIFF extends TerrainMap {
 
 
 	public Coordinate coordinate2LatLong(Coordinate coord) {
+
+
 		if(coord.getUnits() != "pixels") {
 			//return original cooridinate
 			return coord;
@@ -169,6 +171,9 @@ public class GeoTIFF extends TerrainMap {
 		//get x and y coordinate
 		int x = coord.getX();
 		int y = coord.getY();
+
+		System.out.println("")
+		System.out.println("here");
 
 		//declare lat/long variables
 		double latitude, longitude;

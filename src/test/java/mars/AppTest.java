@@ -409,6 +409,18 @@ public class AppTest extends TestCase {
         if(failure){assertTrue("Found a path it shouldn't have",false);}
     }
 
+
+    public void testpixeltoLatLong() throws Exception{
+        Coordinate currentCoord = new Coordinate(10,10);
+        GeoTIFF convert = new GeoTIFF();
+        Coordinate degrees = convert.coordinate2LatLong(currentCoord);
+        try {
+            assertTrue(degrees.getX() != 0 && degrees.getY() != 0);
+        }catch (Exception e){
+            System.out.println(e);
+        }
+
+    }
     /*
     public void testGreedyAlgorithmLimitedComparison() throws Exception{
         Coordinate startCoord = new Coordinate(400,131);
