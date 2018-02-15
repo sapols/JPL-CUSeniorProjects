@@ -192,7 +192,7 @@ public class TerminalInterface extends UserInterface {
             }
         }
         else if (alg.equalsIgnoreCase("L")) {
-            MarsRover r = new MarsRover(slope, startCoords, endCoords, mapPath, fieldOfView);
+            MarsRover r = new MarsRover(slope,startCoords,endCoords,mapPath,fieldOfView);
             algorithm = new AlgorithmLimitedScope(r);
 
             try {
@@ -205,5 +205,6 @@ public class TerminalInterface extends UserInterface {
             System.out.println("Error: No algorithm selected.");
         }
     }
-
+    
 }
+

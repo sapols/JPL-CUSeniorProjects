@@ -2,15 +2,12 @@ package mars.algorithm;
 
 import mars.coordinate.Coordinate;
 import mars.coordinate.AStarCoordinate;
-import mars.out.MapImageOutput;
 import mars.rover.MarsRover;
 import mars.out.TerminalOutput;
 import mars.map.TerrainMap;
 import java.util.Collections;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * Class which implements the path-finding algorithm without a limited field of view.
@@ -18,23 +15,19 @@ import java.util.List;
  */
 public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
 
-    ArrayList<AStarCoordinate> visitedCoords = new ArrayList<AStarCoordinate>();
+    ArrayList<AStarCoordinate> path = new ArrayList<AStarCoordinate>();
     Coordinate goal;
-    AStarCoordinate targetCoord;
 
     /**
      * Default constructor for an AlgorithmUnlimitedScopeRecursive.
-     * rover - the rover being input
-     * map - the map being used
-     * goal - the end position the rover needs to get to
      *
-     * @param r The rover
+     * @param map The terrain map
+     * @param rover The rover
      */
     public AlgorithmUnlimitedScopeRecursive(MarsRover r) {
         rover = r;
         map = r.getMap();
         goal = r.getEndPosition();
-        targetCoord = new AStarCoordinate(rover.getStartPosition());
     }
 
     /**
@@ -51,37 +44,28 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
         }
     }
 
-    public ArrayList<AStarCoordinate> getPath() {
-        return constructPath(targetCoord);
-    }
-
     /**
      * Find a path from start to goal with A*. Then output it.
      * Throw an exception if a path cannot be found.
      *
-     * @param unvisitedCoords The list of coordinates being considered by the algorithm.
+     * @param coords The list of coordinates being considered by the algorithm.
      */
-    public void AStarSearch(ArrayList<AStarCoordinate> unvisitedCoords) throws Exception {
-        if (unvisitedCoords.isEmpty()) {
+    public void AStarSearch(ArrayList<AStarCoordinate> coords) throws Exception {
+        if (coords.isEmpty()) {
             throw new Exception("WARNING: A path to the goal could not be found.");
         }
         else {
-            AStarCoordinate thisCoord = unvisitedCoords.get(0);
-            visitedCoords.add(thisCoord);
+            AStarCoordinate thisCoord = coords.get(0);
+            path.add(thisCoord);
             if (thisCoord.equals(goal)) { //if we found the goal
-                targetCoord = thisCoord; //for getPath to reference
-                output = new TerminalOutput(constructPath(thisCoord));
-                output = new MapImageOutput(constructPath(thisCoord), map.getMapPath());
+                output = new TerminalOutput(path);
             }
             else {
-                ArrayList<AStarCoordinate> unvisitedNeighbors = getReachableUnvisitedNeighbors(thisCoord);
-                for (AStarCoordinate n : unvisitedNeighbors) {
-                    if (!coordIsInSet(n, unvisitedCoords)) //Don't add duplicates
-                        unvisitedCoords.add(n);
-                }
-                sortCoordinatesByCost(unvisitedCoords);
-                unvisitedCoords.remove(thisCoord);
-                AStarSearch(unvisitedCoords);
+                ArrayList<AStarCoordinate> neighbors = getReachableNeighbors(thisCoord);
+                coords.addAll(neighbors);
+                sortCoordinatesByCost(coords);
+                coords.remove(thisCoord);
+                AStarSearch(coords);
             }
         }
     }
@@ -93,10 +77,9 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
      * which can be visited by this algorithm's rover (meaning that
      * the slope between the coordinates is not too steep).
      * Possible neighbors are all eight coordinates surrounding the given one.
-     * Do not consider already-visited coordinates.
      * @param coord The coordinate whose neighbors will be found.
      */
-    public ArrayList<AStarCoordinate> getReachableUnvisitedNeighbors(AStarCoordinate coord) {
+    public ArrayList<AStarCoordinate> getReachableNeighbors(AStarCoordinate coord) {
         int x = coord.getX();
         int y = coord.getY();
         double costSoFar = coord.getCostSoFar();
@@ -104,14 +87,12 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
 
         for (int i = x-1; i <= x+1; i++) {
             for (int j = y-1; j <= y+1; j++) {
-                if (!(i == x && j == y)) { //if this is not the given coordinate "coord". TODO: probably not needed now because of visited set logic
+                if (!(i == x && j == y)) { //if this is not the given coordinate "coord"
                     try {
                         AStarCoordinate potentialNeighbor = new AStarCoordinate(i, j);
                         potentialNeighbor.setCostSoFar(costSoFar+1); //TODO: diagonals should technically add sqrt(2), not 1
-                        potentialNeighbor.setParent(coord);
-                        //TODO: Address issues with MarsRover.canTraverse (are we using Robert's idea?)
-                        if (rover.canTraverse(coord, potentialNeighbor)
-                                && !coordHasBeenVisited(potentialNeighbor)) { //if rover could visit this coordinate and hasn't already, add it
+                        //TODO: Address issues with MarsRover.canTraverse
+                        if (rover.canTraverse(coord, potentialNeighbor)) { //if rover could visit this coordinate, add it
                             neighbors.add(potentialNeighbor);
                         }
                     } catch (Exception e) {
@@ -148,43 +129,6 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
         int y2 = goal.getY();
 
         return Math.sqrt((Math.pow((x2-x1),2) + Math.pow((y2-y1),2)));
-    }
-
-    /**
-     * Check if there is a node matching ours in the given set
-     * @param coord Coordinate to test for
-     * @return Boolean whether coord has been visited
-     */
-    private boolean coordIsInSet(AStarCoordinate coord, ArrayList<AStarCoordinate> set) {
-        for (AStarCoordinate c : set) {
-            if (c.equals(coord))
-                return true;
-        }
-        return false;
-    }
-
-    /**
-     * Check if there is a node matching ours in the visited set
-     * @param coord Coordinate to test for
-     * @return Boolean whether coord has been visited
-     */
-    private boolean coordHasBeenVisited(AStarCoordinate coord) {
-        return coordIsInSet(coord, visitedCoords); //TODO: if this change causes merge conflict, nix it.
-    }
-
-    /**
-     * Constructs a path for A* by traversing nodes' parents.
-     * @param coord Node to start traversing
-     */
-    private ArrayList<AStarCoordinate> constructPath(AStarCoordinate coord) {
-        ArrayList<AStarCoordinate> path = new ArrayList<AStarCoordinate>();
-        while (coord != null) {
-            path.add(coord);
-            coord = coord.getParent();
-        }
-
-        Collections.reverse(path);
-        return path;
     }
 
 }

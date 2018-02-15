@@ -7,7 +7,6 @@ package mars.coordinate;
 public class AStarCoordinate extends Coordinate implements Comparable<AStarCoordinate> {
     private double costSoFar;
     private double distanceToGoal;
-    private AStarCoordinate parent;
 
     /**
      * Main constructor for an AStarCoordinate.
@@ -42,12 +41,6 @@ public class AStarCoordinate extends Coordinate implements Comparable<AStarCoord
     public void setDistanceToGoal(double d) {
         distanceToGoal = d;
     }
-
-    public AStarCoordinate getParent() { return parent; }
-
-    public void setParent(AStarCoordinate p) { parent = p; }
-
-    public String toString() { return "(" + getX() + ", " + getY() + ")"; }
 
 
     //----For sorting based on A* heuristics--------------------------------------------------------------------------
