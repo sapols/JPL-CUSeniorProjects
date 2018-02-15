@@ -130,5 +130,40 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
 
         return Math.sqrt((Math.pow((x2-x1),2) + Math.pow((y2-y1),2)));
     }
-    
+  /**
+     * Check if there is a node matching ours in the given set
+     * @param coord Coordinate to test for
+     * @return Boolean whether coord has been visited
+     */
+    private boolean coordIsInSet(AStarCoordinate coord, ArrayList<AStarCoordinate> set) {
+        for (AStarCoordinate c : set) {
+            if (c.equals(coord))
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check if there is a node matching ours in the visited set
+     * @param coord Coordinate to test for
+     * @return Boolean whether coord has been visited
+     */
+    private boolean coordHasBeenVisited(AStarCoordinate coord) {
+        return coordIsInSet(coord, visitedCoords); //TODO: if this change causes merge conflict, nix it.
+    }
+
+    /**
+     * Constructs a path for A* by traversing nodes' parents.
+     * @param coord Node to start traversing
+     */
+    private ArrayList<AStarCoordinate> constructPath(AStarCoordinate coord) {
+        ArrayList<AStarCoordinate> path = new ArrayList<AStarCoordinate>();
+        while (coord != null) {
+            path.add(coord);
+            coord = coord.getParent();
+        }
+
+        Collections.reverse(path);
+        return path;
+    }
 }
