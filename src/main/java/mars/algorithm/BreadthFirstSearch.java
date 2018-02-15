@@ -12,9 +12,10 @@ import java.util.ArrayList;
 /**
  * Class which implements the path-finding algorithm without a limited field of view.
  */
+
 public class BreadthFirstSearch extends Algorithm {
 
-	List<Coordinate> fullPath = new ArrayList<Coordinate>();
+	ArrayList<Coordinate> fullPath = new ArrayList<Coordinate>();
 
 	/*
 	 * Default constructor for an AlgorithmUnlimitedScopeNonRecursive.
@@ -170,6 +171,10 @@ public class BreadthFirstSearch extends Algorithm {
 		double goalY = goalNode.getPosition().getY();
 
 		return (currentX == goalX) && (currentY == goalY);
+	}
+
+	public ArrayList<Coordinate> getPath() {
+		return fullPath;
 	}
 
 	public class Node {

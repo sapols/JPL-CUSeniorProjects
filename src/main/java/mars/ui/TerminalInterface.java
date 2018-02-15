@@ -183,7 +183,7 @@ public class TerminalInterface extends UserInterface {
         //Start Rover then run its algorithm until the output file is populated with results.
         if (alg.equalsIgnoreCase("U")) {
             MarsRover r = new MarsRover(slope, startCoords, endCoords, mapPath);
-            algorithm = new BreadthFirstSearch(r);
+            algorithm = new AlgorithmUnlimitedScopeRecursive(r);
 
             try {
                 algorithm.findPath();
@@ -193,7 +193,7 @@ public class TerminalInterface extends UserInterface {
         }
         else if (alg.equalsIgnoreCase("L")) {
             MarsRover r = new MarsRover(slope, startCoords, endCoords, mapPath, fieldOfView);
-            algorithm = new AlgorithmLimitedScope(r);
+            algorithm = new AlgorithmUnlimitedScopeRecursive(r);
 
             try {
                 algorithm.findPath();
