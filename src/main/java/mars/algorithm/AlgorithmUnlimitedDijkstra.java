@@ -7,17 +7,17 @@ import mars.out.TerminalOutput;
 import mars.rover.MarsRover;
 import java.util.*;
 
-public class Dijkstra extends Algorithm {
+public class AlgorithmUnlimitedDijkstra extends Algorithm {
 
     ArrayList<Coordinate> fullPath = new ArrayList<Coordinate>();
 
     /*
-     * Default constructor for an Dijkstra.
+     * Default constructor for an AlgorithmUnlimitedDijkstra.
      *
      * @param map The terrain map
      * @param rover The rover
      */
-    public Dijkstra(MarsRover r) {
+    public AlgorithmUnlimitedDijkstra(MarsRover r) {
         rover = r;
         map = rover.getMap();
     }

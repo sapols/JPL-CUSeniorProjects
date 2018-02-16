@@ -95,8 +95,8 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
             thisCoord = coords.get(coords.size()-1); //set current location to the latest position in the path
             //System.out.println((thisCoord.getX()) + "," + (thisCoord.getY())); //debug
         }
-        output = new TerminalOutput(path); //if we reached here, we got out of the while loop. we're done!
-        output = new MapImageOutput(path, map.getMapPath());
+        output = new TerminalOutput(coords); //if we reached here, we got out of the while loop. we're done!
+        output = new MapImageOutput(coords, map.getMapPath());
     }
 
 

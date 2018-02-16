@@ -16,7 +16,7 @@ import static java.lang.Math.abs;
  * Class which implements the path-finding algorithm without a limited field of view.
  * Uses an A* search.
  */
-public class AlgorithmGreedyLimited extends Algorithm {
+public class AlgorithmLimitedGreedy extends Algorithm {
 
 
     ArrayList<GreedyCoordinate> path = new ArrayList<GreedyCoordinate>();
@@ -29,7 +29,7 @@ public class AlgorithmGreedyLimited extends Algorithm {
      * @param map The terrain map
      * @param rover The rover
      */
-    public AlgorithmGreedyLimited(MarsRover r) {
+    public AlgorithmLimitedGreedy(MarsRover r) {
         rover = r;
         map = r.getMap();
         goal = r.getEndPosition();
