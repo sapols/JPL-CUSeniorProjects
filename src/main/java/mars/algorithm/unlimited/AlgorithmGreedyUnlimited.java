@@ -24,16 +24,17 @@ public class AlgorithmGreedyUnlimited extends Algorithm {
     Coordinate goal;
     //String mode;
 
-    /*
+    /**
      * Default constructor for an AlgorithmGreedy.
      *
-     * @param map The terrain map
-     * @param rover The rover
+     * @param r The rover
+     * @param output The output type specified during this algorithm's instantiation
      */
-    public AlgorithmGreedyUnlimited(MarsRover r) {
+    public AlgorithmGreedyUnlimited(MarsRover r, String output) {
         rover = r;
         map = r.getMap();
         goal = r.getEndPosition();
+        outputClass = output;
     }
 
     /*

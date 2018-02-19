@@ -15,16 +15,17 @@ public class AlgorithmUnlimitedBestFirst extends Algorithm {
     ArrayList<Coordinate> fullPath = new ArrayList<Coordinate>();
     Coordinate goal;
 
-    /*
-    * Default constructor for an AlgorithmUnlimitedScopeNonRecursive.
-    *
-    * @param map The terrain map
-    * @param rover The rover
-    */
-    public AlgorithmUnlimitedBestFirst(MarsRover r) {
+    /**
+     * Default constructor for an AlgorithmUnlimitedScopeNonRecursive.
+     *
+     * @param r The rover
+     * @param output The output type specified during this algorithm's instantiation
+     */
+    public AlgorithmUnlimitedBestFirst(MarsRover r, String output) {
         rover = r;
         map = rover.getMap();
         goal = r.getEndPosition();
+        outputClass = output;
     }
 
     /*

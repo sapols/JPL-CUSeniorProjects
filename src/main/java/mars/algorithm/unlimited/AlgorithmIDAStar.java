@@ -24,11 +24,13 @@ public class AlgorithmIDAStar extends Algorithm {
      * Default constructor for an AlgorithmIDAStar.
      *
      * @param r The rover
+     * @param output The output type specified during this algorithm's instantiation
      */
-    public AlgorithmIDAStar(MarsRover r) {
+    public AlgorithmIDAStar(MarsRover r, String output) {
         rover = r;
         map = r.getMap();
         goal = r.getEndPosition();
+        outputClass = output;
     }
 
     /**
