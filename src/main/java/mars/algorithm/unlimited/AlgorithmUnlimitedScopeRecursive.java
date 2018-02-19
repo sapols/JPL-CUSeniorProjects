@@ -75,8 +75,9 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
             if (thisCoord.equals(goal)) { //if we found the goal
                 targetCoord = thisCoord; //for getPath to reference
 
+                //TODO: remove this commented-out code
                 //Generates Output based on the type specified during this algorithm's instantiation
-                OutputFactory.getOutputFromName(outputClass, constructPath(thisCoord), map.getMapPath());
+                //OutputFactory.getOutput(this);
             }
             else {
                 ArrayList<AStarCoordinate> unvisitedNeighbors = getReachableUnvisitedNeighbors(thisCoord);

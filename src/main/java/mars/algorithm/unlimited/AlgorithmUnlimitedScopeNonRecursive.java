@@ -107,8 +107,6 @@ public class AlgorithmUnlimitedScopeNonRecursive extends Algorithm {
 
         Collections.reverse(fullPath);
 
-        //Generates Output based on the type specified during this algorithm's instantiation
-        OutputFactory.getOutputFromName(outputClass, fullPath, map.getMapPath());
     }
 
     /**

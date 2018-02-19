@@ -7,10 +7,7 @@ import mars.coordinate.Coordinate;
 import mars.algorithm.limited.AlgorithmLimitedScope;
 import mars.map.GeoTIFF;
 import mars.map.TerrainMap;
-import mars.out.FileOutput;
-import mars.out.MapImageOutput;
-import mars.out.Output;
-import mars.out.TerminalOutput;
+import mars.out.*;
 import mars.rover.MarsRover;
 import java.util.Map;
 import java.util.*;
@@ -54,6 +51,28 @@ public class TerminalInterface extends UserInterface {
         promptForOutput();
         startAlgorithm();
     }
+
+    /**
+     * Function to run the requested algorithm with user-prompted variables.
+     */
+    public void startAlgorithm() {
+        MarsRover r;
+        if (algType.equalsIgnoreCase("L"))
+            r = new MarsRover(slope, startCoords, endCoords, mapPath, fieldOfView);
+        else //algType equals "U"
+            r = new MarsRover(slope, startCoords, endCoords, mapPath);
+
+        Algorithm algorithm = AlgorithmFactory.getAlgorithm(algorithmClass, r, outputClass);
+
+        try {
+            algorithm.findPath();
+            OutputFactory.getOutput(algorithm); //Produces output from the completed algorithm
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //----Prompting methods---------------------------------------------------------------------------------------------
 
     /**
      * Prompts the user to select a map from the available tif(f)'s.
@@ -270,24 +289,7 @@ public class TerminalInterface extends UserInterface {
         }
     }
 
-    /**
-     * Function to run the requested algorithm with user-prompted variables.
-     */
-    public void startAlgorithm() {
-        MarsRover r;
-        if (algType.equalsIgnoreCase("L"))
-            r = new MarsRover(slope, startCoords, endCoords, mapPath, fieldOfView);
-        else
-            r = new MarsRover(slope, startCoords, endCoords, mapPath);
 
-        Algorithm algorithm = AlgorithmFactory.getAlgorithm(algorithmClass, r, outputClass);
-
-        try {
-            algorithm.findPath();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     //----Resource scanning methods-------------------------------------------------------------------------------------
 

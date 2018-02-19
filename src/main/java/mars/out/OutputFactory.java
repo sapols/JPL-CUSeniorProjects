@@ -18,24 +18,29 @@ import java.util.List;
 public class OutputFactory {
 
     /**
-     * Returns an Output class based on its name.
+     * Returns an Output based on the name of the output class
+     * stored in the given algorithm.
      *
-     * @param out The name of the Output class to be returned.
+     * @param algorithm The Algorithm whose path will be output.
      * @return The corresponding algorithm class
      */
-    public static Output getOutputFromName(String outputClass, List<? extends Coordinate> out, String mapPath) {
+    public static Output getOutput(Algorithm algorithm) {
+        String outputClass = algorithm.outputClass;
+        List<? extends Coordinate> out = algorithm.getPath();
+        String mapPath = algorithm.map.getMapPath();
+
         try {
             if (outputClass.equals("FileOutput")) {
-                return new FileOutput(out, mapPath);
+                return new FileOutput(algorithm);
             } else if (outputClass.equals("MapImageOutput")) {
-                return new MapImageOutput(out, mapPath);
+                return new MapImageOutput(algorithm);
             } else {
-                return new TerminalOutput(out, mapPath);
+                return new TerminalOutput(algorithm);
             }
         } catch (IOException ex) {
             //If something weird happened with FileOutput, default to TerminalOutput
             ex.printStackTrace();
-            return new TerminalOutput(out, mapPath);
+            return new TerminalOutput(algorithm);
         }
     }
 

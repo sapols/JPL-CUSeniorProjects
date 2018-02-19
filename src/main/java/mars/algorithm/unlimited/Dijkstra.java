@@ -191,8 +191,6 @@ public class Dijkstra extends Algorithm {
         }
         Collections.reverse(fullPath);
 
-        //Generates Output based on the type specified during this algorithm's instantiation
-        OutputFactory.getOutputFromName(outputClass, fullPath, map.getMapPath());
     }
 
     private void removeNodeFromVector(Vector<DijkstraNode> nodeVector, DijkstraNode minNode) {

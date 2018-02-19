@@ -152,12 +152,10 @@ public class AlgorithmGreedy extends Algorithm {
 
             if(currentNode.equals(goal)){ //and if we reached the goal, stop
                 if(mode.equals("limited")){
-                    //Generates Output based on the type specified during this algorithm's instantiation
-                    OutputFactory.getOutputFromName(outputClass, fullcoords, map.getMapPath());
+
                     coords = fullcoords;
                 }else{
-                    //Generates Output based on the type specified during this algorithm's instantiation
-                    OutputFactory.getOutputFromName(outputClass, fullcoords, map.getMapPath());
+                    //no-op because nothing else is needed
                 }
                 working = false;
             }

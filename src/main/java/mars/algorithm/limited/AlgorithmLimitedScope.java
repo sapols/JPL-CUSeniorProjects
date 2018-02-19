@@ -40,9 +40,6 @@ public class AlgorithmLimitedScope extends Algorithm {
     public void blankAlgorithm() {
         path.add(rover.getStartPosition());
         path.add(rover.getEndPosition());
-
-        //Generates Output based on the type specified during this algorithm's instantiation
-        OutputFactory.getOutputFromName(outputClass, path, map.getMapPath());
     }
 
     public ArrayList<Coordinate> getPath() {
