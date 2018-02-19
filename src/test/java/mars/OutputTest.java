@@ -57,9 +57,11 @@ public class OutputTest extends TestCase{
         assertEquals(testString, "1059039900,1023360986");
     }
 
+    /*
     public void testMapImageOutputInstantiate() throws Exception {
         ArrayList<Coordinate> list = new ArrayList<Coordinate>();
         MapImageOutput testOut = new MapImageOutput(list, "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
         assertNotNull(testOut);
     }
+    */
 }
