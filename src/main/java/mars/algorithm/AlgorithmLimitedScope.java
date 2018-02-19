@@ -1,8 +1,11 @@
-package mars.algorithm;
+package mars.algorithm.limited;
 
+import mars.algorithm.Algorithm;
 import mars.coordinate.*;
+import mars.out.OutputFactory;
 import mars.rover.MarsRover;
 import mars.out.TerminalOutput;
+import mars.map.TerrainMap;
 
 import java.util.ArrayList;
 
@@ -13,15 +16,16 @@ public class AlgorithmLimitedScope extends Algorithm {
 
     ArrayList<Coordinate> path = new ArrayList<Coordinate>();
 
-    /*
+    /**
      * Default constructor for an AlgorithmUnlimitedScopeRecursive.
      *
-     * @param map The terrain map
-     * @param rover The rover
+     * @param r The rover
+     * @param output The output type specified during this algorithm's instantiation
      */
-    public AlgorithmLimitedScope(MarsRover r) {
+    public AlgorithmLimitedScope(MarsRover r, String output) {
         rover = r;
         map = r.getMap();
+        outputClass = output;
     }
 
     /**
@@ -36,8 +40,6 @@ public class AlgorithmLimitedScope extends Algorithm {
     public void blankAlgorithm() {
         path.add(rover.getStartPosition());
         path.add(rover.getEndPosition());
-
-        output = new TerminalOutput(path);
     }
 
     public ArrayList<Coordinate> getPath() {
