@@ -2,6 +2,7 @@ package mars.algorithm;
 
 import mars.coordinate.BestFirstCoordinate;
 import mars.coordinate.Coordinate;
+import mars.out.MapImageOutput;
 import mars.out.TerminalOutput;
 import mars.rover.MarsRover;
 
@@ -44,6 +45,7 @@ public class AlgorithmUnlimitedBestFirst extends Algorithm {
 
         ArrayList<BestFirstCoordinate> closed = new ArrayList<BestFirstCoordinate>();
         ArrayList<BestFirstCoordinate> open = new ArrayList<BestFirstCoordinate>();
+        boolean validNeighbor = false;
         open.add(startPosition);
 
         BestFirstCoordinate current;
@@ -53,13 +55,28 @@ public class AlgorithmUnlimitedBestFirst extends Algorithm {
             current = getLowestFScore(open);
             if (current.equals(goal)) { //if we found the goal
                 output = new TerminalOutput(constructPath(current));
+                output = new MapImageOutput(constructPath(current), map.getMapPath());
+                break;
             }
             closed.add(current);
             open.remove(current);
             neighbors = getReachableNeighbors(current);
 
             for(BestFirstCoordinate n : neighbors){
-                if(!closed.contains(n)){
+                validNeighbor = true;
+                for(BestFirstCoordinate m : closed){
+                    if(m.equals(n)){
+                        validNeighbor = false;
+                        break;
+                    }
+                }
+                for(BestFirstCoordinate m : open){
+                    if(m.equals(n)){
+                        validNeighbor = false;
+                        break;
+                    }
+                }
+                if(validNeighbor){
                     open.add(n);
                 }
             }

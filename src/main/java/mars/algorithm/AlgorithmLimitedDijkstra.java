@@ -83,7 +83,7 @@ public class AlgorithmLimitedDijkstra extends Algorithm {
             }
 
             thisCoord = coords.get(coords.size()-1); //set current location to the latest position in the path
-            //System.out.println((thisCoord.getX()) + "," + (thisCoord.getY())); //debug
+            System.out.println((thisCoord.getX()) + "," + (thisCoord.getY())); //debug
         }
 
         //ArrayList<Coordinate> outCoords = convertDijkstraNodeList(coords);

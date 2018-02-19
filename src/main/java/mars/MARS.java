@@ -24,16 +24,14 @@ public class MARS {
         //Algorithm algorithm = new AlgorithmUnlimitedScopeRecursive(rover);
         //Algorithm algorithm = new AlgorithmUnlimitedScopeNonrecursive(rover);
         //Algorithm algorithm = new AlgorithmLimitedScopeAStar(rover);
-        //Algorithm algorithm = new AlgorithmLimitedDijkstra(rover);
+        Algorithm algorithm = new AlgorithmLimitedDijkstra(rover);
         //Algorithm algorithm = new AlgorithmUnlimitedDijkstra(rover);
-        Algorithm algorithm = new AlgorithmUnlimitedBestFirst(rover);
+        //Algorithm algorithm = new AlgorithmUnlimitedBestFirst(rover);
         try {
              algorithm.findPath();
         } catch (Exception expectedException) {
              //assertTrue("Failed to find a route it should have",false);
         }
-        boolean check = true;
-        //assertTrue(check);
 
         TerminalInterface ti = new TerminalInterface();
         ti.promptUser();
