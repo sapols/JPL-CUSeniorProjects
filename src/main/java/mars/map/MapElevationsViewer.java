@@ -1,12 +1,7 @@
 package mars.map;
 
 import com.sun.corba.se.impl.io.TypeMismatchException;
-import mars.algorithm.AlgorithmUnlimitedScopeNonRecursive;
-import mars.algorithm.AlgorithmUnlimitedScopeRecursive;
 import mars.coordinate.Coordinate;
-import mars.rover.MarsRover;
-import mars.ui.UserInterface;
-
 import java.util.Scanner;
 
 /**
