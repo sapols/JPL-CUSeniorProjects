@@ -278,6 +278,62 @@ public class AlgorithmTest extends TestCase {
         tryAlgorithm(algorithm,false);
     }
 
+
+
+    // Tests for AlgorithmIDAStar
+
+    //Test if algorithm can complete a trivial route
+    public void testIDAStarAlgorithmFlatCase() throws Exception{
+        Coordinate startCoord = new Coordinate(10,10);
+        Coordinate endCoord = new Coordinate(10,20);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(1,startCoord,endCoord,mapPath,3);
+        Algorithm algorithm = new AlgorithmIDAStar(rover);
+        tryAlgorithm(algorithm,true);
+    }
+
+    //Test if algorithm can handle a more complex route
+    public void testIDAStarAlgorithmSlopedCase() throws Exception{
+        Coordinate startCoord = new Coordinate(538,191);
+        Coordinate endCoord = new Coordinate(208,210);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(45,startCoord,endCoord,mapPath,3);
+        Algorithm algorithm = new AlgorithmIDAStar(rover);
+        tryAlgorithm(algorithm,true);
+    }
+
+    //Test if algorithm doesn't skip over points and produces a valid route
+    public void testIDAStarAlgorithmValidRoute() throws Exception{
+        Coordinate startCoord = new Coordinate(538,191);
+        Coordinate endCoord = new Coordinate(208,210);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(45,startCoord,endCoord,mapPath,3);
+        Algorithm algorithm = new AlgorithmIDAStar(rover);
+        ArrayList<? extends Coordinate> out = tryAlgorithm(algorithm,true);
+        Coordinate oldItem;
+        Coordinate item = startCoord;
+        for (Coordinate aPath : out) { //foreach coordinate in list
+            oldItem = item;
+            item = aPath;
+            int diff = abs(oldItem.getX() - item.getX()) + abs(oldItem.getY() - item.getY());
+            if (diff > 2) {
+                assertTrue("Path points too far from each other", false);
+            }
+        }
+    }
+
+    /*
+    //Test that algorithm fails with an impossible route
+    public void testIDAStarAlgorithmFailure() throws Exception{
+        Coordinate startCoord = new Coordinate(0,0); //this is on an island in the map that the rover can't escape
+        Coordinate endCoord = new Coordinate(-5,-5);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(0,startCoord,endCoord,mapPath,3);
+        Algorithm algorithm = new AlgorithmIDAStar(rover);
+        tryAlgorithm(algorithm,false);
+    }
+    */
+
     /* optional tests, they don't run in travis or need components travis doesn't support
 
     public void testGreedyAlgorithmLimitedComparison() throws Exception{

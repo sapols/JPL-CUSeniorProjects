@@ -22,10 +22,14 @@ public class FileOutput extends Output {
 
     public void writeToOutput() throws IOException {
         //Write resultList to a file
-        for (int i = 1; i <= resultList.size(); i++) {
-            int x = resultList.get(i-1).getX();
-            int y = resultList.get(i-1).getY();
-            writer.append(Integer.toString(x) + ',' + Integer.toString(y) +'\n');
+        try {
+            for (int i = 1; i <= resultList.size(); i++) {
+                int x = resultList.get(i - 1).getX();
+                int y = resultList.get(i - 1).getY();
+                writer.append(Integer.toString(x) + ',' + Integer.toString(y) + '\n');
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
         writer.close();
     }
