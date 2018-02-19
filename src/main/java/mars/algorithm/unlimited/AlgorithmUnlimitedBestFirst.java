@@ -1,5 +1,6 @@
-package mars.algorithm;
+package mars.algorithm.unlimited;
 
+import mars.algorithm.Algorithm;
 import mars.coordinate.BestFirstCoordinate;
 import mars.coordinate.Coordinate;
 import mars.out.TerminalOutput;
@@ -52,7 +53,7 @@ public class AlgorithmUnlimitedBestFirst extends Algorithm {
         while(! open.isEmpty()){
             current = getLowestFScore(open);
             if (current.equals(goal)) { //if we found the goal
-                output = new TerminalOutput(constructPath(current));
+                //No-op. We're done.
             }
             closed.add(current);
             open.remove(current);

@@ -49,9 +49,9 @@ public class OutputTest extends TestCase{
         Coordinate testCoord = new Coordinate(1059039900,1023360986);
         list.add(testCoord);
         FileOutput out = new FileOutput(list);
-        out.writeToOutput();
         File testFile = new File("MARS_output.csv");
         Scanner testScan = new Scanner(testFile);
+        testScan.nextLine(); //skip "x,y" row
         String testString = testScan.nextLine();
         testScan.close();
         assertEquals(testString, "1059039900,1023360986");

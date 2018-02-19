@@ -1,13 +1,7 @@
 package mars.out;
 
 import mars.algorithm.Algorithm;
-import mars.algorithm.limited.AlgorithmGreedy;
-import mars.algorithm.limited.AlgorithmLimitedScope;
-import mars.algorithm.unlimited.AlgorithmUnlimitedScopeNonRecursive;
-import mars.algorithm.unlimited.AlgorithmUnlimitedScopeRecursive;
-import mars.algorithm.unlimited.Dijkstra;
 import mars.coordinate.Coordinate;
-import mars.rover.MarsRover;
 
 import java.io.IOException;
 import java.util.List;

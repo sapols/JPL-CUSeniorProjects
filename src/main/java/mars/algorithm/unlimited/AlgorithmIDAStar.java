@@ -1,5 +1,6 @@
-package mars.algorithm;
+package mars.algorithm.unlimited;
 
+import mars.algorithm.Algorithm;
 import mars.coordinate.AStarCoordinate;
 import mars.coordinate.Coordinate;
 import mars.out.TerminalOutput;
@@ -60,7 +61,6 @@ public class AlgorithmIDAStar extends Algorithm {
         else {
             if (thisNode.equals(goal)) { //if we found the goal
                 fullPath = constructPath(thisNode);
-                output = new TerminalOutput(fullPath);
             }
             else {
                 ArrayList<AStarCoordinate> neighbors = getReachableNeighbors(thisNode);

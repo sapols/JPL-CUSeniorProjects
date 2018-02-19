@@ -91,6 +91,7 @@ public class MapPanel extends JPanel {
      */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        //TODO: Add buttons for zooming in/out.
         //TODO: DO NOT redraw maps so often... (find a good solution to this)
         g.drawImage(mapBackgroundImage, 0, 0, this); //Sets the background image, not scaled (so zoomed in).
 //        g.drawImage(mapBackgroundImage, 0, 0, this.getWidth(), this.getHeight(), this); //Sets the background image, scaled to fit view.

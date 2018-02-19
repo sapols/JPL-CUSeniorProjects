@@ -26,9 +26,9 @@ public class AlgorithmFactory {
         else if (algorithmClass.equals("Dijkstra")) {
             return new Dijkstra(rover, outputClass);
         }
-        else if (algorithmClass.equals("AlgorithmGreedy")) {
-            return new AlgorithmGreedy(outputClass, rover); //NOTE: this is getting String then rover because of "_mode"
-        }
+//        else if (algorithmClass.equals("AlgorithmGreedy")) {
+//            return new AlgorithmGreedy(outputClass, rover); //NOTE: this is getting String then rover because of "_mode"
+//        }
         else {
             return new AlgorithmLimitedScope(rover, outputClass);
         }

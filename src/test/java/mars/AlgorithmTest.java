@@ -4,6 +4,11 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import mars.algorithm.*;
+import mars.algorithm.limited.*;
+import mars.algorithm.unlimited.*;
+import mars.algorithm.limited.AlgorithmLimitedScopeAStar;
+import mars.algorithm.unlimited.AlgorithmGreedyUnlimited;
+import mars.algorithm.unlimited.AlgorithmIDAStar;
 import mars.coordinate.Coordinate;
 import mars.rover.MarsRover;
 
@@ -74,7 +79,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         MarsRover rover = new MarsRover(45,startCoord,endCoord,mapPath,3);
         Algorithm limitedAlgorithm = new AlgorithmLimitedScopeAStar(rover);
-        Algorithm unlimitedAlgorithm = new AlgorithmUnlimitedScopeRecursive(rover);
+        Algorithm unlimitedAlgorithm = new AlgorithmUnlimitedScopeRecursive(rover, "TerminalOutput");
         int limitedLength = (tryAlgorithm(limitedAlgorithm,true)).size();
         int unlimitedLength = (tryAlgorithm(unlimitedAlgorithm,true)).size();
         boolean check = unlimitedLength < limitedLength;
@@ -175,7 +180,7 @@ public class AlgorithmTest extends TestCase {
         Coordinate endCoord = new Coordinate(10,20);
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         MarsRover rover = new MarsRover(1,startCoord,endCoord,mapPath);
-        Algorithm algorithm = new AlgorithmUnlimitedScopeRecursive(rover);
+        Algorithm algorithm = new AlgorithmUnlimitedScopeRecursive(rover, "TerminalOutput");
         tryAlgorithm(algorithm,true);
     }
 
@@ -185,7 +190,7 @@ public class AlgorithmTest extends TestCase {
         Coordinate endCoord = new Coordinate(-1,-1);
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         MarsRover rover = new MarsRover(0,startCoord,endCoord,mapPath);
-        Algorithm algorithm = new AlgorithmUnlimitedScopeRecursive(rover);
+        Algorithm algorithm = new AlgorithmUnlimitedScopeRecursive(rover, "TerminalOutput");
         tryAlgorithm(algorithm,false);
     }
 
