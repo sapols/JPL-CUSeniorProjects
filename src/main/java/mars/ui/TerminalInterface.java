@@ -184,6 +184,7 @@ public class TerminalInterface extends UserInterface {
         if (alg.equalsIgnoreCase("U")) {
             MarsRover r = new MarsRover(slope, startCoords, endCoords, mapPath);
             algorithm = new AlgorithmGreedy(r, "unlimited");
+            //algorithm = new BreadthFirstSearch(r);
 
             try {
                 algorithm.findPath();

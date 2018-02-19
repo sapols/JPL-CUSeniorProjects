@@ -137,7 +137,7 @@ public class GeoTIFF extends TerrainMap {
      * @param height the number of pixels to extend the area in the Y direction from the origin
      */
     public double[][] getElevationsInArea(Coordinate origin, int width, int height) {
-        int x = origin.getX();
+		int x = origin.getX();
         int y = origin.getY();
         double[][] elevations = new double[height][width];
         //bounds checking
@@ -171,8 +171,58 @@ public class GeoTIFF extends TerrainMap {
 		double x = coord.getX();
 		double y = coord.getY();
 
-//		System.out.println(x);
-//		System.out.println(y);
+		//declare lat/long variables
+		double latitude;
+		double longitude;
+
+		//Mars Radius in meters
+		int marsRadius = 3396200;
+
+		//declare negative value degrees
+		boolean isSouth = false;
+		boolean isWest = false;
+
+		double getEquator = gridData.getHeight()/2;
+		double getPrimeMeridean = gridData.getWidth()/2;
+
+
+		double pixelDistanceLatitude = y - getEquator;
+		double pixelDistanceLongitude = x - getPrimeMeridean;
+
+
+		//The conversion for the Viking map is 40ppd which equates to 40 pixels per degree.
+		//therefore once you find the equator and prime Meridean just take difference and divide by ppd ratio to get degrees.
+		latitude = pixelDistanceLatitude / 40;
+		longitude = pixelDistanceLongitude / 40;
+
+
+		if(isSouth) {
+			latitude = latitude * -1;
+		}
+
+		if(isWest) {
+			longitude = longitude * -1;
+		}
+
+		int latitudeint = (int) latitude;
+		int longitudeint = (int) longitude;
+
+		Coordinate newCoord = new Coordinate(latitudeint, longitudeint);
+		newCoord.setUnits("latLong");
+		return newCoord;
+
+	}
+
+
+	public Coordinate LatLong2Coordinate(Coordinate coord){
+		if(coord.getUnits() != "latLong") {
+			//return original cooridinate
+			return coord;
+		}
+
+		//get x and y coordinate
+		double x = coord.getX();
+		double y = coord.getY();
 
 		//declare lat/long variables
 		double latitude;
@@ -191,19 +241,16 @@ public class GeoTIFF extends TerrainMap {
 //		System.out.println(getEquator);
 //		System.out.println(getPrimeMeridean);
 
+
 		double pixelDistanceLatitude = y - getEquator;
 		double pixelDistanceLongitude = x - getPrimeMeridean;
 
-//		System.out.println(pixelDistanceLatitude);
-//		System.out.println(pixelDistanceLongitude);
 
 		//The conversion for the Viking map is 40ppd which equates to 40 pixels per degree.
 		//therefore once you find the equator and prime Meridean just take difference and divide by ppd ratio to get degrees.
 		latitude = pixelDistanceLatitude / 40;
 		longitude = pixelDistanceLongitude / 40;
 
-//		System.out.println(latitude);
-//		System.out.println(longitude);
 
 		if(isSouth) {
 			latitude = latitude * -1;
@@ -213,9 +260,6 @@ public class GeoTIFF extends TerrainMap {
 			longitude = longitude * -1;
 		}
 
-//		System.out.println(latitude);
-//		System.out.println(longitude);
-
 		int latitudeint = (int) latitude;
 		int longitudeint = (int) longitude;
 
@@ -224,7 +268,6 @@ public class GeoTIFF extends TerrainMap {
 		return newCoord;
 
 	}
-
 	//Left over logic keeping here for now
 	/*
 
