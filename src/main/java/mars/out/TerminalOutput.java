@@ -2,6 +2,7 @@ package mars.out;
 
 import mars.algorithm.Algorithm;
 import mars.coordinate.*;
+import mars.map.GeoTIFF;
 
 import java.util.*;
 
@@ -36,10 +37,22 @@ public class TerminalOutput extends Output {
     public void writeToOutput() {
         System.out.println("\nOutput path: ");
         System.out.println("------------");
-        for (int i = 1; i <= resultList.size(); i++) {
-            int x = resultList.get(i-1).getX();
-            int y = resultList.get(i-1).getY();
-            System.out.println(i + ". (" + x + ", " + y + ")");
+        boolean convertFlag = false;
+        if(convertFlag){
+            GeoTIFF convert = new GeoTIFF();
+            for (int i = 1; i <= resultList.size(); i++) {
+                int x = resultList.get(i-1).getX();
+                int y = resultList.get(i-1).getY();
+                Coordinate outputCoordinate = convert.coordinatConvert(new Coordinate(x, y));
+                System.out.println(i + ". (" + outputCoordinate.getX() + ", " + outputCoordinate.getY() + ")");
+            }
+        }
+        else{
+            for (int i = 1; i <= resultList.size(); i++) {
+                int x = resultList.get(i - 1).getX();
+                int y = resultList.get(i - 1).getY();
+                System.out.println(i + ". (" + x + ", " + y + ")");
+            }
         }
         System.out.println("------------");
     }

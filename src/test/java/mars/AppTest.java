@@ -5,6 +5,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import mars.coordinate.Coordinate;
 import mars.coordinate.GreedyCoordinate;
+import mars.map.GeoTIFF;
 import mars.rover.MarsRover;
 
 import java.util.*;
@@ -112,6 +113,19 @@ public class AppTest extends TestCase {
         assertEquals(45,neighbors.get(7).getDirection());
     }
 
+
+    public void testpixeltoLatLong() throws Exception{
+        Coordinate currentCoord = new Coordinate(11000, 5000);
+
+        GeoTIFF newMap = new GeoTIFF();
+        newMap.initMap("src/main/resources/Phobos_Viking_Mosaic_40ppd_DLRcontrol.tif");
+        Coordinate degrees = newMap.coordinatConvert(currentCoord);
+        try{
+            assertTrue(degrees.getX() != 0 && degrees.getY() != 0);
+        } catch (Exception e){
+            System.out.println(e);
+        }
+    }
 
 
 }

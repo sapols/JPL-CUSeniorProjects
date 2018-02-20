@@ -1,5 +1,6 @@
 package mars.map;
 
+import jj2000.j2k.codestream.CoordInfo;
 import org.geotools.coverage.grid.GridCoordinates2D;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -156,6 +157,72 @@ public class GeoTIFF extends TerrainMap {
 
         return elevations;
     }
+
+
+
+    public Coordinate coordinatConvert(Coordinate coord){
+
+        double getEquator = gridData.getHeight() / 2;
+        double getPrimeMeridean = gridData.getWidth() / 2;
+
+        //new Coordinate placeholder
+        int xCoordInt = 0;
+        int yCoordInt = 0;
+
+        if(coord.getUnits() == "pixels") {
+
+            //get x and y coordinate
+            double xpixel = coord.getX();
+            double ypixel = coord.getY();
+
+            //declare lat/long variables
+            double latitude;
+            double longitude;
+
+            double pixelDistanceLatitude = ypixel - getEquator;
+            double pixelDistanceLongitude = xpixel - getPrimeMeridean;
+
+
+            //Viking Mosaic is 40 pixels per degree.
+            latitude = pixelDistanceLatitude / 40;
+            longitude = pixelDistanceLongitude / 40;
+
+            xCoordInt = (int) latitude;
+            yCoordInt = (int) longitude;
+
+        }
+
+        else if(coord.getUnits() == "latlong"){
+
+            //get x and y coordinate
+            double latdegree = coord.getX();
+            double longdegree = coord.getY();
+
+            //declare latitude and longitude pixel
+            double latitudepixel;
+            double longitudepixel;
+
+            //Viking Mosaic is 40 pixels per degree
+            latitudepixel = latdegree * 40;
+            longitudepixel = longdegree * 40;
+
+            double pixelDistanceLatitude = getEquator + latitudepixel;
+            double pixelDistanceLongitude = getPrimeMeridean + longitudepixel;
+
+            xCoordInt = (int) pixelDistanceLatitude;
+            yCoordInt = (int) pixelDistanceLongitude;
+
+
+        }
+        else{
+            System.out.println("Invalid Coordinate type");
+        }
+
+        Coordinate newCoord = new Coordinate(xCoordInt, yCoordInt);
+        return newCoord;
+
+    }
+
 
     /* leftover function from Route. Keeping here for now
     public void getLine(double x) throws Exception {
