@@ -1,8 +1,8 @@
-package mars.algorithm;
+package mars.algorithm.unlimited;
 
+import mars.algorithm.Algorithm;
 import mars.coordinate.BestFirstCoordinate;
 import mars.coordinate.Coordinate;
-import mars.out.MapImageOutput;
 import mars.out.TerminalOutput;
 import mars.rover.MarsRover;
 
@@ -15,16 +15,17 @@ public class AlgorithmUnlimitedBestFirst extends Algorithm {
     ArrayList<Coordinate> fullPath = new ArrayList<Coordinate>();
     Coordinate goal;
 
-    /*
-    * Default constructor for an AlgorithmUnlimitedScopeNonRecursive.
-    *
-    * @param map The terrain map
-    * @param rover The rover
-    */
-    public AlgorithmUnlimitedBestFirst(MarsRover r) {
+    /**
+     * Default constructor for an AlgorithmUnlimitedScopeNonRecursive.
+     *
+     * @param r The rover
+     * @param output The output type specified during this algorithm's instantiation
+     */
+    public AlgorithmUnlimitedBestFirst(MarsRover r, String output) {
         rover = r;
         map = rover.getMap();
         goal = r.getEndPosition();
+        outputClass = output;
     }
 
     /*
@@ -54,8 +55,7 @@ public class AlgorithmUnlimitedBestFirst extends Algorithm {
         while(! open.isEmpty()){
             current = getLowestFScore(open);
             if (current.equals(goal)) { //if we found the goal
-                output = new TerminalOutput(constructPath(current));
-                output = new MapImageOutput(constructPath(current), map.getMapPath());
+                //No-op. We're done.
                 break;
             }
             closed.add(current);

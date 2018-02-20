@@ -1,5 +1,6 @@
-package mars.algorithm;
+package mars.algorithm.limited;
 
+import mars.algorithm.Algorithm;
 import mars.coordinate.BestFirstCoordinate;
 import mars.coordinate.Coordinate;
 import mars.out.MapImageOutput;
@@ -21,10 +22,10 @@ public class AlgorithmLimitedBestFirst extends Algorithm {
     /*
     * Default constructor for an AlgorithmUnlimitedScopeNonRecursive.
     *
-    * @param map The terrain map
-    * @param rover The rover
+    * @param r The rover
+    * @param output The output type specified during this algorithm's instantiation
     */
-    public AlgorithmLimitedBestFirst(MarsRover r) {
+    public AlgorithmLimitedBestFirst(MarsRover r, String output) {
         rover = r;
         map = rover.getMap();
         goal = r.getEndPosition();
@@ -82,8 +83,6 @@ public class AlgorithmLimitedBestFirst extends Algorithm {
             thisCoord = coords.get(coords.size() - 1);
             System.out.println((thisCoord.getX()) + "," + (thisCoord.getY())); //debug
         }
-        output = new TerminalOutput(coords);
-        output = new MapImageOutput(coords, map.getMapPath());
     }
 
     /*

@@ -1,5 +1,6 @@
-package mars.algorithm;
+package mars.algorithm.limited;
 
+import mars.algorithm.Algorithm;
 import mars.coordinate.Coordinate;
 import mars.coordinate.DijkstraNode;
 import mars.out.MapImageOutput;
@@ -23,10 +24,10 @@ public class AlgorithmLimitedDijkstra extends Algorithm {
     /*
      * Default constructor for an AlgorithmUnlimitedDijkstra.
      *
-     * @param map The terrain map
-     * @param rover The rover
+     * @param r The rover
+     * @param output The output type specified during this algorithm's instantiation
      */
-    public AlgorithmLimitedDijkstra(MarsRover r) {
+    public AlgorithmLimitedDijkstra(MarsRover r, String output) {
         rover = r;
         map = r.getMap();
         goal = new DijkstraNode(r.getEndPosition());
@@ -85,11 +86,6 @@ public class AlgorithmLimitedDijkstra extends Algorithm {
             thisCoord = coords.get(coords.size()-1); //set current location to the latest position in the path
             System.out.println((thisCoord.getX()) + "," + (thisCoord.getY())); //debug
         }
-
-        //ArrayList<Coordinate> outCoords = convertDijkstraNodeList(coords);
-
-        output = new TerminalOutput(coords); //if we reached here, we got out of the while loop. we're done!
-        output = new MapImageOutput(coords, map.getMapPath());
     }
 
     public ArrayList<Coordinate> dijkstra(DijkstraNode startNode, DijkstraNode goalNode) throws Exception{

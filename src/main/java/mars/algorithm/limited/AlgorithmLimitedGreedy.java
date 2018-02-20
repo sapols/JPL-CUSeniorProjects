@@ -1,5 +1,6 @@
-package mars.algorithm;
+package mars.algorithm.limited;
 
+import mars.algorithm.Algorithm;
 import mars.coordinate.Coordinate;
 import mars.coordinate.GreedyCoordinate;
 import mars.out.MapImageOutput;
@@ -23,16 +24,17 @@ public class AlgorithmLimitedGreedy extends Algorithm {
     Coordinate goal;
     //String mode;
 
-    /*
+    /**
      * Default constructor for an AlgorithmGreedy.
      *
-     * @param map The terrain map
-     * @param rover The rover
+     * @param r The rover
+     * @param output The output type specified during this algorithm's instantiation
      */
-    public AlgorithmLimitedGreedy(MarsRover r) {
+    public AlgorithmLimitedGreedy(MarsRover r, String output) {
         rover = r;
         map = r.getMap();
         goal = r.getEndPosition();
+        outputClass = output;
     }
 
     /*
@@ -134,8 +136,7 @@ public class AlgorithmLimitedGreedy extends Algorithm {
             preferences.clear(); //abandon the leftover candidates
 
             if(currentNode.equals(goal)){ //and if we reached the goal, stop
-                output = new TerminalOutput(fullcoords);
-                output = new MapImageOutput(fullcoords, map.getMapPath());
+                //no-op
                 coords = fullcoords;
                 working = false;
             }

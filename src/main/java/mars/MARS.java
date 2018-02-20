@@ -1,6 +1,9 @@
 package mars;
 
+import mars.algorithm.limited.*;
+import mars.algorithm.unlimited.*;
 import mars.algorithm.*;
+import mars.algorithm.limited.AlgorithmLimitedDijkstra;
 import mars.coordinate.Coordinate;
 import mars.rover.MarsRover;
 import mars.ui.TerminalInterface;
@@ -24,9 +27,9 @@ public class MARS {
         //Algorithm algorithm = new AlgorithmUnlimitedScopeRecursive(rover);
         //Algorithm algorithm = new AlgorithmUnlimitedScopeNonrecursive(rover);
         //Algorithm algorithm = new AlgorithmLimitedScopeAStar(rover);
-        Algorithm algorithm = new AlgorithmLimitedDijkstra(rover);
+        //Algorithm algorithm = new AlgorithmLimitedDijkstra(rover);
         //Algorithm algorithm = new AlgorithmUnlimitedDijkstra(rover);
-        //Algorithm algorithm = new AlgorithmUnlimitedBestFirst(rover);
+        Algorithm algorithm = new AlgorithmUnlimitedBestFirst(rover,"TerminalOutput");
         try {
              algorithm.findPath();
         } catch (Exception expectedException) {

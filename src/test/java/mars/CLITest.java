@@ -28,16 +28,6 @@ public class CLITest extends TestCase {
         return new TestSuite( CLITest.class );
     }
 
-    public void testCLIcheckMapFailsWithoutRealFile() throws Exception{
-        TerminalInterface ti = new TerminalInterface();
-        assertFalse(ti.checkMap(new Scanner("not a real file")));
-    }
-
-    public void testCLIcheckMapPassesWithRealFile() throws Exception{
-        TerminalInterface ti = new TerminalInterface();
-        assertTrue(ti.checkMap(new Scanner("src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff")));
-    }
-
     public void testCLIcheckSlopeFailsWithNonNumber() throws Exception{
         TerminalInterface ti = new TerminalInterface();
         assertFalse(ti.checkSlope(new Scanner("letters")));

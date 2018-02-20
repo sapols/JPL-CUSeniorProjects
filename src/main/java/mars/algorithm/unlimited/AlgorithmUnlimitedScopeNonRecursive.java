@@ -1,13 +1,14 @@
-package mars.algorithm;
+package mars.algorithm.unlimited;
 
+import mars.algorithm.Algorithm;
 import mars.coordinate.Coordinate;
 import mars.out.MapImageOutput;
-import mars.rover.MarsRover;
+import mars.out.OutputFactory;
 import mars.out.TerminalOutput;
-import mars.map.TerrainMap;
-import java.util.*;
-
+import mars.rover.MarsRover;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Class which implements the path-finding algorithm without a limited field of view.
@@ -16,15 +17,16 @@ public class AlgorithmUnlimitedScopeNonRecursive extends Algorithm {
 
     ArrayList<Coordinate> fullPath = new ArrayList<Coordinate>();
 
-    /*
+    /**
      * Default constructor for an AlgorithmUnlimitedScopeNonRecursive.
      *
-     * @param map The terrain map
-     * @param rover The rover
+     * @param r The rover
+     * @param output The output type specified during this algorithm's instantiation
      */
-    public AlgorithmUnlimitedScopeNonRecursive(MarsRover r) {
+    public AlgorithmUnlimitedScopeNonRecursive(MarsRover r, String output) {
         rover = r;
         map = rover.getMap();
+        outputClass = output;
     }
 
     public ArrayList<Coordinate> getPath() {
@@ -104,8 +106,7 @@ public class AlgorithmUnlimitedScopeNonRecursive extends Algorithm {
         }
 
         Collections.reverse(fullPath);
-        output = new TerminalOutput(fullPath);
-        output = new MapImageOutput(fullPath,map.getMapPath());
+
     }
 
     /**

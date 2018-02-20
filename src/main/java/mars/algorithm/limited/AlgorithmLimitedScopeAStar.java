@@ -1,5 +1,6 @@
-package mars.algorithm;
+package mars.algorithm.limited;
 
+import mars.algorithm.Algorithm;
 import mars.coordinate.AStarCoordinate;
 import mars.coordinate.Coordinate;
 import mars.out.MapImageOutput;
@@ -28,12 +29,14 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
      * fieldOfView - field of view of rover
      *
      * @param r The rover
+     * @param output The output type specified during this algorithm's instantiation
      */
-    public AlgorithmLimitedScopeAStar(MarsRover r) {
+    public AlgorithmLimitedScopeAStar(MarsRover r, String output) {
         rover = r;
         map = r.getMap();
         goal = r.getEndPosition();
         fieldOfView = r.getFieldOfView();
+        outputClass = output;
     }
 
     /**
@@ -95,8 +98,7 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
             thisCoord = coords.get(coords.size()-1); //set current location to the latest position in the path
             //System.out.println((thisCoord.getX()) + "," + (thisCoord.getY())); //debug
         }
-        output = new TerminalOutput(coords); //if we reached here, we got out of the while loop. we're done!
-        output = new MapImageOutput(coords, map.getMapPath());
+        //If we reached here, we got out of the while loop. We're done!
     }
 
 
