@@ -22,14 +22,14 @@ public class MARS {
         Coordinate endCoord = new Coordinate(7568,1727);
         String mapPath = "src/main/resources/Phobos_Viking_Mosaic_40ppd_DLRcontrol.tif";
         //String mapPath = "src/main/resources/Phobos_Viking_Mosaic_40ppd_DLRcontrol.tif";
-        MarsRover rover = new MarsRover(6 ,startCoord,endCoord,mapPath,8);
+        MarsRover rover = new MarsRover(6 ,startCoord,endCoord,mapPath,3);
         //Algorithm algorithm = new AlgorithmGreedy(rover,"limited");
         //Algorithm algorithm = new AlgorithmUnlimitedScopeRecursive(rover);
         //Algorithm algorithm = new AlgorithmUnlimitedScopeNonrecursive(rover);
         //Algorithm algorithm = new AlgorithmLimitedScopeAStar(rover);
         //Algorithm algorithm = new AlgorithmLimitedDijkstra(rover);
         //Algorithm algorithm = new AlgorithmUnlimitedDijkstra(rover);
-        Algorithm algorithm = new AlgorithmUnlimitedBestFirst(rover,"TerminalOutput");
+        Algorithm algorithm = new AlgorithmLimitedIDAStar(rover,"TerminalOutput");
         try {
              algorithm.findPath();
         } catch (Exception expectedException) {
