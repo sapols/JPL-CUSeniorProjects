@@ -40,8 +40,6 @@ public class Coordinate {
 
     public String getUnits() { return units; }
 
-    public void setUnits(String units){ this.units = units; };
-
     public boolean equals(Coordinate other) {
         return ((other.getX()==this.getX()) && (other.getY()==this.getY()));
     }
