@@ -44,8 +44,8 @@ public class TerminalOutput extends Output {
             for (int i = 1; i <= resultList.size(); i++) {
                 int x = resultList.get(i-1).getX();
                 int y = resultList.get(i-1).getY();
-                Coordinate outputCoordinate = convert.coordinateConvert(new Coordinate(x, y));
-                System.out.println(i + ". (" + outputCoordinate.getX() + ", " + outputCoordinate.getY() + ")");
+                double [] outputCoordinate = convert.coordinateConvert(new Coordinate(x, y));
+                System.out.println(i + ". (" + outputCoordinate[0]+ ", " + outputCoordinate[1] + ")");
             }
         }
         else{

@@ -160,35 +160,32 @@ public class GeoTIFF extends TerrainMap {
 
 
 
-    public Coordinate coordinateConvert(Coordinate coord){
+    public double[] coordinateConvert(Coordinate coord){
 
         double getEquator = gridData.getHeight() / 2;
         double getPrimeMeridean = gridData.getWidth() / 2;
 
         //new Coordinate placeholder
-        int xCoordInt = 0;
-        int yCoordInt = 0;
+        double xLatDouble = 0;
+        double yLonDouble = 0;
+
 
         if(coord.getUnits() == "pixels") {
+
 
             //get x and y coordinate
             double xpixel = coord.getX();
             double ypixel = coord.getY();
-
-            //declare lat/long variables
-            double latitude;
-            double longitude;
 
             double pixelDistanceLatitude = ypixel - getEquator;
             double pixelDistanceLongitude = xpixel - getPrimeMeridean;
 
 
             //Viking Mosaic is 40 pixels per degree.
-            latitude = pixelDistanceLatitude / 40;
-            longitude = pixelDistanceLongitude / 40;
+            xLatDouble = pixelDistanceLatitude / 40.0;
+            yLonDouble = pixelDistanceLongitude / 40.0;
 
-            xCoordInt = (int) latitude;
-            yCoordInt = (int) longitude;
+
 
         }
 
@@ -209,8 +206,8 @@ public class GeoTIFF extends TerrainMap {
             double pixelDistanceLatitude = getEquator + latitudepixel;
             double pixelDistanceLongitude = getPrimeMeridean + longitudepixel;
 
-            xCoordInt = (int) pixelDistanceLatitude;
-            yCoordInt = (int) pixelDistanceLongitude;
+            xLatDouble = (int) pixelDistanceLatitude;
+            yLonDouble = (int) pixelDistanceLongitude;
 
 
         }
@@ -218,7 +215,8 @@ public class GeoTIFF extends TerrainMap {
             System.out.println("Invalid Coordinate type");
         }
 
-        Coordinate newCoord = new Coordinate(xCoordInt, yCoordInt);
+        double [] newCoord = {xLatDouble, yLonDouble};
+
         return newCoord;
 
     }
