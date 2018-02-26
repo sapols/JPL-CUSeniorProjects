@@ -5,6 +5,7 @@ import mars.algorithm.unlimited.*;
 import mars.algorithm.*;
 import mars.algorithm.limited.AlgorithmLimitedDijkstra;
 import mars.coordinate.Coordinate;
+import mars.out.OutputFactory;
 import mars.rover.MarsRover;
 import mars.ui.TerminalInterface;
 
@@ -22,20 +23,22 @@ public class MARS {
         Coordinate endCoord = new Coordinate(7568,1727);
         String mapPath = "src/main/resources/Phobos_Viking_Mosaic_40ppd_DLRcontrol.tif";
         //String mapPath = "src/main/resources/Phobos_Viking_Mosaic_40ppd_DLRcontrol.tif";
-        MarsRover rover = new MarsRover(6 ,startCoord,endCoord,mapPath,3);
+        MarsRover rover = new MarsRover(6 ,startCoord,endCoord,mapPath,50);
         //Algorithm algorithm = new AlgorithmGreedy(rover,"limited");
         //Algorithm algorithm = new AlgorithmUnlimitedScopeRecursive(rover);
         //Algorithm algorithm = new AlgorithmUnlimitedScopeNonrecursive(rover);
         //Algorithm algorithm = new AlgorithmLimitedScopeAStar(rover);
-        //Algorithm algorithm = new AlgorithmLimitedDijkstra(rover);
+        //Algorithm algorithm = new AlgorithmLimitedDijkstrdIDAStara(rover);
         //Algorithm algorithm = new AlgorithmUnlimitedDijkstra(rover);
-        Algorithm algorithm = new AlgorithmLimitedIDAStar(rover,"TerminalOutput");
+        //Algorithm algorithm = new AlgorithmLimitedScopeAStar(rover,"MapImageOutput");
+        Algorithm algorithm = new AlgorithmUnlimitedBestFirst(rover,"MapImageOutput");
         try {
              algorithm.findPath();
+
         } catch (Exception expectedException) {
              //assertTrue("Failed to find a route it should have",false);
         }
-
+        OutputFactory.getOutput(algorithm);
         TerminalInterface ti = new TerminalInterface();
         ti.promptUser();
     }

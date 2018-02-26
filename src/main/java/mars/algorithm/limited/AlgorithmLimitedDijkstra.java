@@ -32,6 +32,7 @@ public class AlgorithmLimitedDijkstra extends Algorithm {
         map = r.getMap();
         goal = new DijkstraNode(r.getEndPosition());
         fieldOfView = r.getFieldOfView();
+        outputClass = output;
     }
     
     public ArrayList<Coordinate> getPath() {

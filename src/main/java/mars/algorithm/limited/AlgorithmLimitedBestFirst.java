@@ -30,6 +30,7 @@ public class AlgorithmLimitedBestFirst extends Algorithm {
         map = rover.getMap();
         goal = r.getEndPosition();
         fieldOfView = r.getFieldOfView();
+        outputClass = output;
     }
 
     /*
@@ -79,7 +80,6 @@ public class AlgorithmLimitedBestFirst extends Algorithm {
                     backtrackDistance++;
                 }
             }
-
             thisCoord = coords.get(coords.size() - 1);
             System.out.println((thisCoord.getX()) + "," + (thisCoord.getY())); //debug
         }
@@ -143,6 +143,39 @@ public class AlgorithmLimitedBestFirst extends Algorithm {
     }
 
     //------------------Helper_methods---------------------------------------------------
+
+    /**
+     * finds angle between two coordinates
+     * @param current first coordinate
+     * @param goal second coordinate
+     * @return angle to second coordinate (0 = east)
+     */
+    public double getAngleToGoal(Coordinate current, Coordinate goal) {
+        int xdiff = goal.getX() - current.getX();
+        int ydiff = goal.getY() - current.getY();
+        double result = Math.toDegrees(Math.atan2(ydiff,xdiff));
+        while(result < 0){result += 360;}
+        return result;
+    }
+
+    /**
+     * boolean to check if a given coordinate is unique and in range of what the rover has seen by this point
+     * @param target coord to check
+     * @return boolean if acceptable
+     */
+    public boolean checkIfViewed(Coordinate target){
+        boolean viewed = false;
+        for(BestFirstCoordinate item : path){ //for each item in the overall path (not just for the iteration!)
+            if(target.equals(item)){ //if we're considering a coord that's unvisited for the iteration but not the overall run, then fail
+                return false; //no repeats allowed
+            }
+            if(getDistanceToPoint(target,item) <= fieldOfView){ //and if we've seen this coord, it's acceptable
+                viewed = true; //we now know it's in range, but still have to check for repeats
+            }
+        }
+        return viewed; //if it's in range, true, if not, false
+    }
+
     /**
      * Given a coordinate, return all the neighboring coordinates
      * which can be visited by this algorithm's rover (meaning that
@@ -176,23 +209,7 @@ public class AlgorithmLimitedBestFirst extends Algorithm {
         return neighbors;
     }
 
-    /**
-     * boolean to check if a given coordinate is unique and in range of what the rover has seen by this point
-     * @param target coord to check
-     * @return boolean if acceptable
-     */
-    public boolean checkIfViewed(Coordinate target){
-        boolean viewed = false;
-        for(BestFirstCoordinate item : path){ //for each item in the overall path (not just for the iteration!)
-            if(target.equals(item)){ //if we're considering a coord that's unvisited for the iteration but not the overall run, then fail
-                return false; //no repeats allowed
-            }
-            if(getDistanceToPoint(target,item) <= fieldOfView){ //and if we've seen this coord, it's acceptable
-                viewed = true; //we now know it's in range, but still have to check for repeats
-            }
-        }
-        return viewed; //if it's in range, true, if not, false
-    }
+
 
     /**
      * Heuristic function for BestFirst implementing diagonal distance between two nodes
@@ -211,32 +228,20 @@ public class AlgorithmLimitedBestFirst extends Algorithm {
         double goalXPos = goal.getX();
         double goalYPos = goal.getY();
 
-        return Math.max(Math.abs(currentXPos - goalXPos) , Math.abs(currentYPos - goalYPos));
+        return (Math.abs(currentXPos - goalXPos) + Math.abs(currentYPos - goalYPos));
     }
 
     private BestFirstCoordinate getLowestFScore(ArrayList<BestFirstCoordinate> list) {
         BestFirstCoordinate lowest = list.get(0);
         for (BestFirstCoordinate n : list) {
-            if (estimateHeuristic(n, goal) < estimateHeuristic(lowest, goal)) {
+            if (estimateHeuristic(n, interimGoal) < estimateHeuristic(lowest, interimGoal)) {
                 lowest = n;
             }
         }
         return lowest;
     }
 
-    /**
-     * finds angle between two coordinates
-     * @param current first coordinate
-     * @param goal second coordinate
-     * @return angle to second coordinate (0 = east)
-     */
-    public double getAngleToGoal(Coordinate current, Coordinate goal) {
-        int xdiff = goal.getX() - current.getX();
-        int ydiff = goal.getY() - current.getY();
-        double result = Math.toDegrees(Math.atan2(ydiff,xdiff));
-        while(result < 0){result += 360;}
-        return result;
-    }
+
 
     /**
      * Given a coordinate, calculate its euclidean distance to the rover's goal coordinate

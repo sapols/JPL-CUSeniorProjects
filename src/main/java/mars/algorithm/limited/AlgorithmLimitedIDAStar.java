@@ -105,10 +105,10 @@ public class AlgorithmLimitedIDAStar extends Algorithm {
      */
     public ArrayList<AStarCoordinate> IDAStar(AStarCoordinate thisNode, Coordinate currentGoal) throws Exception {
         ArrayList<AStarCoordinate> currentPath = constructPath(thisNode);
-        if (coordIsInSet(thisNode, currentPath.subList(0,currentPath.size()-1))){
+        /*if (coordIsInSet(thisNode, currentPath.subList(0,currentPath.size()-1))){
             throw new Exception("WARNING: A path to the goal could not be found.");
             // no loops
-        }
+        }*/
         if (thisNode == null) {
             if(getDistanceToPoint(bestNode,interimGoal) < (fieldOfView-1)){
                 return constructPath(bestNode);

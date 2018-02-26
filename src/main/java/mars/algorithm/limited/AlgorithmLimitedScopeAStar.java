@@ -89,7 +89,7 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
                 }else{
                     //System.out.printf("bt"); //backtrack by one. it can't visit thisCoord anymore since it already visited it
                     backtrackDistance++; //first backtrackDistance to get the next backtrack
-                    backCoord = coords.get(coords.size()-1-backtrackDistance);
+                    backCoord = coords.get(coords.size() - 1 - backtrackDistance);
                     coords.add(backCoord); //add the backtrack coordinate as the next place.
                     backtrackDistance++; //and a second one to account for the new entry to the overall path
                 }
