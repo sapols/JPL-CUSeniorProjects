@@ -34,6 +34,18 @@ public class AlgorithmIDAStar extends Algorithm {
     }
 
     /**
+     * Second constructor for an AlgorithmIDAStar which defaults output to "TerminalOutput".
+     *
+     * @param r The rover
+     */
+    public AlgorithmIDAStar(MarsRover r) {
+        rover = r;
+        map = r.getMap();
+        goal = r.getEndPosition();
+        outputClass = "TerminalOutput";
+    }
+
+    /**
      * @return fullPath the path constructed by findPath method
      */
     public ArrayList<? extends Coordinate> getPath() { return fullPath; }

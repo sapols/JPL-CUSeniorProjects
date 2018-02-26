@@ -24,6 +24,17 @@ public class Dijkstra extends Algorithm {
         map = rover.getMap();
         outputClass = output;
     }
+
+    /**
+     * Second constructor for an Dijkstra which defaults output to "TerminalOutput".
+     *
+     * @param r The rover
+     */
+    public Dijkstra(MarsRover r) {
+        rover = r;
+        map = rover.getMap();
+        outputClass = "TerminalOutput";
+    }
     
     public ArrayList<Coordinate> getPath() {
         return fullPath;
