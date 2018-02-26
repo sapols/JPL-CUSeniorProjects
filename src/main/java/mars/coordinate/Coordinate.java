@@ -20,6 +20,26 @@ public class Coordinate {
         this.y = y;
     }
 
+//    public Coordinate(double lon, double lat) {
+//
+//        double latitudepixel;
+//        double longitudepixel;
+//
+//
+//        double getEquator =
+//
+//        //Viking Mosaic is 40 pixels per degree
+//        latitudepixel = lat * 40;
+//        longitudepixel = lon * 40;
+//
+//        double pixelDistanceLatitude = getEquator + latitudepixel;
+//        double pixelDistanceLongitude = getPrimeMeridean + longitudepixel;
+//
+//
+//        this.x = x;
+//        this.y = y;
+//    }
+
     //----Getter/Setter Methods----------------------------------------------------------------------------------------
 
     public int getX() {

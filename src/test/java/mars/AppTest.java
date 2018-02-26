@@ -119,9 +119,8 @@ public class AppTest extends TestCase {
 
     public void testpixeltoLatLong() throws Exception{
         Coordinate currentCoord = new Coordinate(11000, 5000);
-
         GeoTIFF newMap = new GeoTIFF();
-        newMap.initMap("src/main/resources/Phobos_Viking_Mosaic_40ppd_DLRcontrol.tif");
+        newMap.initMap("src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
         Coordinate degrees = newMap.coordinateConvert(currentCoord);
         try{
             assertTrue(degrees.getX() != 0 && degrees.getY() != 0);
