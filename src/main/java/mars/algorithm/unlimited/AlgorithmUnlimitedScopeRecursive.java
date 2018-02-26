@@ -42,6 +42,22 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
     }
 
     /**
+     * Second constructor for an AlgorithmUnlimitedScopeRecursive which defaults output to "TerminalOutput".
+     * rover - the rover being input
+     * map - the map being used
+     * goal - the end position the rover needs to get to
+     *
+     * @param r The rover
+     */
+    public AlgorithmUnlimitedScopeRecursive(MarsRover r) {
+        rover = r;
+        map = r.getMap();
+        goal = r.getEndPosition();
+        outputClass = "TerminalOutput";
+        targetCoord = new AStarCoordinate(rover.getStartPosition());
+    }
+
+    /**
      * Method which starts this search algorithm.
      */
     public void findPath() throws Exception {

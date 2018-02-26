@@ -28,6 +28,18 @@ public class AlgorithmUnlimitedBestFirst extends Algorithm {
         outputClass = output;
     }
 
+    /**
+     * Second constructor for an AlgorithmUnlimitedScopeNonRecursive which defaults output to "TerminalOutput".
+     *
+     * @param r The rover
+     */
+    public AlgorithmUnlimitedBestFirst(MarsRover r) {
+        rover = r;
+        map = rover.getMap();
+        goal = r.getEndPosition();
+        outputClass = "TerminalOutput";
+    }
+
     /*
      *   Return path
      */

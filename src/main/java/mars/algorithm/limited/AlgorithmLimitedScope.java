@@ -17,7 +17,7 @@ public class AlgorithmLimitedScope extends Algorithm {
     ArrayList<Coordinate> path = new ArrayList<Coordinate>();
 
     /**
-     * Default constructor for an AlgorithmUnlimitedScopeRecursive.
+     * Default constructor for an AlgorithmLimitedScopeRecursive.
      *
      * @param r The rover
      * @param output The output type specified during this algorithm's instantiation
@@ -26,6 +26,17 @@ public class AlgorithmLimitedScope extends Algorithm {
         rover = r;
         map = r.getMap();
         outputClass = output;
+    }
+
+    /**
+     * Second constructor for an AlgorithmLimitedScopeRecursive which defaults output to TerminalOutput.
+     *
+     * @param r The rover
+     */
+    public AlgorithmLimitedScope(MarsRover r) {
+        rover = r;
+        map = r.getMap();
+        outputClass = "TerminalOutput";
     }
 
     /**

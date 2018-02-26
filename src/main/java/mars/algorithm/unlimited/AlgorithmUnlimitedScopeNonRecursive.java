@@ -29,6 +29,17 @@ public class AlgorithmUnlimitedScopeNonRecursive extends Algorithm {
         outputClass = output;
     }
 
+    /**
+     * Second constructor for an AlgorithmUnlimitedScopeNonRecursive which defaults output to "TerminalOutput".
+     *
+     * @param r The rover
+     */
+    public AlgorithmUnlimitedScopeNonRecursive(MarsRover r) {
+        rover = r;
+        map = rover.getMap();
+        outputClass = "TerminalOutput";
+    }
+
     public ArrayList<Coordinate> getPath() {
         return fullPath;
     }

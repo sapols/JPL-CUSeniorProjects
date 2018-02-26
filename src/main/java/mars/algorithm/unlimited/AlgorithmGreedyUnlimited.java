@@ -22,7 +22,6 @@ public class AlgorithmGreedyUnlimited extends Algorithm {
 
     ArrayList<GreedyCoordinate> path = new ArrayList<GreedyCoordinate>();
     Coordinate goal;
-    //String mode;
 
     /**
      * Default constructor for an AlgorithmGreedy.
@@ -35,6 +34,18 @@ public class AlgorithmGreedyUnlimited extends Algorithm {
         map = r.getMap();
         goal = r.getEndPosition();
         outputClass = output;
+    }
+
+    /**
+     * Second constructor for an AlgorithmGreedy which defaults output to "TerminalOutput".
+     *
+     * @param r The rover
+     */
+    public AlgorithmGreedyUnlimited(MarsRover r) {
+        rover = r;
+        map = r.getMap();
+        goal = r.getEndPosition();
+        outputClass = "TerminalOutput";
     }
 
     /*
