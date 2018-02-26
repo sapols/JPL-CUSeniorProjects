@@ -18,6 +18,7 @@ public class TerminalOutput extends Output {
      */
     public TerminalOutput(Algorithm algorithm) {
         resultList = algorithm.getPath();
+        coordinateType = algorithm.rover.getcoordType();
         writeToOutput();
     }
 
@@ -37,13 +38,13 @@ public class TerminalOutput extends Output {
     public void writeToOutput() {
         System.out.println("\nOutput path: ");
         System.out.println("------------");
-        boolean convertFlag = false;
-        if(convertFlag){
+
+        if(coordinateType.equals("L") || coordinateType.equals("l")){
             GeoTIFF convert = new GeoTIFF();
             for (int i = 1; i <= resultList.size(); i++) {
                 int x = resultList.get(i-1).getX();
                 int y = resultList.get(i-1).getY();
-                Coordinate outputCoordinate = convert.coordinatConvert(new Coordinate(x, y));
+                Coordinate outputCoordinate = convert.coordinateConvert(new Coordinate(x, y));
                 System.out.println(i + ". (" + outputCoordinate.getX() + ", " + outputCoordinate.getY() + ")");
             }
         }

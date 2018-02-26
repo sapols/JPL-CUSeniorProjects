@@ -160,7 +160,7 @@ public class GeoTIFF extends TerrainMap {
 
 
 
-    public Coordinate coordinatConvert(Coordinate coord){
+    public Coordinate coordinateConvert(Coordinate coord){
 
         double getEquator = gridData.getHeight() / 2;
         double getPrimeMeridean = gridData.getWidth() / 2;

@@ -34,7 +34,8 @@ public class AppTest extends TestCase {
     public void testRoverInitialize() {
         Coordinate starts = new Coordinate(10,10);
         Coordinate ends = new Coordinate(20, 20);
-        MarsRover newRover = new MarsRover(0,starts,ends,"");
+        String coordType = "L";
+        MarsRover newRover = new MarsRover(0,coordType,starts,ends,"");
         assertEquals(10,(newRover.getStartPosition()).getX());
     }
 
@@ -50,7 +51,8 @@ public class AppTest extends TestCase {
     public void testRoverGetSlopeZero() throws Exception {
         Coordinate starts = new Coordinate(10,10);
         Coordinate ends = new Coordinate(20, 20);
-        MarsRover newRover = new MarsRover(0,starts,ends,"src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
+        String coordType = "L";
+        MarsRover newRover = new MarsRover(0,coordType,starts,ends,"src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
         assertEquals(0.,newRover.getSlope(20,20,21,20));
     }
 
@@ -58,7 +60,8 @@ public class AppTest extends TestCase {
     public void testRoverTestSlopeValid() throws Exception {
         Coordinate starts = new Coordinate(10,10);
         Coordinate ends = new Coordinate(20, 20);
-        MarsRover newRover = new MarsRover(0,starts,ends,"src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
+        String coordType = "L";
+        MarsRover newRover = new MarsRover(0,coordType,starts,ends,"src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
 
         double maxSlope = 0.5;
         Coordinate point1 = new Coordinate(20, 20);
@@ -119,7 +122,7 @@ public class AppTest extends TestCase {
 
         GeoTIFF newMap = new GeoTIFF();
         newMap.initMap("src/main/resources/Phobos_Viking_Mosaic_40ppd_DLRcontrol.tif");
-        Coordinate degrees = newMap.coordinatConvert(currentCoord);
+        Coordinate degrees = newMap.coordinateConvert(currentCoord);
         try{
             assertTrue(degrees.getX() != 0 && degrees.getY() != 0);
         } catch (Exception e){

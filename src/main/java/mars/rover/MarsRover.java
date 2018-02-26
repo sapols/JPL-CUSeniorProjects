@@ -15,10 +15,11 @@ public class MarsRover extends Rover {
      * @param startCoords the beginning X, Y position of the rover (passed in as an array).
      * @param endCoords the ending X, Y position of the rover (passed in as an array).
      */
-    public MarsRover(double slope, Coordinate startCoords, Coordinate endCoords, String mapPath) {
+    public MarsRover(double slope, String coordType, Coordinate startCoords, Coordinate endCoords, String mapPath) {
         setMaxSlope(slope);
         setCurrentPosition(startCoords);
         setStartPosition(startCoords);
+        setCoordType(coordType);
         setEndPosition(endCoords);
         try {
             map.initTif(mapPath);
@@ -36,10 +37,11 @@ public class MarsRover extends Rover {
      * @param endCoords The ending X, Y position of the rover (passed in as an array).
      * @param radius The radius of this rover's field of view
      */
-    public MarsRover(double slope, Coordinate startCoords, Coordinate endCoords, String mapPath, double radius) {
+    public MarsRover(double slope, String coordType, Coordinate startCoords, Coordinate endCoords, String mapPath, double radius) {
         setMaxSlope(slope);
         setCurrentPosition(startCoords);
         setStartPosition(startCoords);
+        setCoordType(coordType);
         setEndPosition(endCoords);
         setFieldOfView(radius);
         try {
@@ -166,6 +168,7 @@ public class MarsRover extends Rover {
     public void printSpecs() {
         System.out.println("\nThe specs of this rover: ");
         System.out.println("Max slope: " + maxSlope);
+        System.out.println("Ouput coordinates: "+ coordType);
         System.out.println("Field of view: " + ((fieldOfView==Double.MAX_VALUE) ? "Unlimited" : fieldOfView));
         System.out.println("Current position - X: " + currentPosition.getX() + ", Y: " + currentPosition.getY());
         System.out.println("Start position - X: " + startPosition.getX() + ", Y: " + startPosition.getY());
@@ -191,6 +194,10 @@ public class MarsRover extends Rover {
     public double getFieldOfView() {
         return fieldOfView;
     }
+
+    public void setCoordType(String coordinateType) { coordType = coordinateType;}
+
+    public String getcoordType(){return coordType;}
 
     public void setCurrentPosition(Coordinate position) {
         currentPosition = position;

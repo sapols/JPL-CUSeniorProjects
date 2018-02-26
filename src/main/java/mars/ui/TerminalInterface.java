@@ -25,6 +25,7 @@ public class TerminalInterface extends UserInterface {
     double slope = 0;
     Coordinate startCoords;
     Coordinate endCoords;
+    String coordType = "";
     String mapPath = "";
     String algType = ""; //used to determine limited or unlimited.
     String algorithmClass = ""; //used to instantiate the chosen algorithm by name
@@ -48,6 +49,7 @@ public class TerminalInterface extends UserInterface {
         promptForStartCoords();
         promptForEndCoords();
         promptForAlgorithm();
+        promptForCoordOutput();
         promptForOutput();
         startAlgorithm();
     }
@@ -58,9 +60,9 @@ public class TerminalInterface extends UserInterface {
     public void startAlgorithm() {
         MarsRover r;
         if (algType.equalsIgnoreCase("L"))
-            r = new MarsRover(slope, startCoords, endCoords, mapPath, fieldOfView);
+            r = new MarsRover(slope, coordType, startCoords, endCoords, mapPath, fieldOfView);
         else //algType equals "U"
-            r = new MarsRover(slope, startCoords, endCoords, mapPath);
+            r = new MarsRover(slope, coordType ,startCoords, endCoords, mapPath);
 
         Algorithm algorithm = AlgorithmFactory.getAlgorithm(algorithmClass, r, outputClass);
 
@@ -183,6 +185,26 @@ public class TerminalInterface extends UserInterface {
             scan.nextLine();
             return false;
         }
+    }
+
+    public void promptForCoordOutput(){
+        Scanner scanner = new Scanner(System.in);
+
+        while(true){
+            System.out.println("\nWould you like the output coordinates to be in (P) pixels or (L) latlong?");
+            coordType = scanner.next();
+            if(coordType.equalsIgnoreCase("P")){
+                break;
+            }
+            else if(coordType.equalsIgnoreCase("L")){
+                break;
+            }
+            else{
+                System.out.println("Warning: Enter 'P' for pixels or 'L' for latitude and longitude");
+                scanner.nextLine();
+            }
+        }
+
     }
 
     /**

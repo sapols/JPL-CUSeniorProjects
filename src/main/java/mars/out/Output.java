@@ -13,6 +13,7 @@ import java.util.*;
 public abstract class Output {
 
     List<? extends Coordinate> resultList;
+    String coordinateType;
 
     public abstract void writeToOutput() throws IOException;
 }
