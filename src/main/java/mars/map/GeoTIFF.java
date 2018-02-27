@@ -179,6 +179,11 @@ public class GeoTIFF extends TerrainMap {
             double pixelDistanceLongitude = xpixel - getPrimeMeridean;
 
 
+            /**
+             * TODO: find a method to dynamically calculate Pixels Per Degree given a GeoTiff
+             *
+              */
+
             //Viking Mosaic is 40 pixels per degree.
             xLatDouble = pixelDistanceLatitude / 40.0;
             yLonDouble = pixelDistanceLongitude / 40.0;
@@ -197,6 +202,11 @@ public class GeoTIFF extends TerrainMap {
             double latitudepixel;
             double longitudepixel;
 
+
+            /**
+             * TODO: find a method to dynamically calculate Pixels Per Degree given a GeoTiff
+             *
+             */
             //Viking Mosaic is 40 pixels per degree
             latitudepixel = latdegree * 40;
             longitudepixel = longdegree * 40;
