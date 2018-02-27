@@ -1,6 +1,5 @@
 package mars.map;
 
-import jj2000.j2k.codestream.CoordInfo;
 import org.geotools.coverage.grid.GridCoordinates2D;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -8,7 +7,6 @@ import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.geometry.DirectPosition2D;
 import mars.coordinate.*;
 
-import java.awt.image.PackedColorModel;
 import java.awt.image.Raster;
 import java.io.File;
 

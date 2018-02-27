@@ -1,6 +1,5 @@
 package mars.out;
 
-import mars.algorithm.Algorithm;
 import mars.coordinate.*;
 
 import java.io.IOException;

@@ -29,6 +29,7 @@ public class TerminalOutput extends Output {
      */
     public TerminalOutput(List<? extends Coordinate> out) {
         resultList = out;
+        coordinateType = "";
         writeToOutput();
     }
 
@@ -36,11 +37,13 @@ public class TerminalOutput extends Output {
      * Function that outputs resultList to terminal in a user-friendly format.
      */
     public void writeToOutput() {
+        GeoTIFF convert = new GeoTIFF();
+
         System.out.println("\nOutput path: ");
         System.out.println("------------");
 
         if(coordinateType.equalsIgnoreCase("L")) {
-            GeoTIFF convert = new GeoTIFF();
+
             for (int i = 1; i <= resultList.size(); i++) {
                 int x = resultList.get(i-1).getX();
                 int y = resultList.get(i-1).getY();
