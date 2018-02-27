@@ -197,7 +197,7 @@ public class MarsRover extends Rover {
 
     public void setCoordType(String coordinateType) { coordType = coordinateType;}
 
-    public String getcoordType(){return coordType;}
+    public String getCoordType(){return coordType;}
 
     public void setCurrentPosition(Coordinate position) {
         currentPosition = position;

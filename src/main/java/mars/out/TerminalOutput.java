@@ -18,7 +18,7 @@ public class TerminalOutput extends Output {
      */
     public TerminalOutput(Algorithm algorithm) {
         resultList = algorithm.getPath();
-        coordinateType = algorithm.rover.getcoordType();
+        coordinateType = algorithm.rover.getCoordType();
         writeToOutput();
     }
 
