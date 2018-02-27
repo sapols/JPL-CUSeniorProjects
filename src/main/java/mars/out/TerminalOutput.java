@@ -39,7 +39,7 @@ public class TerminalOutput extends Output {
         System.out.println("\nOutput path: ");
         System.out.println("------------");
 
-        if(coordinateType.equals("L") || coordinateType.equals("l")){
+        if(coordinateType.equalsIgnoreCase("L")) {
             GeoTIFF convert = new GeoTIFF();
             for (int i = 1; i <= resultList.size(); i++) {
                 int x = resultList.get(i-1).getX();
