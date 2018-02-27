@@ -1,6 +1,7 @@
 package mars.out;
 
 import mars.coordinate.*;
+import mars.map.GeoTIFF;
 
 import java.io.IOException;
 import java.util.*;
@@ -13,6 +14,7 @@ public abstract class Output {
 
     List<? extends Coordinate> resultList;
     String coordinateType;
+    GeoTIFF convert;
 
     public abstract void writeToOutput() throws IOException;
 }

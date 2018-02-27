@@ -19,6 +19,7 @@ public class TerminalOutput extends Output {
     public TerminalOutput(Algorithm algorithm) {
         resultList = algorithm.getPath();
         coordinateType = algorithm.rover.getCoordType();
+        convert = algorithm.rover.getMap();
         writeToOutput();
     }
 
@@ -30,6 +31,7 @@ public class TerminalOutput extends Output {
     public TerminalOutput(List<? extends Coordinate> out) {
         resultList = out;
         coordinateType = "";
+        convert = new GeoTIFF();
         writeToOutput();
     }
 
@@ -37,7 +39,6 @@ public class TerminalOutput extends Output {
      * Function that outputs resultList to terminal in a user-friendly format.
      */
     public void writeToOutput() {
-        GeoTIFF convert = new GeoTIFF();
 
         System.out.println("\nOutput path: ");
         System.out.println("------------");
