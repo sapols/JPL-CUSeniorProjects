@@ -11,6 +11,8 @@ import java.util.*;
 
 public class Dijkstra extends Algorithm {
 
+    final int BUFFER_VALUE = 25;
+
     ArrayList<Coordinate> fullPath = new ArrayList<Coordinate>();
 
     /**
@@ -66,10 +68,14 @@ public class Dijkstra extends Algorithm {
         int bufferGoalX;
         if (startX < goalX) {
             bufferStartX = startX - halfXRange;
+            bufferStartX = bufferStartX - BUFFER_VALUE < 0 ? 0 : bufferStartX - BUFFER_VALUE;
             bufferGoalX = goalX + halfXRange;
+            bufferGoalX += BUFFER_VALUE;
             if (startY < goalY) {
                 bufferStartY = startY - halfYRange;
+                bufferStartY = bufferStartY - BUFFER_VALUE < 0 ? 0 : bufferStartY - BUFFER_VALUE;
                 bufferGoalY = goalY + halfYRange;
+                bufferGoalY += BUFFER_VALUE;
                 for (int y = bufferStartY; y <= bufferGoalY; y++) {
                     for (int x = bufferStartX; x <= bufferGoalX; x++) {
                         Coordinate tmpCoordinate = new Coordinate(x, y);
@@ -82,7 +88,9 @@ public class Dijkstra extends Algorithm {
             }
             else { // startY > goalY
                 bufferStartY = startY + halfYRange;
+                bufferStartY += BUFFER_VALUE;
                 bufferGoalY = goalY - halfYRange;
+                bufferGoalY = bufferGoalY - BUFFER_VALUE < 0 ? 0 : bufferGoalY - BUFFER_VALUE;
                 for (int y = bufferGoalY; y <= bufferStartY; y++) {
                     for (int x = bufferStartX; x <= bufferGoalX; x++) {
                         Coordinate tmpCoordinate = new Coordinate(x, y);
@@ -95,13 +103,15 @@ public class Dijkstra extends Algorithm {
             }
         }
         else { // startX > goalX
-            System.out.println("2");
             bufferStartX = startX + halfXRange;
+            bufferStartX += BUFFER_VALUE;
             bufferGoalX = goalX - halfXRange;
+            bufferGoalX = bufferGoalX - BUFFER_VALUE < 0 ? 0 : bufferGoalX - BUFFER_VALUE;
             if (startY < goalY) {
-                System.out.println("3");
                 bufferStartY = startY - halfYRange;
+                bufferStartY = bufferStartY - BUFFER_VALUE < 0 ? 0 : bufferStartY - BUFFER_VALUE;
                 bufferGoalY = goalY + halfYRange;
+                bufferGoalY += BUFFER_VALUE;
                 for (int y = bufferStartY; y <= bufferGoalY; y++) {
                     for (int x = bufferGoalX; x <= bufferStartX; x++) {
                         Coordinate tmpCoordinate = new Coordinate(x, y);
@@ -114,7 +124,9 @@ public class Dijkstra extends Algorithm {
             }
             else { // startY > goalY
                 bufferStartY = startY + halfYRange;
+                bufferStartY += BUFFER_VALUE;
                 bufferGoalY = goalY - halfYRange;
+                bufferGoalY = bufferGoalY - BUFFER_VALUE < 0 ? 0 : bufferGoalY - BUFFER_VALUE;
                 for (int y = bufferGoalY; y <= bufferStartY; y++) {
                     for (int x = bufferGoalX; x <= bufferStartX; x++) {
                         Coordinate tmpCoordinate = new Coordinate(x, y);
@@ -122,7 +134,6 @@ public class Dijkstra extends Algorithm {
                         tmpNode.setDistanceFromStart(Double.POSITIVE_INFINITY);
                         tmpNode.setParent(null);
                         nodeVector.add(tmpNode);
-                        System.out.println("1");
                     }
                 }
             }
@@ -141,6 +152,7 @@ public class Dijkstra extends Algorithm {
 
             if (minNode.getPosition().getX() == Integer.MAX_VALUE) {
                 // No path found?
+                // System.out.println("INT MAX LOL");
                 break;
             }
 
@@ -163,7 +175,6 @@ public class Dijkstra extends Algorithm {
                     }
                 }
                 if (inVector) {
-                    //System.out.println("hi");
                     // If current neighbor is in the vector, we're going to get the new distance for that node,
                     // check to see if it's traversable, and if so, set distance and parent for the node.
                     double totalDist = minNode.getDistanceFromStart() + minNode.distBetween(neighborList.get(i));
@@ -176,29 +187,32 @@ public class Dijkstra extends Algorithm {
                                 if (rover.canTraverse(minNode.getPosition(), currentNode.getPosition())) {
                                     nodeVector.get(q).setDistanceFromStart(totalDist);
                                     nodeVector.get(q).setParent(minNode);
+
+                                    if (neighborList.get(i).currentIsGoal(goalNode)) {
+                                        // Goal node has been found.
+
+                                        for (int w = 0; w < nodeVector.size(); w++) {
+                                            if (nodeVector.get(w).getPosition().getX() == neighborList.get(i).getPosition().getX() &&
+                                                    nodeVector.get(w).getPosition().getY() == neighborList.get(i).getPosition().getY()) {
+                                                // Alter node within vector.
+                                                List<Coordinate> tmpList = nodeVector.get(w).constructPath();
+                                                fullPath = new ArrayList<Coordinate>(tmpList);
+                                                goalFound = true;
+                                            }
+                                        }
+                                        break;
+                                    }
                                 }
                             }
                         }
                     }
                 }
-                if (neighborList.get(i).currentIsGoal(goalNode)) {
-                    // Goal node has been found.
 
-                    for (int q = 0; q < nodeVector.size(); q++) {
-                        if (nodeVector.get(q).getPosition().getX() == neighborList.get(i).getPosition().getX() &&
-                                nodeVector.get(q).getPosition().getY() == neighborList.get(i).getPosition().getY()) {
-                            // Alter node within vector.
-                            List<Coordinate> tmpList = nodeVector.get(q).constructPath();
-                            fullPath = new ArrayList<Coordinate>(tmpList);
-                            goalFound = true;
-                        }
-                    }
-
-                }
             }
             if (goalFound) {
                 break;
             }
+            // System.out.println(nodeVector.size());
         }
         Collections.reverse(fullPath);
 
