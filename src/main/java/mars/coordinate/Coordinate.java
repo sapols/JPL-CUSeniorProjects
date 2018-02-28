@@ -20,13 +20,6 @@ public class Coordinate {
         this.y = y;
     }
 
-    public Coordinate(double lon, double lat) {
-
-
-
-        this.x = x;
-        this.y = y;
-    }
 
     //----Getter/Setter Methods----------------------------------------------------------------------------------------
 

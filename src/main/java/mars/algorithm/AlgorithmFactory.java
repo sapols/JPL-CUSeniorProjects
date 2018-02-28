@@ -41,6 +41,9 @@ public class AlgorithmFactory {
         else if (algorithmClass.equals("AlgorithmUnlimitedScopeRecursive")) {
             return new AlgorithmUnlimitedScopeRecursive(rover, outputClass);
         }
+        else if (algorithmClass.equals("BreadthFirstSearch")){
+            return new BreadthFirstSearch(rover, outputClass);
+        }
         else  {
             return new Dijkstra(rover, outputClass); //last one has to be in "else" to satisfy Java
         }
