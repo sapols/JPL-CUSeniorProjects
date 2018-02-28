@@ -20,6 +20,14 @@ public class Coordinate {
         this.y = y;
     }
 
+    public Coordinate(double lon, double lat) {
+
+
+
+        this.x = x;
+        this.y = y;
+    }
+
     //----Getter/Setter Methods----------------------------------------------------------------------------------------
 
     public int getX() {
@@ -38,9 +46,7 @@ public class Coordinate {
         this.y = y;
     }
 
-    public String getUnits() {
-        return units;
-    }
+    public String getUnits() { return units; }
 
     public boolean equals(Coordinate other) {
         return ((other.getX()==this.getX()) && (other.getY()==this.getY()));
