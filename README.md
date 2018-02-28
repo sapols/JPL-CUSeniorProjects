@@ -33,15 +33,23 @@ Compatible elevation map formats include:
 | Format    | Accepted Extension(s) |
 | --------- | --------------------- |
 | GeoTIFF   | .tiff, .tif           |
- 
-Available algorithms include:
+
+Available maps include:
+
+| Map Names                                  | Prompt Key  | Description           |
+| -----------------------------------------  | ----------- | ----------------------|
+| Mars_MGS_MOLA_DEM_mosaic_global_463m.tif   | (1)         | 128 Pixels Per Degree |
+| Phobos_ME_HRSC_DEM_Global_2ppd.tiff        | (2)         | 2 Pixels Per Degree   |
+| Phobos_Viking_Mosaic_40ppd_DLRcontrol.tif  | (3)         | 40 Pixels Per Degree  |
+
+Available algorithm types include:
 
 | Algorithm Type  | Prompt Key | Description                                                                               |
 | --------------- | ---------- | ----------------------------------------------------------------------------------------- |
 | Unlimited scope | U          | Navigates from start to goal with perfect information with regards to the elevation map.  |
 | Limited scope   | L          | Navigates from start to goal with information gathered as it traverses the elevation map. |
  
-This information can be provided to the utility by simply running it, and following the prompts.
+Available algorithms include:
 
 | Unlimited Algorithms| Prompt Key | Description                                                                               |
 | ------------------- | ---------- | ----------------------------------------------------------------------------------------- |
@@ -53,8 +61,6 @@ This information can be provided to the utility by simply running it, and follow
 | A* (Recursive)      | (6)        | Navigates from start to goal with information gathered as it traverses the elevation map. | 
 | Dijkstra            | (7)        | Navigates from start to goal with information gathered as it traverses the elevation map. |
 
-This information can be provided to the utility by simply running it, and following the prompts.
-
 | Limited Algorithms  | Prompt Key | Description                                                                               |
 | ------------------- | ---------- | ----------------------------------------------------------------------------------------- |
 | Greedy              | (1)        | Navigates from start to goal with perfect information with regards to the elevation map.  |
@@ -65,14 +71,14 @@ This information can be provided to the utility by simply running it, and follow
 | A* (Recursive)      | (6)        | Navigates from start to goal with information gathered as it traverses the elevation map. | 
 | Dijkstra            | (7)        | Navigates from start to goal with information gathered as it traverses the elevation map. |
 
-This information can be provided to the utility by simply running it, and following the prompts.
+Available output coordinate types include:
 
 | Coordinate Type| Prompt Key | Description                                                                                |
 | -------------- | ---------- | ------------------------------------------------------------------------------------------ |
 | Pixel          | P          | Outputs the rover's path from start to goal coordinate in pixels.                          |
 | Lat/Lon        | L          | Outputs the rover's path from start to goal coordinate in latitude and longitude.          |
 
-This information can be provided to the utiltity by simply running it, and following the prompts. 
+Available output options include:
 
 | Output Type| Prompt Key | Description                                                                                    |
 | -------------- | ---------- | ------------------------------------------------------------------------------------------ |
