@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Class which implements the path-finding algorithm without a limited field of view
  */
-public class BreadthFirstSearch extends Algorithm {
+public class AlgorithmUnlimitedBreadthFirstSearch extends Algorithm {
 
 	ArrayList<Coordinate> fullPath = new ArrayList<Coordinate>();
 
@@ -25,7 +25,7 @@ public class BreadthFirstSearch extends Algorithm {
 	 * @param r The rover
 	 * @param output The output type specified during this algorithm's instantiation
 	 */
-	public BreadthFirstSearch(MarsRover r, String output) {
+	public AlgorithmUnlimitedBreadthFirstSearch(MarsRover r, String output) {
 		rover = r;
 		map = rover.getMap();
 		outputClass = output;
@@ -36,7 +36,7 @@ public class BreadthFirstSearch extends Algorithm {
 	 *
 	 * @param r The rover
 	 */
-	public BreadthFirstSearch(MarsRover r) {
+	public AlgorithmUnlimitedBreadthFirstSearch(MarsRover r) {
 		rover = r;
 		map = rover.getMap();
 		outputClass = "TerminalOutput";
