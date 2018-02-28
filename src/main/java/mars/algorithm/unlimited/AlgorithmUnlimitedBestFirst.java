@@ -40,7 +40,7 @@ public class AlgorithmUnlimitedBestFirst extends Algorithm {
     /*
      * Implementation of Best First
      */
-    public void findPath() {
+    public void findPath() throws Exception {
         BestFirstCoordinate startPosition = new BestFirstCoordinate(rover.getStartPosition());
         BestFirstCoordinate endPosition = new BestFirstCoordinate(rover.getEndPosition());
 
@@ -52,10 +52,13 @@ public class AlgorithmUnlimitedBestFirst extends Algorithm {
         BestFirstCoordinate current;
         ArrayList<BestFirstCoordinate> neighbors = new ArrayList<BestFirstCoordinate>();
 
+        boolean foundSolution = false;
+
         while(! open.isEmpty()){
             current = getLowestFScore(open);
             if (current.equals(goal)) { //if we found the goal
                 //No-op. We're done.
+                foundSolution = true;
                 break;
             }
             closed.add(current);
@@ -84,7 +87,7 @@ public class AlgorithmUnlimitedBestFirst extends Algorithm {
 
 
         }
-
+        if (!foundSolution) throw new Exception("WARNING: A path to the goal could not be found.");
     }
 
     //------------------Helper_methods---------------------------------------------------

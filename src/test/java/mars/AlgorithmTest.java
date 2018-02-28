@@ -193,6 +193,38 @@ public class AlgorithmTest extends TestCase {
         tryAlgorithm(algorithm,false);
     }
 
+    //Test if algorithm can complete a trivial route
+    public void testAstarAlgorithmUnlimitedNonRecursiveFlatCase() throws Exception{
+        Coordinate startCoord = new Coordinate(10,10);
+        Coordinate endCoord = new Coordinate(10,20);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(1,startCoord,endCoord,mapPath);
+        Algorithm algorithm = new AlgorithmUnlimitedScopeNonRecursive(rover, "TerminalOutput");
+        tryAlgorithm(algorithm,true);
+    }
+
+    //Test that algorithm fails with an impossible route
+    public void testAstarAlgorithmUnlimitedNonRecursiveFailure() throws Exception {
+        Coordinate startCoord = new Coordinate(0, 0); //this is on an island in the map that the rover can't escape
+        Coordinate endCoord = new Coordinate(-1, -1);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(0, startCoord, endCoord, mapPath);
+        Algorithm algorithm = new AlgorithmUnlimitedScopeNonRecursive(rover, "TerminalOutput");
+        tryAlgorithm(algorithm, false);
+    }
+
+    // Tests for Dummy Algorithm
+
+    //Test if algorithm runs
+    public void testDummyAlgorithm() throws Exception{
+        Coordinate startCoord = new Coordinate(10,10);
+        Coordinate endCoord = new Coordinate(10,20);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(1,startCoord,endCoord,mapPath);
+        Algorithm algorithm = new AlgorithmLimitedScope(rover, "TerminalOutput");
+        tryAlgorithm(algorithm,true);
+    }
+
     // Tests for AlgorithmGreedy
 
     //Test if algorithm can complete a trivial route
@@ -324,6 +356,180 @@ public class AlgorithmTest extends TestCase {
                 assertTrue("Path points too far from each other", false);
             }
         }
+    }
+
+    // Tests for AlgorithmIDAStar Limited
+
+    //Test if algorithm can complete a trivial route
+    public void testIDAStarAlgorithmLimitedFlatCase() throws Exception{
+        Coordinate startCoord = new Coordinate(10,10);
+        Coordinate endCoord = new Coordinate(10,20);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(1,startCoord,endCoord,mapPath,3);
+        Algorithm algorithm = new AlgorithmLimitedIDAStar(rover, "TerminalOutput");
+        tryAlgorithm(algorithm,true);
+    }
+
+    /*
+    //Test if algorithm can handle a more complex route
+    public void testIDAStarAlgorithmLimitedSlopedCase() throws Exception{
+        Coordinate startCoord = new Coordinate(538,191);
+        Coordinate endCoord = new Coordinate(208,210);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(45,startCoord,endCoord,mapPath,3);
+        Algorithm algorithm = new AlgorithmLimitedIDAStar(rover, "TerminalOutput");
+        tryAlgorithm(algorithm,true);
+    }
+
+    //Test if algorithm doesn't skip over points and produces a valid route
+    public void testIDAStarAlgorithmLimitedValidRoute() throws Exception{
+        Coordinate startCoord = new Coordinate(538,191);
+        Coordinate endCoord = new Coordinate(208,210);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(45,startCoord,endCoord,mapPath,3);
+        Algorithm algorithm = new AlgorithmLimitedIDAStar(rover, "TerminalOutput");
+        ArrayList<? extends Coordinate> out = tryAlgorithm(algorithm,true);
+        Coordinate oldItem;
+        Coordinate item = startCoord;
+        for (Coordinate aPath : out) { //foreach coordinate in list
+            oldItem = item;
+            item = aPath;
+            int diff = abs(oldItem.getX() - item.getX()) + abs(oldItem.getY() - item.getY());
+            if (diff > 2) {
+                assertTrue("Path points too far from each other", false);
+            }
+        }
+    }
+    */
+
+    // Tests for AlgorithmLimitedBestFirst
+
+    //Test if algorithm can complete a trivial route
+    public void testLimitedBestFirstAlgorithmFlatCase() throws Exception{
+        Coordinate startCoord = new Coordinate(10,10);
+        Coordinate endCoord = new Coordinate(10,20);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(1,startCoord,endCoord,mapPath,3);
+        Algorithm algorithm = new AlgorithmLimitedBestFirst(rover, "TerminalOutput");
+        tryAlgorithm(algorithm,true);
+    }
+
+    //Test if algorithm can handle a more complex route
+    public void testLimitedBestFirstAlgorithmSlopedCase() throws Exception{
+        Coordinate startCoord = new Coordinate(538,191);
+        Coordinate endCoord = new Coordinate(208,210);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(45,startCoord,endCoord,mapPath,3);
+        Algorithm algorithm = new AlgorithmLimitedBestFirst(rover, "TerminalOutput");
+        tryAlgorithm(algorithm,true);
+    }
+
+    //Test if algorithm doesn't skip over points and produces a valid route
+    public void testLimitedBestFirstAlgorithmValidRoute() throws Exception{
+        Coordinate startCoord = new Coordinate(538,191);
+        Coordinate endCoord = new Coordinate(208,210);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(45,startCoord,endCoord,mapPath,3);
+        Algorithm algorithm = new AlgorithmLimitedBestFirst(rover, "TerminalOutput");
+        ArrayList<? extends Coordinate> out = tryAlgorithm(algorithm,true);
+        Coordinate oldItem;
+        Coordinate item = startCoord;
+        for (Coordinate aPath : out) { //foreach coordinate in list
+            oldItem = item;
+            item = aPath;
+            int diff = abs(oldItem.getX() - item.getX()) + abs(oldItem.getY() - item.getY());
+            if (diff > 2) {
+                assertTrue("Path points too far from each other", false);
+            }
+        }
+    }
+
+    //Test if unlimited algorithm does not backtrack
+    public void testLimitedBestFirstAlgorithmNoBacktrack() throws Exception{
+        Coordinate startCoord = new Coordinate(538,191);
+        Coordinate endCoord = new Coordinate(208,210);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(45,startCoord,endCoord,mapPath,3);
+        Algorithm algorithm = new AlgorithmLimitedBestFirst(rover,"TerminalOutput");
+        ArrayList<? extends Coordinate> path = tryAlgorithm(algorithm,true);
+        Set<Coordinate> pathSet = new HashSet<Coordinate>(path);
+        boolean check = path.size() == pathSet.size();
+        assertTrue("Path has duplicates",check);
+    }
+
+    //Test that algorithm fails with an impossible route
+    public void testLimitedBestFirstAlgorithmFailure() throws Exception{
+        Coordinate startCoord = new Coordinate(0,0); //this is on an island in the map that the rover can't escape
+        Coordinate endCoord = new Coordinate(-5,-5);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(0,startCoord,endCoord,mapPath,3);
+        Algorithm algorithm = new AlgorithmLimitedBestFirst(rover, "TerminalOutput");
+        tryAlgorithm(algorithm,false);
+    }
+
+    // Tests for AlgorithmUnlimitedBestFirst
+
+    //Test if algorithm can complete a trivial route
+    public void testUnlimitedBestFirstAlgorithmFlatCase() throws Exception{
+        Coordinate startCoord = new Coordinate(10,10);
+        Coordinate endCoord = new Coordinate(10,20);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(1,startCoord,endCoord,mapPath,3);
+        Algorithm algorithm = new AlgorithmUnlimitedBestFirst(rover, "TerminalOutput");
+        tryAlgorithm(algorithm,true);
+    }
+
+    //Test if algorithm can handle a more complex route
+    public void testUnlimitedBestFirstAlgorithmSlopedCase() throws Exception{
+        Coordinate startCoord = new Coordinate(538,191);
+        Coordinate endCoord = new Coordinate(208,210);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(45,startCoord,endCoord,mapPath,3);
+        Algorithm algorithm = new AlgorithmUnlimitedBestFirst(rover, "TerminalOutput");
+        tryAlgorithm(algorithm,true);
+    }
+
+    //Test if algorithm doesn't skip over points and produces a valid route
+    public void testUnlimitedBestFirstAlgorithmValidRoute() throws Exception{
+        Coordinate startCoord = new Coordinate(538,191);
+        Coordinate endCoord = new Coordinate(208,210);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(45,startCoord,endCoord,mapPath,3);
+        Algorithm algorithm = new AlgorithmUnlimitedBestFirst(rover, "TerminalOutput");
+        ArrayList<? extends Coordinate> out = tryAlgorithm(algorithm,true);
+        Coordinate oldItem;
+        Coordinate item = startCoord;
+        for (Coordinate aPath : out) { //foreach coordinate in list
+            oldItem = item;
+            item = aPath;
+            int diff = abs(oldItem.getX() - item.getX()) + abs(oldItem.getY() - item.getY());
+            if (diff > 2) {
+                assertTrue("Path points too far from each other", false);
+            }
+        }
+    }
+
+    //Test if unlimited algorithm does not backtrack
+    public void testUnlimitedBestFirstAlgorithmNoBacktrack() throws Exception{
+        Coordinate startCoord = new Coordinate(538,191);
+        Coordinate endCoord = new Coordinate(208,210);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(45,startCoord,endCoord,mapPath);
+        Algorithm algorithm = new AlgorithmUnlimitedBestFirst(rover,"TerminalOutput");
+        ArrayList<? extends Coordinate> path = tryAlgorithm(algorithm,true);
+        Set<Coordinate> pathSet = new HashSet<Coordinate>(path);
+        boolean check = path.size() == pathSet.size();
+        assertTrue("Path has duplicates",check);
+    }
+
+    //Test that algorithm fails with an impossible route
+    public void testUnlimitedBestFirstAlgorithmFailure() throws Exception{
+        Coordinate startCoord = new Coordinate(0,0); //this is on an island in the map that the rover can't escape
+        Coordinate endCoord = new Coordinate(-5,-5);
+        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
+        MarsRover rover = new MarsRover(0,startCoord,endCoord,mapPath);
+        Algorithm algorithm = new AlgorithmUnlimitedBestFirst(rover, "TerminalOutput");
+        tryAlgorithm(algorithm,false);
     }
 
     /*
