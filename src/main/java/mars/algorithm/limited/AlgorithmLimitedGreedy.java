@@ -37,6 +37,18 @@ public class AlgorithmLimitedGreedy extends Algorithm {
         outputClass = output;
     }
 
+    /**
+     * Second constructor for an AlgorithmGreedy which defaults output to TerminalOutput.
+     *
+     * @param r The rover
+     */
+    public AlgorithmLimitedGreedy(MarsRover r) {
+        rover = r;
+        map = r.getMap();
+        goal = r.getEndPosition();
+        outputClass = "TerminalOutput";
+    }
+
     /*
      * Method which starts this search algorithm.
      */

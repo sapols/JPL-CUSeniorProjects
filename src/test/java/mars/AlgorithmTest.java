@@ -6,8 +6,6 @@ import junit.framework.TestSuite;
 import mars.algorithm.*;
 import mars.algorithm.limited.*;
 import mars.algorithm.unlimited.*;
-import mars.algorithm.limited.AlgorithmLimitedScopeAStar;
-import mars.algorithm.unlimited.AlgorithmGreedyUnlimited;
 import mars.coordinate.Coordinate;
 import mars.rover.MarsRover;
 
