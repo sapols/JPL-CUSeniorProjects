@@ -40,6 +40,23 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
     }
 
     /**
+     * Second constructor for an AlgorithmLimitedScopeAStar which defaults output to "TerminalOutput".
+     * rover - the rover being input
+     * map - the map being used
+     * goal - the end position the rover needs to get to
+     * fieldOfView - field of view of rover
+     *
+     * @param r The rover
+     */
+    public AlgorithmLimitedScopeAStar(MarsRover r) {
+        rover = r;
+        map = r.getMap();
+        goal = r.getEndPosition();
+        fieldOfView = r.getFieldOfView();
+        outputClass = "TerminalOutput";
+    }
+
+    /**
      * Method which starts this search algorithm.
      */
     public void findPath() throws Exception {

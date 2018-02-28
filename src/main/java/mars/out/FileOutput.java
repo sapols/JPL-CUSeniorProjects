@@ -23,6 +23,7 @@ public class FileOutput extends Output {
      */
     public FileOutput(Algorithm algorithm) throws IOException {
         resultList = algorithm.getPath();
+        coordinateType = algorithm.rover.getCoordType();
         writer = new FileWriter(new File("MARS_output.csv"));
         writeToOutput();
     }
