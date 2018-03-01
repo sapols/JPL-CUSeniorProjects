@@ -4,10 +4,8 @@ import mars.algorithm.Algorithm;
 import mars.coordinate.Coordinate;
 import mars.rover.MarsRover;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.lang.reflect.Array;
+import java.util.*;
 
 
 /**
@@ -16,6 +14,9 @@ import java.util.List;
 public class AlgorithmLimitedBreadthFirstSearch extends Algorithm {
 
 	ArrayList<Coordinate> fullPath = new ArrayList<Coordinate>();
+	Coordinate goal; //ultimate goal
+	Coordinate interimGoal; //goal used to handle iterations of a*
+	double fieldOfView;
 
 	/**
 	 * Default constructor for an AlgorithmUnlimitedScopeNonRecursive.
@@ -26,6 +27,8 @@ public class AlgorithmLimitedBreadthFirstSearch extends Algorithm {
 	public AlgorithmLimitedBreadthFirstSearch(MarsRover r, String output) {
 		rover = r;
 		map = rover.getMap();
+		goal = r.getEndPosition();
+		fieldOfView = r.getFieldOfView();
 		outputClass = output;
 	}
 
@@ -37,19 +40,63 @@ public class AlgorithmLimitedBreadthFirstSearch extends Algorithm {
 	public AlgorithmLimitedBreadthFirstSearch(MarsRover r) {
 		rover = r;
 		map = rover.getMap();
+		goal = r.getEndPosition();
+		fieldOfView = r.getFieldOfView();
 		outputClass = "TerminalOutput";
 	}
 
 	public ArrayList<Coordinate> getPath() {return fullPath;}
 
+	public void findPath() throws Exception {
+        if(fieldOfView < 3) throw new Exception("WARNING: Field of view should be set to 3 or higher."); //interim goal calculations don't work with 1 or 2
+        fullPath.add(rover.getStartPosition()); //start coord
+        try {
+            bfsSearch(fullPath);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    public void bfsSearch(ArrayList<Coordinate> coords) throws Exception {
+	    Coordinate thisCoord = coords.get(0);
+	    Coordinate backCoord;
+	    int backtrackDistance = 0;
+	    double goalAngle;
+	    ArrayList<Coordinate> tempPath = new ArrayList<Coordinate>();
+        while(!thisCoord.equals(goal)){ //while we haven't reached the goal yet
+            goalAngle = getAngleToGoal(thisCoord, goal);
+            if(getDistanceToPoint(thisCoord,goal) > fieldOfView){ //if the rover can't see the goal...
+                interimGoal = new Coordinate((int) (thisCoord.getX() + ((fieldOfView) * Math.cos(Math.toRadians(goalAngle)))),
+                        (int) (thisCoord.getY() + ((fieldOfView) * Math.sin(Math.toRadians(goalAngle))))); //then come up with a waypoint it can see in the right direction
+            }else{ //if we're close enough to see the goal just use that
+                interimGoal = goal;
+            }
+            try {
+                tempPath = bfs(thisCoord,interimGoal); //try a* from our current location to the next waypoint
+                coords.addAll(tempPath.subList(1,tempPath.size())); //if we got this far, a* worked. add the a* path to the overall path
+                backtrackDistance = 0; //reset backtrack distance
+            } catch (Exception e) { //if a* failed
+                if(coords.get(0).equals(thisCoord)){ //if we've backtracked to the start
+                    throw e; //give up
+                }else{
+                    //System.out.printf("bt"); //backtrack by one. it can't visit thisCoord anymore since it already visited it
+                    backtrackDistance++; //first backtrackDistance to get the next backtrack
+                    backCoord = coords.get(coords.size() - 1 - backtrackDistance);
+                    coords.add(backCoord); //add the backtrack coordinate as the next place.
+                    backtrackDistance++; //and a second one to account for the new entry to the overall path
+                }
+            }
+
+            thisCoord = coords.get(coords.size()-1); //set current location to the latest position in the path
+            System.out.println((thisCoord.getX()) + "," + (thisCoord.getY())); //debug
+        }
+        //If we reached here, we got out of the while loop. We're done!
+    }
 
 	/**
 	 *Implementation of Breadth First Search
 	 */
-	public void findPath(){
-
-		Coordinate startPosition = rover.getStartPosition();
-		Coordinate endPosition = rover.getEndPosition();
+	public ArrayList<Coordinate> bfs(Coordinate startPosition, Coordinate endPosition) throws Exception{
 
 		Node startNode = new Node(startPosition);
 		Node goalNode = new Node(endPosition);
@@ -57,7 +104,6 @@ public class AlgorithmLimitedBreadthFirstSearch extends Algorithm {
 		// Create a queue for BFS
 		LinkedList<Node> queue = new LinkedList<Node>();
 		List<Node> visitedList = new ArrayList<Node>();
-
 
 		//set all vertices to be equal to not visited
 		queue.add(startNode);
@@ -69,8 +115,9 @@ public class AlgorithmLimitedBreadthFirstSearch extends Algorithm {
 			visitedList.add(currentNode);
 
 			if(currentIsGoal(currentNode, goalNode)) {
-				constructPath(currentNode);
-				break;
+				ArrayList<Coordinate> path = constructPath(currentNode);
+                Collections.reverse(path);
+                return path;
 			}
 
 			// Get all adjacent vertices of the dequeued vertex s
@@ -97,10 +144,65 @@ public class AlgorithmLimitedBreadthFirstSearch extends Algorithm {
 				neighbor.setParent(currentNode);
 			}
 		}
+		Node targetNode = new Node(startPosition);
+		for(Node n : visitedList){
+		    if(getDistanceToPoint(n.getPosition(),endPosition) < getDistanceToPoint(targetNode.getPosition(),endPosition)){
+		        targetNode = n;
+            }
+        }
+        if(getDistanceToPoint(targetNode.getPosition(),endPosition) < (fieldOfView-1)){
+            ArrayList<Coordinate> path = constructPath(targetNode);
+            Collections.reverse(path);
+            return path;
+        }else{
+            throw new Exception("WARNING: A path to the goal could not be found.");
+        }
+    }
 
-		Collections.reverse(fullPath);
+    /**
+     * finds angle between two coordinates
+     * @param current first coordinate
+     * @param goal second coordinate
+     * @return angle to second coordinate (0 = east)
+     */
+    public double getAngleToGoal(Coordinate current, Coordinate goal) {
+        int xdiff = goal.getX() - current.getX();
+        int ydiff = goal.getY() - current.getY();
+        double result = Math.toDegrees(Math.atan2(ydiff,xdiff));
+        while(result < 0){result += 360;}
+        return result;
+    }
 
-	}
+    /**
+     * boolean to check if a given coordinate is unique and in range of what the rover has seen by this point
+     * @param target coord to check
+     * @return boolean if acceptable
+     */
+    public boolean checkIfViewed(Coordinate target){
+        boolean viewed = false;
+        for(Coordinate item : fullPath){ //for each item in the overall path (not just for the iteration!)
+            if(target.equals(item)){ //if we're considering a coord that's unvisited for the iteration but not the overall run, then fail
+                return false; //no repeats allowed
+            }
+            if(getDistanceToPoint(target,item) <= fieldOfView){ //and if we've seen this coord, it's acceptable
+                viewed = true; //we now know it's in range, but still have to check for repeats
+            }
+        }
+        return viewed; //if it's in range, true, if not, false
+    }
+
+    /**
+     * Given a coordinate, calculate its euclidean distance to the rover's goal coordinate
+     * (using the distance formula derived from the Pythagorean theorem).
+     */
+    public double getDistanceToPoint(Coordinate coord, Coordinate coord2) {
+        int x1 = coord.getX();
+        int y1 = coord.getY();
+        int x2 = coord2.getX();
+        int y2 = coord2.getY();
+
+        return Math.sqrt((Math.pow((x2-x1),2) + Math.pow((y2-y1),2)));
+    }
 
 	/**
 	 * Check if there is a node matching ours in a list
@@ -123,11 +225,13 @@ public class AlgorithmLimitedBreadthFirstSearch extends Algorithm {
 	 * Constructs a path for BreadthFirst by traversing nodes' parents.
 	 * @param currentNode node to start traversing
 	 */
-	private void constructPath(Node currentNode) {
+	private ArrayList<Coordinate> constructPath(Node currentNode) {
+	    ArrayList<Coordinate> newList = new ArrayList<Coordinate>();
 		while (currentNode != null) {
-			fullPath.add(currentNode.getPosition());
+			newList.add(currentNode.getPosition());
 			currentNode = currentNode.getParent();
 		}
+		return newList;
 	}
 
 	/**
@@ -172,6 +276,15 @@ public class AlgorithmLimitedBreadthFirstSearch extends Algorithm {
 		neighborNodeList.add(nodeDownRight);
 		neighborNodeList.add(nodeDown);
 		neighborNodeList.add(nodeDownLeft);
+
+		Iterator<Node> iter = neighborNodeList.iterator();
+
+		while(iter.hasNext()) {
+			Node n = iter.next();
+			if (!checkIfViewed(n.position) && !(n.position.equals(interimGoal))) {
+				iter.remove();
+			}
+		}
 
 		return neighborNodeList;
 	}

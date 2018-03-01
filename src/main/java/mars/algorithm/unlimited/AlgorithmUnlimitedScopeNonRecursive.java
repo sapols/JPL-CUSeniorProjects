@@ -47,8 +47,9 @@ public class AlgorithmUnlimitedScopeNonRecursive extends Algorithm {
     /**
      * Implementation of A*
      */
-    public void findPath() {
+    public void findPath() throws Exception {
         // Main method to find path.
+        boolean success = false;
 
         Coordinate startPosition = rover.getStartPosition();
         Coordinate endPosition= rover.getEndPosition();
@@ -72,6 +73,7 @@ public class AlgorithmUnlimitedScopeNonRecursive extends Algorithm {
 
             if (currentIsGoal(currentNode, goalNode)) {
                 constructPath(currentNode);
+                success = true;
                 break;
             }
 
@@ -116,7 +118,11 @@ public class AlgorithmUnlimitedScopeNonRecursive extends Algorithm {
             }
         }
 
-        Collections.reverse(fullPath);
+        if(success) {
+            Collections.reverse(fullPath);
+        }else{
+            throw new Exception("WARNING: A path to the goal could not be found.");
+        }
 
     }
 

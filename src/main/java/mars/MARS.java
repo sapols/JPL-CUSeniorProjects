@@ -28,10 +28,11 @@ public class MARS {
         //Algorithm algorithm = new AlgorithmUnlimitedScopeRecursive(rover);
         //Algorithm algorithm = new AlgorithmUnlimitedScopeNonrecursive(rover);
         //Algorithm algorithm = new AlgorithmLimitedScopeAStar(rover);
-        Algorithm algorithm = new AlgorithmLimitedDijkstra(rover,"MapImageOutput");
+        //Algorithm algorithm = new AlgorithmLimitedDijkstra(rover,"MapImageOutput");
         //Algorithm algorithm = new AlgorithmUnlimitedDijkstra(rover);
         //Algorithm algorithm = new AlgorithmLimitedScopeAStar(rover,"MapImageOutput");
         //Algorithm algorithm = new AlgorithmUnlimitedBestFirst(rover,"MapImageOutput");
+        Algorithm algorithm = new AlgorithmLimitedBreadthFirstSearch(rover,"MapImageOutput");
         try {
              algorithm.findPath();
         } catch (Exception expectedException) {
