@@ -48,7 +48,8 @@ public class AlgorithmUnlimitedBreadthFirstSearch extends Algorithm {
 	/**
 	 *Implementation of Breadth First Search
 	 */
-	public void findPath(){
+	public void findPath() throws Exception{
+		Boolean success = false;
 
 		Coordinate startPosition = rover.getStartPosition();
 		Coordinate endPosition = rover.getEndPosition();
@@ -71,6 +72,7 @@ public class AlgorithmUnlimitedBreadthFirstSearch extends Algorithm {
 			visitedList.add(currentNode);
 
 			if(currentIsGoal(currentNode, goalNode)) {
+			    success = true;
 				constructPath(currentNode);
 				break;
 			}
@@ -100,7 +102,11 @@ public class AlgorithmUnlimitedBreadthFirstSearch extends Algorithm {
 			}
 		}
 
-		Collections.reverse(fullPath);
+		if(success) {
+            Collections.reverse(fullPath);
+        }else{
+            throw new Exception("WARNING: A path to the goal could not be found.");
+        }
 
 	}
 
