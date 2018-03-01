@@ -25,7 +25,7 @@ public class AlgorithmLimitedIDAStar extends Algorithm {
     double fieldOfView;
 
     /**
-     * Default constructor for an AlgorithmIDAStar.
+     * Default constructor for an AlgorithmUnlimitedIDAStar.
      *
      * @param r The rover
      * @param output The output type specified during this algorithm's instantiation

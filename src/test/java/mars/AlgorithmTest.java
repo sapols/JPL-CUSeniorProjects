@@ -332,7 +332,7 @@ public class AlgorithmTest extends TestCase {
         tryAlgorithm(algorithm,false);
     }
 
-    // Tests for AlgorithmIDAStar
+    // Tests for AlgorithmUnlimitedIDAStar
 
     //Test if algorithm can complete a trivial route
     public void testIDAStarAlgorithmFlatCase() throws Exception{
@@ -341,7 +341,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(1,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmIDAStar(rover, "TerminalOutput");
+        Algorithm algorithm = new AlgorithmUnlimitedIDAStar(rover, "TerminalOutput");
         tryAlgorithm(algorithm,true);
     }
 
@@ -352,7 +352,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmIDAStar(rover, "TerminalOutput");
+        Algorithm algorithm = new AlgorithmUnlimitedIDAStar(rover, "TerminalOutput");
         tryAlgorithm(algorithm,true);
     }
 
@@ -363,7 +363,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmIDAStar(rover, "TerminalOutput");
+        Algorithm algorithm = new AlgorithmUnlimitedIDAStar(rover, "TerminalOutput");
         ArrayList<? extends Coordinate> out = tryAlgorithm(algorithm,true);
         Coordinate oldItem;
         Coordinate item = startCoord;
@@ -377,7 +377,7 @@ public class AlgorithmTest extends TestCase {
         }
     }
 
-    // Tests for AlgorithmIDAStar Limited
+    // Tests for AlgorithmUnlimitedIDAStar Limited
 
     //Test if algorithm can complete a trivial route
     public void testIDAStarAlgorithmLimitedFlatCase() throws Exception{
@@ -819,7 +819,7 @@ public class AlgorithmTest extends TestCase {
         Coordinate endCoord = new Coordinate(-5,-5);
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         MarsRover rover = new MarsRover(0,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmIDAStar(rover);
+        Algorithm algorithm = new AlgorithmUnlimitedIDAStar(rover);
         tryAlgorithm(algorithm,false);
     }
     */
