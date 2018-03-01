@@ -42,7 +42,7 @@ public class AlgorithmUnlimitedDijkstra extends Algorithm {
         return fullPath;
     }
 
-    public void findPath(){
+    public void findPath() throws Exception{
         Vector<DijkstraNode> nodeVector = new Vector<DijkstraNode>();
 
         DijkstraNode startNode = new DijkstraNode(rover.getStartPosition());
@@ -153,7 +153,7 @@ public class AlgorithmUnlimitedDijkstra extends Algorithm {
             if (minNode.getPosition().getX() == Integer.MAX_VALUE) {
                 // No path found?
                 // System.out.println("INT MAX LOL");
-                break;
+                throw new Exception("WARNING: A path to the goal could not be found.");
             }
 
             removeNodeFromVector(nodeVector, minNode);
