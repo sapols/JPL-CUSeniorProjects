@@ -7,10 +7,12 @@ import mars.coordinate.Coordinate;
 import mars.out.FileOutput;
 import mars.out.MapImageOutput;
 import mars.out.TerminalOutput;
+import mars.ui.TerminalInterface;
 
 import java.io.File;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Scanner;
 
 public class OutputTest extends TestCase{
@@ -56,6 +58,31 @@ public class OutputTest extends TestCase{
         String testString = testScan.nextLine();
         testScan.close();
         assertEquals(testString, "1059039900,1023360986");
+    }
+
+    public void testMultipleOutputRequestFormatting() throws Exception {
+        TerminalInterface ti = new TerminalInterface();
+        String outputDir = "src/main/java/mars/out/";
+        Map<Integer, String> outputs = ti.findOutputs(outputDir);
+        String request = "";
+
+        request = "1";
+        Boolean requestIsValid = ti.checkOutputRequest(request, outputs);
+        assertTrue(requestIsValid);
+        assertEquals("FileOutput", ti.getOutputTypesFromRequest(request, outputs));
+
+        request = "1,2,  3";
+        requestIsValid = ti.checkOutputRequest(request, outputs);
+        assertTrue(requestIsValid);
+        assertEquals("FileOutput,MapImageOutput,TerminalOutput", ti.getOutputTypesFromRequest(request, outputs));
+
+        request = "1, stupid";
+        requestIsValid = ti.checkOutputRequest(request, outputs);
+        assertFalse(requestIsValid);
+
+        request = "stupid";
+        requestIsValid = ti.checkOutputRequest(request, outputs);
+        assertFalse(requestIsValid);
     }
 
     /*

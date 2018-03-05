@@ -42,7 +42,6 @@ public class TerminalInterface extends UserInterface {
         System.out.println("**==================================================**");
         System.out.println("*  Welcome to the Martian Autonomous Routing System. *");
         System.out.println("**==================================================**\n");
-        //TODO: Print basic description of prompts to follow?
 
         promptForMap();
         promptForSlope();
@@ -288,21 +287,24 @@ public class TerminalInterface extends UserInterface {
         String outputDir = "src/main/java/mars/out/";
         Map<Integer, String> outputs = findOutputs(outputDir);
 
-        System.out.println("\nLast question, please choose your output type:\n");
+        System.out.println("\nLast question, please choose your output type (separate multiple choices with commas ','):\n");
         for (Integer index : outputs.keySet()) {
             System.out.println("("+index+") " + outputs.get(index));
         }
         System.out.println(); //New line
 
         Scanner scan = new Scanner(System.in);
+
         while (true) {
             try {
-                int outputNum = new Integer(scan.next());
-                String outputChoice = outputs.get(outputNum);
-                if (outputChoice != null) {
-                    outputClass = outputChoice;
+                String requestedOutputs = scan.nextLine();
+                Boolean requestIsValid = checkOutputRequest(requestedOutputs, outputs);
+
+                if (requestIsValid) {
+                    outputClass = getOutputTypesFromRequest(requestedOutputs, outputs);
                     break;
-                } else {
+                }
+                else {
                     throw new Exception("Please only select from the given options.");
                 }
             } catch (Exception ex) {
@@ -311,6 +313,54 @@ public class TerminalInterface extends UserInterface {
         }
     }
 
+    /**
+     * Helper method to check if the user requested Output types in the proper format.
+     * E.g., "2" or "1,3" or "1,  2,3"
+     *
+     * @param in The user's input
+     * @return Returns true if the input is formatted correctly, else false
+     */
+    public boolean checkOutputRequest(String in, Map<Integer, String> outputs) {
+        String[] choices = in.split(",");
+
+        if (choices.length > outputs.size()) { //if user requested more Output types than are available
+            return false;
+        }
+        else { //user requested a proper amount of Output types
+            for (String choice : choices) {
+                try {
+                    int outputNum = Integer.parseInt(choice.trim());
+                    if (!(outputNum <= outputs.size() && outputNum > 0)) { //if user's requested number isn't an option
+                        return false;
+                    }
+                } catch (NumberFormatException ex) { //one of the user's choices wasn't a number
+                    return false;
+                }
+            }
+        }
+
+        return true; //user's request passed all the checks
+    }
+
+    /**
+     * Helper method to return a well-formatted String representation of
+     * the requested Output type(s). Assumes that the user's input has
+     * already been checked for correctness (by checkOutputRequest).
+     *
+     * @param in The user's well-formatted input
+     * @return A well-formatted String representation of the requested Output type(s).
+     */
+    public String getOutputTypesFromRequest(String in, Map<Integer, String> outputs) {
+        String outputTypes = "";
+        String[] choices = in.split(",");
+
+        for (String choice : choices) {
+            int key = Integer.parseInt(choice.trim());
+            outputTypes = outputTypes + outputs.get(key) + ",";
+        }
+
+        return outputTypes.substring(0, outputTypes.length()-1); //drop the trailing comma from the output string
+    }
 
 
     //----Resource scanning methods-------------------------------------------------------------------------------------
