@@ -11,7 +11,7 @@ import java.util.*;
 /**
  * Class which implements the path-finding algorithm without a limited field of view
  */
-public class AlgorithmLimitedBreadthFirstSearch extends Algorithm {
+public class LimitedBreadthFirstSearch extends Algorithm {
 
 	ArrayList<Coordinate> fullPath = new ArrayList<Coordinate>();
 	Coordinate goal; //ultimate goal
@@ -19,12 +19,12 @@ public class AlgorithmLimitedBreadthFirstSearch extends Algorithm {
 	double fieldOfView;
 
 	/**
-	 * Default constructor for an AlgorithmUnlimitedScopeNonRecursive.
+	 * Default constructor for an UnlimitedAStarNonRecursive.
 	 *
 	 * @param r The rover
 	 * @param output The output type specified during this algorithm's instantiation
 	 */
-	public AlgorithmLimitedBreadthFirstSearch(MarsRover r, String output) {
+	public LimitedBreadthFirstSearch(MarsRover r, String output) {
 		rover = r;
 		map = rover.getMap();
 		goal = r.getEndPosition();
@@ -33,11 +33,11 @@ public class AlgorithmLimitedBreadthFirstSearch extends Algorithm {
 	}
 
 	/**
-	 * Second constructor for an AlgorithmUnlimitedScopeNonRecursive which defaults output to "TerminalOutput".
+	 * Second constructor for an UnlimitedAStarNonRecursive which defaults output to "TerminalOutput".
 	 *
 	 * @param r The rover
 	 */
-	public AlgorithmLimitedBreadthFirstSearch(MarsRover r) {
+	public LimitedBreadthFirstSearch(MarsRover r) {
 		rover = r;
 		map = rover.getMap();
 		goal = r.getEndPosition();

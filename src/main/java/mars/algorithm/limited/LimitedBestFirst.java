@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
-public class AlgorithmLimitedBestFirst extends Algorithm {
+public class LimitedBestFirst extends Algorithm {
 
     ArrayList<BestFirstCoordinate> path = new ArrayList<BestFirstCoordinate>();
     ArrayList<BestFirstCoordinate> visitedCoords = new ArrayList<BestFirstCoordinate>();
@@ -20,12 +20,12 @@ public class AlgorithmLimitedBestFirst extends Algorithm {
     double fieldOfView;
 
     /*
-    * Default constructor for an AlgorithmUnlimitedScopeNonRecursive.
+    * Default constructor for an UnlimitedAStarNonRecursive.
     *
     * @param r The rover
     * @param output The output type specified during this algorithm's instantiation
     */
-    public AlgorithmLimitedBestFirst(MarsRover r, String output) {
+    public LimitedBestFirst(MarsRover r, String output) {
         rover = r;
         map = rover.getMap();
         goal = r.getEndPosition();

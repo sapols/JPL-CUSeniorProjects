@@ -1,109 +1,87 @@
 package mars.algorithm.unlimited;
 
 import mars.algorithm.Algorithm;
-import mars.coordinate.Coordinate;
 import mars.coordinate.AStarCoordinate;
-import mars.out.MapImageOutput;
-import mars.out.OutputFactory;
-import mars.rover.MarsRover;
+import mars.coordinate.Coordinate;
 import mars.out.TerminalOutput;
-import mars.map.TerrainMap;
-import java.util.Collections;
+import mars.rover.MarsRover;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.Collections;
+
+import static java.lang.Math.sqrt;
 
 /**
  * Class which implements the path-finding algorithm without a limited field of view.
- * Uses an A* search.
+ * Uses an IDA* search algorithm.
  */
-public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
+public class UnlimitedIDAStar extends Algorithm {
 
-    ArrayList<AStarCoordinate> visitedCoords = new ArrayList<AStarCoordinate>();
+    ArrayList<AStarCoordinate> fullPath = new ArrayList<AStarCoordinate>();
     Coordinate goal;
-    AStarCoordinate targetCoord;
 
     /**
-     * Default constructor for an AlgorithmUnlimitedScopeRecursive.
-     * rover - the rover being input
-     * map - the map being used
-     * goal - the end position the rover needs to get to
+     * Default constructor for an UnlimitedIDAStar.
      *
      * @param r The rover
      * @param output The output type specified during this algorithm's instantiation
      */
-    public AlgorithmUnlimitedScopeRecursive(MarsRover r, String output) {
+    public UnlimitedIDAStar(MarsRover r, String output) {
         rover = r;
         map = r.getMap();
         goal = r.getEndPosition();
         outputClass = output;
-        targetCoord = new AStarCoordinate(rover.getStartPosition());
     }
 
     /**
-     * Second constructor for an AlgorithmUnlimitedScopeRecursive which defaults output to "TerminalOutput".
-     * rover - the rover being input
-     * map - the map being used
-     * goal - the end position the rover needs to get to
+     * Second constructor for an UnlimitedIDAStar which defaults output to "TerminalOutput".
      *
      * @param r The rover
      */
-    public AlgorithmUnlimitedScopeRecursive(MarsRover r) {
+    public UnlimitedIDAStar(MarsRover r) {
         rover = r;
         map = r.getMap();
         goal = r.getEndPosition();
         outputClass = "TerminalOutput";
-        targetCoord = new AStarCoordinate(rover.getStartPosition());
     }
+
+    /**
+     * @return fullPath the path constructed by findPath method
+     */
+    public ArrayList<? extends Coordinate> getPath() { return fullPath; }
 
     /**
      * Method which starts this search algorithm.
      */
     public void findPath() throws Exception {
-        ArrayList<AStarCoordinate> start = new ArrayList<AStarCoordinate>();
-        start.add(new AStarCoordinate(rover.getStartPosition()));
-
         try {
-            AStarSearch(start);
+            IDAStarSearch(new AStarCoordinate(rover.getStartPosition()));
         } catch (Exception e) {
             throw e;
         }
     }
 
-    public ArrayList<AStarCoordinate> getPath() {
-        return constructPath(targetCoord);
-    }
-
     /**
-     * Find a path from start to goal with A*. Then output it.
+     * Find a path from start to goal with IDA*. Then output it.
      * Throw an exception if a path cannot be found.
      *
-     * @param unvisitedCoords The list of coordinates being considered by the algorithm.
+     * @param thisNode The coordinate being considered by the algorithm.
      */
-    public void AStarSearch(ArrayList<AStarCoordinate> unvisitedCoords) throws Exception {
-        if (unvisitedCoords.isEmpty()) {
+    public void IDAStarSearch(AStarCoordinate thisNode) throws Exception {
+        if (coordIsInSet(new AStarCoordinate(goal), fullPath)) { return; }
+        if (thisNode == null) {
             throw new Exception("WARNING: A path to the goal could not be found.");
         }
         else {
-            AStarCoordinate thisCoord = unvisitedCoords.get(0);
-            visitedCoords.add(thisCoord);
-            if (thisCoord.equals(goal)) { //if we found the goal
-                targetCoord = thisCoord; //for getPath to reference
-
-                //TODO: remove this commented-out code
-                //Generates Output based on the type specified during this algorithm's instantiation
-                //OutputFactory.getOutput(this);
+            if (thisNode.equals(goal)) { //if we found the goal
+                fullPath = constructPath(thisNode);
             }
             else {
-                ArrayList<AStarCoordinate> unvisitedNeighbors = getReachableUnvisitedNeighbors(thisCoord);
-                for (AStarCoordinate n : unvisitedNeighbors) {
-                    if (!coordIsInSet(n, unvisitedCoords)) //Don't add duplicates
-                        unvisitedCoords.add(n);
+                ArrayList<AStarCoordinate> neighbors = getReachableNeighbors(thisNode);
+                sortCoordinatesByCost(neighbors);
+                for (AStarCoordinate n : neighbors) {
+                    IDAStarSearch(n);
                 }
-                sortCoordinatesByCost(unvisitedCoords);
-                unvisitedCoords.remove(thisCoord);
-                AStarSearch(unvisitedCoords);
             }
         }
     }
@@ -115,10 +93,9 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
      * which can be visited by this algorithm's rover (meaning that
      * the slope between the coordinates is not too steep).
      * Possible neighbors are all eight coordinates surrounding the given one.
-     * Do not consider already-visited coordinates.
      * @param coord The coordinate whose neighbors will be found.
      */
-    public ArrayList<AStarCoordinate> getReachableUnvisitedNeighbors(AStarCoordinate coord) {
+    public ArrayList<AStarCoordinate> getReachableNeighbors(AStarCoordinate coord) {
         int x = coord.getX();
         int y = coord.getY();
         double costSoFar = coord.getCostSoFar();
@@ -126,14 +103,16 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
 
         for (int i = x-1; i <= x+1; i++) {
             for (int j = y-1; j <= y+1; j++) {
-                if (!(i == x && j == y)) { //if this is not the given coordinate "coord". TODO: probably not needed now because of visited set logic
+                if (!(i == x && j == y)) { //if this is not the given coordinate "coord".
                     try {
                         AStarCoordinate potentialNeighbor = new AStarCoordinate(i, j);
-                        potentialNeighbor.setCostSoFar(costSoFar+1); //TODO: diagonals should technically add sqrt(2), not 1
+                        if (i == x || j == y) {
+                            potentialNeighbor.setCostSoFar(costSoFar+1);
+                        } else {
+                            potentialNeighbor.setCostSoFar(costSoFar+sqrt(2));
+                        }
                         potentialNeighbor.setParent(coord);
-                        //TODO: Address issues with MarsRover.canTraverse (are we using Robert's idea?)
-                        if (rover.canTraverse(coord, potentialNeighbor)
-                                && !coordHasBeenVisited(potentialNeighbor)) { //if rover could visit this coordinate and hasn't already, add it
+                        if (rover.canTraverse(coord, potentialNeighbor)) { //if rover could visit this coordinate
                             neighbors.add(potentialNeighbor);
                         }
                     } catch (Exception e) {
@@ -169,7 +148,7 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
         int x2 = goal.getX();
         int y2 = goal.getY();
 
-        return Math.sqrt((Math.pow((x2-x1),2) + Math.pow((y2-y1),2)));
+        return sqrt((Math.pow((x2-x1),2) + Math.pow((y2-y1),2)));
     }
 
     /**
@@ -186,16 +165,7 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
     }
 
     /**
-     * Check if there is a node matching ours in the visited set
-     * @param coord Coordinate to test for
-     * @return Boolean whether coord has been visited
-     */
-    private boolean coordHasBeenVisited(AStarCoordinate coord) {
-        return coordIsInSet(coord, visitedCoords); //TODO: if this change causes merge conflict, nix it.
-    }
-
-    /**
-     * Constructs a path for A* by traversing nodes' parents.
+     * Constructs a path for IDA* by traversing nodes' parents.
      * @param coord Node to start traversing
      */
     private ArrayList<AStarCoordinate> constructPath(AStarCoordinate coord) {

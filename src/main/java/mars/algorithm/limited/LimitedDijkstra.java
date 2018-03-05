@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
-public class AlgorithmLimitedDijkstra extends Algorithm {
+public class LimitedDijkstra extends Algorithm {
 
     ArrayList<Coordinate> fullPath = new ArrayList<Coordinate>();
     ArrayList<Coordinate> path = new ArrayList<Coordinate>();
@@ -24,12 +24,12 @@ public class AlgorithmLimitedDijkstra extends Algorithm {
     final int BUFFER_VALUE = 25;
 
     /*
-     * Default constructor for an AlgorithmUnlimitedDijkstra.
+     * Default constructor for an UnlimitedDijkstra.
      *
      * @param r The rover
      * @param output The output type specified during this algorithm's instantiation
      */
-    public AlgorithmLimitedDijkstra(MarsRover r, String output) {
+    public LimitedDijkstra(MarsRover r, String output) {
         rover = r;
         map = r.getMap();
         goal = new DijkstraNode(r.getEndPosition());

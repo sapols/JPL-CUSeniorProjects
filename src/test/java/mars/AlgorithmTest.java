@@ -47,7 +47,7 @@ public class AlgorithmTest extends TestCase {
         return new TestSuite( AlgorithmTest.class );
     }
 
-    // Tests for AlgorithmLimitedScopeAStar
+    // Tests for LimitedAStar
 
     //Test if algorithm can complete a trivial route
     public void testAstarAlgorithmLimitedFlatCase() throws Exception{
@@ -56,7 +56,7 @@ public class AlgorithmTest extends TestCase {
         String coordType = "L";
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         MarsRover rover = new MarsRover(1,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmLimitedScopeAStar(rover, "TerminalOutput");
+        Algorithm algorithm = new LimitedAStar(rover, "TerminalOutput");
         tryAlgorithm(algorithm,true);
     }
 
@@ -67,7 +67,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmLimitedScopeAStar(rover, "TerminalOutput");
+        Algorithm algorithm = new LimitedAStar(rover, "TerminalOutput");
         tryAlgorithm(algorithm,true);
     }
 
@@ -78,8 +78,8 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm limitedAlgorithm = new AlgorithmLimitedScopeAStar(rover, "TerminalOutput");
-        Algorithm unlimitedAlgorithm = new AlgorithmUnlimitedScopeRecursive(rover, "TerminalOutput");
+        Algorithm limitedAlgorithm = new LimitedAStar(rover, "TerminalOutput");
+        Algorithm unlimitedAlgorithm = new UnlimitedAStarRecursive(rover, "TerminalOutput");
         int limitedLength = (tryAlgorithm(limitedAlgorithm,true)).size();
         int unlimitedLength = (tryAlgorithm(unlimitedAlgorithm,true)).size();
         boolean check = unlimitedLength < limitedLength;
@@ -93,7 +93,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmLimitedScopeAStar(rover, "TerminalOutput");
+        Algorithm algorithm = new LimitedAStar(rover, "TerminalOutput");
         ArrayList<? extends Coordinate> out = tryAlgorithm(algorithm,true);
         Coordinate oldItem;
         Coordinate item = startCoord;
@@ -114,7 +114,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(0,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmLimitedScopeAStar(rover, "TerminalOutput");
+        Algorithm algorithm = new LimitedAStar(rover, "TerminalOutput");
         tryAlgorithm(algorithm,false);
     }
 
@@ -125,7 +125,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath,0);
-        Algorithm algorithm = new AlgorithmLimitedScopeAStar(rover, "TerminalOutput");
+        Algorithm algorithm = new LimitedAStar(rover, "TerminalOutput");
         tryAlgorithm(algorithm,false);
     }
 
@@ -136,7 +136,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath,3);
-        AlgorithmLimitedScopeAStar algorithm = new AlgorithmLimitedScopeAStar(rover, "TerminalOutput");
+        LimitedAStar algorithm = new LimitedAStar(rover, "TerminalOutput");
         tryAlgorithm(algorithm,true);
         assertTrue("good coordinate was treated as bad", algorithm.checkIfViewed(new Coordinate(11,10)));
     }
@@ -148,7 +148,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath,3);
-        AlgorithmLimitedScopeAStar algorithm = new AlgorithmLimitedScopeAStar(rover, "TerminalOutput");
+        LimitedAStar algorithm = new LimitedAStar(rover, "TerminalOutput");
         tryAlgorithm(algorithm,true);
         assertTrue("bad coordinate treated as good", !algorithm.checkIfViewed(new Coordinate(21,10)));
     }
@@ -160,7 +160,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath,3);
-        AlgorithmLimitedScopeAStar algorithm = new AlgorithmLimitedScopeAStar(rover, "TerminalOutput");
+        LimitedAStar algorithm = new LimitedAStar(rover, "TerminalOutput");
         tryAlgorithm(algorithm,true);
         assertTrue("bad coordinate treated as good", !algorithm.checkIfViewed(new Coordinate(10,15)));
     }
@@ -172,12 +172,12 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath,3);
-        AlgorithmLimitedScopeAStar algorithm = new AlgorithmLimitedScopeAStar(rover, "TerminalOutput");
+        LimitedAStar algorithm = new LimitedAStar(rover, "TerminalOutput");
         assertTrue("wrong angle returned", 0 == algorithm.getAngleToGoal(new Coordinate(10,10),new Coordinate(11,10)));
     }
 
 
-    // Tests for AlgorithmUnlimitedScopeRecursive
+    // Tests for UnlimitedAStarRecursive
 
     //Test if algorithm can complete a trivial route
     public void testAstarAlgorithmUnlimitedFlatCase() throws Exception{
@@ -186,7 +186,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(1,coordType,startCoord,endCoord,mapPath);
-        Algorithm algorithm = new AlgorithmUnlimitedScopeRecursive(rover, "TerminalOutput");
+        Algorithm algorithm = new UnlimitedAStarRecursive(rover, "TerminalOutput");
         tryAlgorithm(algorithm,true);
     }
 
@@ -197,7 +197,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(0,coordType,startCoord,endCoord,mapPath);
-        Algorithm algorithm = new AlgorithmUnlimitedScopeRecursive(rover, "TerminalOutput");
+        Algorithm algorithm = new UnlimitedAStarRecursive(rover, "TerminalOutput");
         tryAlgorithm(algorithm,false);
     }
 
@@ -208,7 +208,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(1,coordType,startCoord,endCoord,mapPath);
-        Algorithm algorithm = new AlgorithmUnlimitedScopeNonRecursive(rover, "TerminalOutput");
+        Algorithm algorithm = new UnlimitedAStarNonRecursive(rover, "TerminalOutput");
         tryAlgorithm(algorithm,true);
     }
 
@@ -219,7 +219,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(0,coordType,startCoord, endCoord, mapPath);
-        Algorithm algorithm = new AlgorithmUnlimitedScopeNonRecursive(rover, "TerminalOutput");
+        Algorithm algorithm = new UnlimitedAStarNonRecursive(rover, "TerminalOutput");
         tryAlgorithm(algorithm, false);
     }
 
@@ -235,7 +235,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(1,coordType,startCoord,endCoord,mapPath);
-        Algorithm algorithm = new AlgorithmUnlimitedGreedy(rover,"TerminalOutput");
+        Algorithm algorithm = new UnlimitedGreedy(rover,"TerminalOutput");
         tryAlgorithm(algorithm,true);
     }
 
@@ -246,7 +246,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(1,coordType,startCoord,endCoord,mapPath);
-        Algorithm algorithm = new AlgorithmLimitedGreedy(rover,"TerminalOutput");
+        Algorithm algorithm = new LimitedGreedy(rover,"TerminalOutput");
         tryAlgorithm(algorithm,true);
     }
 
@@ -257,8 +257,8 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(1,coordType,startCoord,endCoord,mapPath);
-        Algorithm algorithmUnlimited = new AlgorithmUnlimitedGreedy(rover,"TerminalOutput");
-        Algorithm algorithmLimited = new AlgorithmLimitedGreedy(rover,"TerminalOutput");
+        Algorithm algorithmUnlimited = new UnlimitedGreedy(rover,"TerminalOutput");
+        Algorithm algorithmLimited = new LimitedGreedy(rover,"TerminalOutput");
         int unlimitedLength = (tryAlgorithm(algorithmUnlimited,true)).size();
         int limitedLength = (tryAlgorithm(algorithmLimited,true)).size();
         boolean check = unlimitedLength == limitedLength;
@@ -272,7 +272,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath);
-        Algorithm algorithm = new AlgorithmUnlimitedGreedy(rover,"TerminalOutput");
+        Algorithm algorithm = new UnlimitedGreedy(rover,"TerminalOutput");
         tryAlgorithm(algorithm,true);
     }
 
@@ -283,7 +283,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath);
-        Algorithm algorithm = new AlgorithmUnlimitedGreedy(rover,"TerminalOutput");
+        Algorithm algorithm = new UnlimitedGreedy(rover,"TerminalOutput");
         ArrayList<? extends Coordinate> out = tryAlgorithm(algorithm,true);
         Coordinate oldItem;
         Coordinate item = startCoord;
@@ -304,7 +304,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath);
-        Algorithm algorithm = new AlgorithmUnlimitedGreedy(rover,"TerminalOutput");
+        Algorithm algorithm = new UnlimitedGreedy(rover,"TerminalOutput");
         ArrayList<? extends Coordinate> path = tryAlgorithm(algorithm,true);
         Set<Coordinate> pathSet = new HashSet<Coordinate>(path);
         boolean check = path.size() == pathSet.size();
@@ -318,11 +318,11 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(0,coordType,startCoord,endCoord,mapPath);
-        Algorithm algorithm = new AlgorithmUnlimitedGreedy(rover, "TerminalOutput");
+        Algorithm algorithm = new UnlimitedGreedy(rover, "TerminalOutput");
         tryAlgorithm(algorithm,false);
     }
 
-    // Tests for AlgorithmUnlimitedIDAStar
+    // Tests for UnlimitedIDAStar
 
     //Test if algorithm can complete a trivial route
     public void testIDAStarAlgorithmFlatCase() throws Exception{
@@ -331,7 +331,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(1,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmUnlimitedIDAStar(rover, "TerminalOutput");
+        Algorithm algorithm = new UnlimitedIDAStar(rover, "TerminalOutput");
         tryAlgorithm(algorithm,true);
     }
 
@@ -342,7 +342,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmUnlimitedIDAStar(rover, "TerminalOutput");
+        Algorithm algorithm = new UnlimitedIDAStar(rover, "TerminalOutput");
         tryAlgorithm(algorithm,true);
     }
 
@@ -353,7 +353,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmUnlimitedIDAStar(rover, "TerminalOutput");
+        Algorithm algorithm = new UnlimitedIDAStar(rover, "TerminalOutput");
         ArrayList<? extends Coordinate> out = tryAlgorithm(algorithm,true);
         Coordinate oldItem;
         Coordinate item = startCoord;
@@ -367,7 +367,7 @@ public class AlgorithmTest extends TestCase {
         }
     }
 
-    // Tests for AlgorithmUnlimitedIDAStar Limited
+    // Tests for UnlimitedIDAStar Limited
 
     //Test if algorithm can complete a trivial route
     public void testIDAStarAlgorithmLimitedFlatCase() throws Exception{
@@ -376,11 +376,11 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(1,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmLimitedIDAStar(rover, "TerminalOutput");
+        Algorithm algorithm = new LimitedIDAStar(rover, "TerminalOutput");
         tryAlgorithm(algorithm,true);
     }
 
-    // Tests for AlgorithmLimitedBestFirst
+    // Tests for LimitedBestFirst
 
     //Test if algorithm can complete a trivial route
     public void testBestFirstAlgorithmLimitedFlatCase() throws Exception{
@@ -389,7 +389,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(1,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmLimitedBestFirst(rover, "TerminalOutput");
+        Algorithm algorithm = new LimitedBestFirst(rover, "TerminalOutput");
         tryAlgorithm(algorithm,true);
     }
 
@@ -400,7 +400,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmLimitedBestFirst(rover, "TerminalOutput");
+        Algorithm algorithm = new LimitedBestFirst(rover, "TerminalOutput");
         tryAlgorithm(algorithm,true);
     }
 
@@ -411,7 +411,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmLimitedBestFirst(rover, "TerminalOutput");
+        Algorithm algorithm = new LimitedBestFirst(rover, "TerminalOutput");
         ArrayList<? extends Coordinate> out = tryAlgorithm(algorithm,true);
         Coordinate oldItem;
         Coordinate item = startCoord;
@@ -432,7 +432,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmLimitedBestFirst(rover,"TerminalOutput");
+        Algorithm algorithm = new LimitedBestFirst(rover,"TerminalOutput");
         ArrayList<? extends Coordinate> path = tryAlgorithm(algorithm,true);
         Set<Coordinate> pathSet = new HashSet<Coordinate>(path);
         boolean check = path.size() == pathSet.size();
@@ -446,11 +446,11 @@ public class AlgorithmTest extends TestCase {
         String coordType = "L";
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         MarsRover rover = new MarsRover(0,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmLimitedBestFirst(rover, "TerminalOutput");
+        Algorithm algorithm = new LimitedBestFirst(rover, "TerminalOutput");
         tryAlgorithm(algorithm,false);
     }
 
-    // Tests for AlgorithmUnlimitedBestFirst
+    // Tests for UnlimitedBestFirst
 
     //Test if algorithm can complete a trivial route
     public void testBestFirstAlgorithmUnlimitedFlatCase() throws Exception{
@@ -459,7 +459,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(1,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmUnlimitedBestFirst(rover, "TerminalOutput");
+        Algorithm algorithm = new UnlimitedBestFirst(rover, "TerminalOutput");
         tryAlgorithm(algorithm,true);
     }
 
@@ -470,7 +470,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmUnlimitedBestFirst(rover, "TerminalOutput");
+        Algorithm algorithm = new UnlimitedBestFirst(rover, "TerminalOutput");
         tryAlgorithm(algorithm,true);
     }
 
@@ -481,7 +481,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmUnlimitedBestFirst(rover, "TerminalOutput");
+        Algorithm algorithm = new UnlimitedBestFirst(rover, "TerminalOutput");
         ArrayList<? extends Coordinate> out = tryAlgorithm(algorithm,true);
         Coordinate oldItem;
         Coordinate item = startCoord;
@@ -502,7 +502,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath);
-        Algorithm algorithm = new AlgorithmUnlimitedBestFirst(rover,"TerminalOutput");
+        Algorithm algorithm = new UnlimitedBestFirst(rover,"TerminalOutput");
         ArrayList<? extends Coordinate> path = tryAlgorithm(algorithm,true);
         Set<Coordinate> pathSet = new HashSet<Coordinate>(path);
         boolean check = path.size() == pathSet.size();
@@ -516,11 +516,11 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(0,coordType,startCoord,endCoord,mapPath);
-        Algorithm algorithm = new AlgorithmUnlimitedBestFirst(rover, "TerminalOutput");
+        Algorithm algorithm = new UnlimitedBestFirst(rover, "TerminalOutput");
         tryAlgorithm(algorithm,false);
     }
 
-    // Tests for AlgorithmLimitedBreadthFirstSearch
+    // Tests for LimitedBreadthFirstSearch
 
     //Test if algorithm can complete a trivial route
     public void testBreadthFirstSearchAlgorithmLimitedFlatCase() throws Exception{
@@ -529,7 +529,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(1,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmLimitedBreadthFirstSearch(rover, "TerminalOutput");
+        Algorithm algorithm = new LimitedBreadthFirstSearch(rover, "TerminalOutput");
         tryAlgorithm(algorithm,true);
     }
 
@@ -540,7 +540,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmLimitedBreadthFirstSearch(rover, "TerminalOutput");
+        Algorithm algorithm = new LimitedBreadthFirstSearch(rover, "TerminalOutput");
         tryAlgorithm(algorithm,true);
     }
 
@@ -551,7 +551,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmLimitedBreadthFirstSearch(rover, "TerminalOutput");
+        Algorithm algorithm = new LimitedBreadthFirstSearch(rover, "TerminalOutput");
         ArrayList<? extends Coordinate> out = tryAlgorithm(algorithm,true);
         Coordinate oldItem;
         Coordinate item = startCoord;
@@ -572,7 +572,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmLimitedBreadthFirstSearch(rover,"TerminalOutput");
+        Algorithm algorithm = new LimitedBreadthFirstSearch(rover,"TerminalOutput");
         ArrayList<? extends Coordinate> path = tryAlgorithm(algorithm,true);
         Set<Coordinate> pathSet = new HashSet<Coordinate>(path);
         boolean check = path.size() == pathSet.size();
@@ -586,11 +586,11 @@ public class AlgorithmTest extends TestCase {
         String coordType = "L";
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         MarsRover rover = new MarsRover(0,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmLimitedBreadthFirstSearch(rover, "TerminalOutput");
+        Algorithm algorithm = new LimitedBreadthFirstSearch(rover, "TerminalOutput");
         tryAlgorithm(algorithm,false);
     }
 
-    // Tests for AlgorithmUnlimitedBreadthFirstSearch
+    // Tests for UnlimitedBreadthFirstSearch
 
     //Test if algorithm can complete a trivial route
     public void testBreadthFirstSearchAlgorithmUnlimitedFlatCase() throws Exception{
@@ -599,7 +599,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(1,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmUnlimitedBreadthFirstSearch(rover, "TerminalOutput");
+        Algorithm algorithm = new UnlimitedBreadthFirstSearch(rover, "TerminalOutput");
         tryAlgorithm(algorithm,true);
     }
 
@@ -610,7 +610,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmUnlimitedBreadthFirstSearch(rover, "TerminalOutput");
+        Algorithm algorithm = new UnlimitedBreadthFirstSearch(rover, "TerminalOutput");
         tryAlgorithm(algorithm,true);
     }
 
@@ -621,7 +621,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmUnlimitedBreadthFirstSearch(rover, "TerminalOutput");
+        Algorithm algorithm = new UnlimitedBreadthFirstSearch(rover, "TerminalOutput");
         ArrayList<? extends Coordinate> out = tryAlgorithm(algorithm,true);
         Coordinate oldItem;
         Coordinate item = startCoord;
@@ -642,7 +642,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath);
-        Algorithm algorithm = new AlgorithmUnlimitedBreadthFirstSearch(rover,"TerminalOutput");
+        Algorithm algorithm = new UnlimitedBreadthFirstSearch(rover,"TerminalOutput");
         ArrayList<? extends Coordinate> path = tryAlgorithm(algorithm,true);
         Set<Coordinate> pathSet = new HashSet<Coordinate>(path);
         boolean check = path.size() == pathSet.size();
@@ -656,11 +656,11 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(0,coordType,startCoord,endCoord,mapPath);
-        Algorithm algorithm = new AlgorithmUnlimitedBreadthFirstSearch(rover, "TerminalOutput");
+        Algorithm algorithm = new UnlimitedBreadthFirstSearch(rover, "TerminalOutput");
         tryAlgorithm(algorithm,false);
     }
 
-    // Tests for AlgorithmLimitedDijkstra
+    // Tests for LimitedDijkstra
 
     //Test if algorithm can complete a trivial route
     public void testDijkstraAlgorithmLimitedFlatCase() throws Exception{
@@ -669,7 +669,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(1,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmLimitedDijkstra(rover, "TerminalOutput");
+        Algorithm algorithm = new LimitedDijkstra(rover, "TerminalOutput");
         tryAlgorithm(algorithm,true);
     }
 
@@ -680,7 +680,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmLimitedDijkstra(rover, "TerminalOutput");
+        Algorithm algorithm = new LimitedDijkstra(rover, "TerminalOutput");
         tryAlgorithm(algorithm,true);
     }
 
@@ -691,7 +691,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmLimitedDijkstra(rover, "TerminalOutput");
+        Algorithm algorithm = new LimitedDijkstra(rover, "TerminalOutput");
         ArrayList<? extends Coordinate> out = tryAlgorithm(algorithm,true);
         Coordinate oldItem;
         Coordinate item = startCoord;
@@ -712,7 +712,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmLimitedDijkstra(rover,"TerminalOutput");
+        Algorithm algorithm = new LimitedDijkstra(rover,"TerminalOutput");
         ArrayList<? extends Coordinate> path = tryAlgorithm(algorithm,true);
         Set<Coordinate> pathSet = new HashSet<Coordinate>(path);
         boolean check = path.size() != pathSet.size();
@@ -726,11 +726,11 @@ public class AlgorithmTest extends TestCase {
         String coordType = "L";
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         MarsRover rover = new MarsRover(0,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmLimitedDijkstra(rover, "TerminalOutput");
+        Algorithm algorithm = new LimitedDijkstra(rover, "TerminalOutput");
         tryAlgorithm(algorithm,false);
     }
 
-    // Tests for AlgorithmUnlimitedDijkstra
+    // Tests for UnlimitedDijkstra
 
     //Test if algorithm can complete a trivial route
     public void testDijkstraAlgorithmUnlimitedFlatCase() throws Exception{
@@ -739,7 +739,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(1,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmUnlimitedDijkstra(rover, "TerminalOutput");
+        Algorithm algorithm = new UnlimitedDijkstra(rover, "TerminalOutput");
         tryAlgorithm(algorithm,true);
     }
 
@@ -750,7 +750,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmUnlimitedDijkstra(rover, "TerminalOutput");
+        Algorithm algorithm = new UnlimitedDijkstra(rover, "TerminalOutput");
         tryAlgorithm(algorithm,true);
     }
 
@@ -761,7 +761,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmUnlimitedDijkstra(rover, "TerminalOutput");
+        Algorithm algorithm = new UnlimitedDijkstra(rover, "TerminalOutput");
         ArrayList<? extends Coordinate> out = tryAlgorithm(algorithm,true);
         Coordinate oldItem;
         Coordinate item = startCoord;
@@ -782,7 +782,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(45,coordType,startCoord,endCoord,mapPath);
-        Algorithm algorithm = new AlgorithmUnlimitedDijkstra(rover,"TerminalOutput");
+        Algorithm algorithm = new UnlimitedDijkstra(rover,"TerminalOutput");
         ArrayList<? extends Coordinate> path = tryAlgorithm(algorithm,true);
         Set<Coordinate> pathSet = new HashSet<Coordinate>(path);
         boolean check = path.size() == pathSet.size();
@@ -796,7 +796,7 @@ public class AlgorithmTest extends TestCase {
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String coordType = "L";
         MarsRover rover = new MarsRover(0,coordType,startCoord,endCoord,mapPath);
-        Algorithm algorithm = new AlgorithmUnlimitedDijkstra(rover, "TerminalOutput");
+        Algorithm algorithm = new UnlimitedDijkstra(rover, "TerminalOutput");
         tryAlgorithm(algorithm,false);
     }
 
@@ -809,7 +809,7 @@ public class AlgorithmTest extends TestCase {
         Coordinate endCoord = new Coordinate(-5,-5);
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         MarsRover rover = new MarsRover(0,startCoord,endCoord,mapPath,3);
-        Algorithm algorithm = new AlgorithmUnlimitedIDAStar(rover);
+        Algorithm algorithm = new UnlimitedIDAStar(rover);
         tryAlgorithm(algorithm,false);
     }
     */
@@ -821,8 +821,8 @@ public class AlgorithmTest extends TestCase {
         Coordinate endCoord = new Coordinate(450,154);
         String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         MarsRover rover = new MarsRover(25,startCoord,endCoord,mapPath);
-        Algorithm algorithmUnlimited = new AlgorithmUnlimitedGreedy(rover));
-        Algorithm algorithmLimited = new AlgorithmLimitedGreedy(rover));
+        Algorithm algorithmUnlimited = new UnlimitedGreedy(rover));
+        Algorithm algorithmLimited = new LimitedGreedy(rover));
         int unlimitedLength = (tryAlgorithm(algorithmUnlimited,true)).size();
         int limitedLength = (tryAlgorithm(algorithmLimited,true)).size();
         boolean check = unlimitedLength != limitedLength;
@@ -854,7 +854,7 @@ public class AlgorithmTest extends TestCase {
         //String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
         String mapPath = "src/main/resources/Phobos_Viking_Mosaic_40ppd_DLRcontrol.tif";
         MarsRover rover = new MarsRover(90 ,startCoord,endCoord,mapPath,20);
-        Algorithm algorithm = new AlgorithmLimitedScopeAStar(rover);
+        Algorithm algorithm = new LimitedAStar(rover);
         tryAlgorithm(algorithm,true);
     }
 
@@ -863,8 +863,8 @@ public class AlgorithmTest extends TestCase {
         Coordinate endCoord = new Coordinate(7436,3927);
         String mapPath = "src/main/resources/Phobos_Viking_Mosaic_40ppd_DLRcontrol.tif";
         MarsRover rover = new MarsRover(30,startCoord,endCoord,mapPath);
-        Algorithm algorithmUnlimited = new AlgorithmUnlimitedGreedy(rover));
-        Algorithm algorithmLimited = new AlgorithmLimitedGreedy(rover));
+        Algorithm algorithmUnlimited = new UnlimitedGreedy(rover));
+        Algorithm algorithmLimited = new LimitedGreedy(rover));
         int unlimitedLength = (tryAlgorithm(algorithmUnlimited,true)).size();
         int limitedLength = (tryAlgorithm(algorithmLimited,true)).size();
         boolean check = unlimitedLength == limitedLength;

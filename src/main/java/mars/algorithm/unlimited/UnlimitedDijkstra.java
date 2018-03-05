@@ -9,7 +9,7 @@ import mars.out.TerminalOutput;
 import mars.rover.MarsRover;
 import java.util.*;
 
-public class AlgorithmUnlimitedDijkstra extends Algorithm {
+public class UnlimitedDijkstra extends Algorithm {
 
     final int BUFFER_VALUE = 25;
 
@@ -21,7 +21,7 @@ public class AlgorithmUnlimitedDijkstra extends Algorithm {
      * @param r The rover
      * @param output The output type specified during this algorithm's instantiation
      */
-    public AlgorithmUnlimitedDijkstra(MarsRover r, String output) {
+    public UnlimitedDijkstra(MarsRover r, String output) {
         rover = r;
         map = rover.getMap();
         outputClass = output;
@@ -32,7 +32,7 @@ public class AlgorithmUnlimitedDijkstra extends Algorithm {
      *
      * @param r The rover
      */
-    public AlgorithmUnlimitedDijkstra(MarsRover r) {
+    public UnlimitedDijkstra(MarsRover r) {
         rover = r;
         map = rover.getMap();
         outputClass = "TerminalOutput";

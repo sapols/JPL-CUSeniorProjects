@@ -10,18 +10,18 @@ import java.util.ArrayList;
 
 
 
-public class AlgorithmUnlimitedBestFirst extends Algorithm {
+public class UnlimitedBestFirst extends Algorithm {
 
     ArrayList<Coordinate> fullPath = new ArrayList<Coordinate>();
     Coordinate goal;
 
     /**
-     * Default constructor for an AlgorithmUnlimitedScopeNonRecursive.
+     * Default constructor for an UnlimitedAStarNonRecursive.
      *
      * @param r The rover
      * @param output The output type specified during this algorithm's instantiation
      */
-    public AlgorithmUnlimitedBestFirst(MarsRover r, String output) {
+    public UnlimitedBestFirst(MarsRover r, String output) {
         rover = r;
         map = rover.getMap();
         goal = r.getEndPosition();
@@ -29,11 +29,11 @@ public class AlgorithmUnlimitedBestFirst extends Algorithm {
     }
 
     /**
-     * Second constructor for an AlgorithmUnlimitedScopeNonRecursive which defaults output to "TerminalOutput".
+     * Second constructor for an UnlimitedAStarNonRecursive which defaults output to "TerminalOutput".
      *
      * @param r The rover
      */
-    public AlgorithmUnlimitedBestFirst(MarsRover r) {
+    public UnlimitedBestFirst(MarsRover r) {
         rover = r;
         map = rover.getMap();
         goal = r.getEndPosition();

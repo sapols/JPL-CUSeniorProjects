@@ -1,8 +1,8 @@
-package mars.algorithm.limited;
+package mars.algorithm.unlimited;
 
 import mars.algorithm.Algorithm;
-import mars.coordinate.Coordinate;
 import mars.coordinate.GreedyCoordinate;
+import mars.coordinate.Coordinate;
 import mars.out.MapImageOutput;
 import mars.out.TerminalOutput;
 import mars.rover.MarsRover;
@@ -17,7 +17,7 @@ import static java.lang.Math.abs;
  * Class which implements the path-finding algorithm without a limited field of view.
  * Uses an A* search.
  */
-public class AlgorithmLimitedGreedy extends Algorithm {
+public class UnlimitedGreedy extends Algorithm {
 
 
     ArrayList<GreedyCoordinate> path = new ArrayList<GreedyCoordinate>();
@@ -30,7 +30,7 @@ public class AlgorithmLimitedGreedy extends Algorithm {
      * @param r The rover
      * @param output The output type specified during this algorithm's instantiation
      */
-    public AlgorithmLimitedGreedy(MarsRover r, String output) {
+    public UnlimitedGreedy(MarsRover r, String output) {
         rover = r;
         map = r.getMap();
         goal = r.getEndPosition();
@@ -38,11 +38,11 @@ public class AlgorithmLimitedGreedy extends Algorithm {
     }
 
     /**
-     * Second constructor for an AlgorithmGreedy which defaults output to TerminalOutput.
+     * Second constructor for an AlgorithmGreedy which defaults output to "TerminalOutput".
      *
      * @param r The rover
      */
-    public AlgorithmLimitedGreedy(MarsRover r) {
+    public UnlimitedGreedy(MarsRover r) {
         rover = r;
         map = r.getMap();
         goal = r.getEndPosition();
@@ -138,7 +138,6 @@ public class AlgorithmLimitedGreedy extends Algorithm {
                         coords.remove(checkArray(currentNode,coords));
                         currentNode = coords.get(coords.size() - 1);
                         currentNode.setVisited(true);
-                        fullcoords.add(currentNode);
                         stepped = false;
                     }else{ //if we can't backtrack, we lose
                         throw new Exception("WARNING: A path to the goal could not be found.");
@@ -148,8 +147,6 @@ public class AlgorithmLimitedGreedy extends Algorithm {
             preferences.clear(); //abandon the leftover candidates
 
             if(currentNode.equals(goal)){ //and if we reached the goal, stop
-                //no-op
-                coords = fullcoords;
                 working = false;
             }
         }

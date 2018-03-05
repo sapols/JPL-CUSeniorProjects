@@ -2,9 +2,7 @@ package mars.ui;
 
 import mars.algorithm.Algorithm;
 import mars.algorithm.AlgorithmFactory;
-import mars.algorithm.unlimited.AlgorithmUnlimitedScopeRecursive;
 import mars.coordinate.Coordinate;
-import mars.algorithm.limited.AlgorithmLimitedScope;
 import mars.map.GeoTIFF;
 import mars.map.TerrainMap;
 import mars.out.*;
