@@ -20,9 +20,6 @@ public class AlgorithmFactory {
         if (algorithmClass.equals("AlgorithmLimitedGreedy")) {
             return new AlgorithmLimitedGreedy(rover, outputClass);
         }
-        else if (algorithmClass.equals("AlgorithmLimitedScope")) {
-            return new AlgorithmLimitedScope(rover, outputClass);
-        }
         else if (algorithmClass.equals("AlgorithmLimitedScopeAStar")) {
             return new AlgorithmLimitedScopeAStar(rover, outputClass);
         }

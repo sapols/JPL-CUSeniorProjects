@@ -225,16 +225,6 @@ public class AlgorithmTest extends TestCase {
 
     // Tests for Dummy Algorithm
 
-    //Test if algorithm runs
-    public void testDummyAlgorithm() throws Exception{
-        Coordinate startCoord = new Coordinate(10,10);
-        Coordinate endCoord = new Coordinate(10,20);
-        String mapPath = "src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff";
-        String coordType = "L";
-        MarsRover rover = new MarsRover(1,coordType,startCoord,endCoord,mapPath);
-        Algorithm algorithm = new AlgorithmLimitedScope(rover, "TerminalOutput");
-        tryAlgorithm(algorithm,true);
-    }
 
     // Tests for AlgorithmGreedy
 
