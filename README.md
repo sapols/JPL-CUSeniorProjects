@@ -99,4 +99,3 @@ Once the program completes, the resultant path the chosen algorithm determined w
 ## Copyright
 
 something open source TODO
-

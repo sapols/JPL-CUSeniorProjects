@@ -14,6 +14,7 @@ public abstract class Rover {
     double maxSlope;
     Coordinate currentPosition; //x, y
     Coordinate startPosition; //x, y
+    String coordType;
     Coordinate endPosition; //x, y
     GeoTIFF map = new GeoTIFF();
     double fieldOfView;

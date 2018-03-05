@@ -1,8 +1,10 @@
-package mars.algorithm;
+package mars.algorithm.unlimited;
 
+import mars.algorithm.Algorithm;
 import mars.coordinate.Coordinate;
 import mars.coordinate.AStarCoordinate;
 import mars.out.MapImageOutput;
+import mars.out.OutputFactory;
 import mars.rover.MarsRover;
 import mars.out.TerminalOutput;
 import mars.map.TerrainMap;
@@ -16,24 +18,42 @@ import java.util.List;
  * Class which implements the path-finding algorithm without a limited field of view.
  * Uses an A* search.
  */
-public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
+public class UnlimitedAStarRecursive extends Algorithm {
 
     ArrayList<AStarCoordinate> visitedCoords = new ArrayList<AStarCoordinate>();
     Coordinate goal;
     AStarCoordinate targetCoord;
 
     /**
-     * Default constructor for an AlgorithmUnlimitedScopeRecursive.
+     * Default constructor for an UnlimitedAStarRecursive.
+     * rover - the rover being input
+     * map - the map being used
+     * goal - the end position the rover needs to get to
+     *
+     * @param r The rover
+     * @param output The output type specified during this algorithm's instantiation
+     */
+    public UnlimitedAStarRecursive(MarsRover r, String output) {
+        rover = r;
+        map = r.getMap();
+        goal = r.getEndPosition();
+        outputClass = output;
+        targetCoord = new AStarCoordinate(rover.getStartPosition());
+    }
+
+    /**
+     * Second constructor for an UnlimitedAStarRecursive which defaults output to "TerminalOutput".
      * rover - the rover being input
      * map - the map being used
      * goal - the end position the rover needs to get to
      *
      * @param r The rover
      */
-    public AlgorithmUnlimitedScopeRecursive(MarsRover r) {
+    public UnlimitedAStarRecursive(MarsRover r) {
         rover = r;
         map = r.getMap();
         goal = r.getEndPosition();
+        outputClass = "TerminalOutput";
         targetCoord = new AStarCoordinate(rover.getStartPosition());
     }
 
@@ -70,8 +90,10 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
             visitedCoords.add(thisCoord);
             if (thisCoord.equals(goal)) { //if we found the goal
                 targetCoord = thisCoord; //for getPath to reference
-                output = new TerminalOutput(constructPath(thisCoord));
-                output = new MapImageOutput(constructPath(thisCoord), map.getMapPath());
+
+                //TODO: remove this commented-out code
+                //Generates Output based on the type specified during this algorithm's instantiation
+                //OutputFactory.getOutput(this);
             }
             else {
                 ArrayList<AStarCoordinate> unvisitedNeighbors = getReachableUnvisitedNeighbors(thisCoord);

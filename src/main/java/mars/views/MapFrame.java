@@ -69,7 +69,7 @@ public class MapFrame extends JFrame {
             setPreferredSize(new Dimension(frameWidth, frameHeight));
             getViewport().add(imagePanel); //Put the pane with the map image in this scroll pane
 
-            int firstX = path.get(0).getX() ;
+            int firstX = path.get(0).getX();
             int firstY = path.get(0).getY(); //Note that all the Y's in "path" have been altered by MapPanel.convertPathXYtoJavaXY()
 
             //Center the view position as much as possible
@@ -84,6 +84,8 @@ public class MapFrame extends JFrame {
                 firstY = firstY - frameHeight/2;
 
             getViewport().setViewPosition(new Point(firstX, firstY));
+            //Put the altered path back to normal to avoid unwanted changes to the algorithm's path
+            MapPanel.convertJavaXYtoPathXY(path, backgroundImage);
         }
     }
 

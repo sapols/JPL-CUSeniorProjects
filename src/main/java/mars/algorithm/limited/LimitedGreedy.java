@@ -1,40 +1,52 @@
-package mars.algorithm;
+package mars.algorithm.limited;
 
-import mars.coordinate.GreedyCoordinate;
+import mars.algorithm.Algorithm;
 import mars.coordinate.Coordinate;
+import mars.coordinate.GreedyCoordinate;
+import mars.out.MapImageOutput;
 import mars.out.TerminalOutput;
 import mars.rover.MarsRover;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 
 import static java.lang.Math.abs;
-import static jdk.nashorn.internal.objects.NativeMath.min;
 
 /**
  * Class which implements the path-finding algorithm without a limited field of view.
  * Uses an A* search.
  */
-public class AlgorithmGreedy extends Algorithm {
+public class LimitedGreedy extends Algorithm {
 
 
     ArrayList<GreedyCoordinate> path = new ArrayList<GreedyCoordinate>();
     Coordinate goal;
-    String mode;
+    //String mode;
 
-    /*
+    /**
      * Default constructor for an AlgorithmGreedy.
      *
-     * @param map The terrain map
-     * @param rover The rover
+     * @param r The rover
+     * @param output The output type specified during this algorithm's instantiation
      */
-    public AlgorithmGreedy(MarsRover r, String _mode) {
+    public LimitedGreedy(MarsRover r, String output) {
         rover = r;
         map = r.getMap();
         goal = r.getEndPosition();
-        mode = _mode;
+        outputClass = output;
+    }
+
+    /**
+     * Second constructor for an AlgorithmGreedy which defaults output to TerminalOutput.
+     *
+     * @param r The rover
+     */
+    public LimitedGreedy(MarsRover r) {
+        rover = r;
+        map = r.getMap();
+        goal = r.getEndPosition();
+        outputClass = "TerminalOutput";
     }
 
     /*
@@ -112,7 +124,7 @@ public class AlgorithmGreedy extends Algorithm {
             while(stepped){
                 if(preferences.size() > 0){
                     checkNode = preferences.get(0); //if we actually were able to make that node, and it has a good slope, and we haven't visited it yet, go there
-                    if(checkNode != null && processSlope(currentNode, checkNode, getAngleToGoal(currentNode,checkNode)) && !checkNode.isVisited()){
+                    if(checkNode != null && rover.canTraverse(currentNode, checkNode) && !checkNode.isVisited()){
                         currentNode = checkNode;
                         coords.add(currentNode);
                         fullcoords.add(currentNode);
@@ -126,7 +138,7 @@ public class AlgorithmGreedy extends Algorithm {
                         coords.remove(checkArray(currentNode,coords));
                         currentNode = coords.get(coords.size() - 1);
                         currentNode.setVisited(true);
-                        if(mode.equals("limited")) fullcoords.add(currentNode);
+                        fullcoords.add(currentNode);
                         stepped = false;
                     }else{ //if we can't backtrack, we lose
                         throw new Exception("WARNING: A path to the goal could not be found.");
@@ -136,12 +148,8 @@ public class AlgorithmGreedy extends Algorithm {
             preferences.clear(); //abandon the leftover candidates
 
             if(currentNode.equals(goal)){ //and if we reached the goal, stop
-                if(mode.equals("limited")){
-                    output = new TerminalOutput(fullcoords);
-                    coords = fullcoords;
-                }else{
-                    output = new TerminalOutput(coords);
-                }
+                //no-op
+                coords = fullcoords;
                 working = false;
             }
         }
@@ -188,44 +196,6 @@ public class AlgorithmGreedy extends Algorithm {
             index++;
         }
         return -1; //if we traverse the whole list and didn't find a match, -1
-    }
-
-    /**
-     * given two points and an angle, expand the distance between the two points along the angle until their respective heights change.
-     * @param point1 first point
-     * @param point2 second point
-     * @param angle angle to expand upon
-     * @return if angle is acceptable or not (see canTraverse)
-     * @throws Exception thrown by GeoTools
-     */
-    public boolean processSlope(Coordinate point1, Coordinate point2, double angle) throws Exception{
-        double temp1x = point1.getX(); //manually get the components (makes the math a lot easier)
-        double temp1y = point1.getY();
-        double temp2x = point2.getX();
-        double temp2y = point2.getY();
-
-        if(temp1x < 0 || temp2x < 0 || temp1x > map.getWidth() || temp2x > map.getWidth()
-                || temp1y < 0 || temp2y < 0 || temp1y > map.getHeight() | temp2y > map.getHeight() )
-            return false;
-
-        double point1height = map.getValue(point1.getX(),point1.getY()); //get the heights of the given points
-        double point2height = map.getValue(point2.getX(),point2.getY());
-        if(point1height != point2height){ //if the heights aren't the same
-            //while the current expanded point height and original are the same, and points are in bounds
-            while(temp1x > 0 && temp1x < map.getWidth() && temp1y > 0 && temp1y < map.getHeight() ){
-                if(point1height != map.getValue(temp1x,temp1y)) break;
-                temp1x -= Math.cos(angle); //subtract one unit length in the desired angle. note we don't round until the end
-                temp1y -= Math.sin(angle);
-            }
-            //then do the same for the second point
-            while(temp2x > 0 && temp2x < map.getWidth() && temp2y > 0 && temp2y < map.getHeight() ){
-                if(point2height != map.getValue(temp2x,temp2y)) break;
-                temp2x += Math.cos(angle);
-                temp2y += Math.sin(angle);
-            }
-            //finally, construct our resultant coordinate and throw it over to canTraverse to judge it
-            return rover.canTraverse(new Coordinate((int)temp1x,(int)temp1y),new Coordinate((int)temp2x,(int)temp2y));
-        }else return true; //if they're the same height, then it can just freely go there
     }
 
     public class GreedyCoordinateWrapper {
