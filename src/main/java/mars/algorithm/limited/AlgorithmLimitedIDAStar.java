@@ -3,35 +3,34 @@ package mars.algorithm.limited;
 import mars.algorithm.Algorithm;
 import mars.coordinate.AStarCoordinate;
 import mars.coordinate.Coordinate;
-import mars.out.MapImageOutput;
-import mars.out.TerminalOutput;
 import mars.rover.MarsRover;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+
+import static java.lang.Math.sqrt;
 
 /**
  * Class which implements the path-finding algorithm without a limited field of view.
- * Uses an A* search.
+ * Uses an IDA* search algorithm.
  */
-public class AlgorithmLimitedScopeAStar extends Algorithm {
+public class AlgorithmLimitedIDAStar extends Algorithm {
 
     ArrayList<AStarCoordinate> visitedCoords = new ArrayList<AStarCoordinate>();
     ArrayList<AStarCoordinate> path = new ArrayList<AStarCoordinate>();
+    AStarCoordinate bestNode;
     Coordinate goal; //ultimate goal
     Coordinate interimGoal; //goal used to handle iterations of a*
     double fieldOfView;
 
     /**
-     * Default constructor for an AlgorithmLimitedScopeAStar.
-     * rover - the rover being input
-     * map - the map being used
-     * goal - the end position the rover needs to get to
-     * fieldOfView - field of view of rover
+     * Default constructor for an AlgorithmUnlimitedIDAStar.
      *
      * @param r The rover
      * @param output The output type specified during this algorithm's instantiation
      */
-    public AlgorithmLimitedScopeAStar(MarsRover r, String output) {
+    public AlgorithmLimitedIDAStar(MarsRover r, String output) {
         rover = r;
         map = r.getMap();
         goal = r.getEndPosition();
@@ -40,21 +39,9 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
     }
 
     /**
-     * Second constructor for an AlgorithmLimitedScopeAStar which defaults output to "TerminalOutput".
-     * rover - the rover being input
-     * map - the map being used
-     * goal - the end position the rover needs to get to
-     * fieldOfView - field of view of rover
-     *
-     * @param r The rover
+     * @return fullPath the path constructed by findPath method
      */
-    public AlgorithmLimitedScopeAStar(MarsRover r) {
-        rover = r;
-        map = r.getMap();
-        goal = r.getEndPosition();
-        fieldOfView = r.getFieldOfView();
-        outputClass = "TerminalOutput";
-    }
+    public ArrayList<? extends Coordinate> getPath() { return path; }
 
     /**
      * Method which starts this search algorithm.
@@ -63,27 +50,19 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
         if(fieldOfView < 3) throw new Exception("WARNING: Field of view should be set to 3 or higher."); //interim goal calculations don't work with 1 or 2
         path.add(new AStarCoordinate(rover.getStartPosition())); //start coord
         try {
-            AStarSearch(path);
+            IDAStarSearch(path);
         } catch (Exception e) {
             throw e;
         }
     }
 
-    public ArrayList<AStarCoordinate> getPath() {
-        return path;
-    }
-
-    /**
-     * the primary function for limited a*. manages a* searches
-     * @param coords arraylist to store the path
-     * @throws Exception n/a
-     */
-    public void AStarSearch(ArrayList<AStarCoordinate> coords) throws Exception {
+    public void IDAStarSearch(ArrayList<AStarCoordinate> coords) throws Exception {
         AStarCoordinate thisCoord = coords.get(0); //stores current location. inits as start coord
         AStarCoordinate backCoord; //used for backtracking
         int backtrackDistance = 0; //used to track where to backtrack to
         double goalAngle;
         ArrayList<AStarCoordinate> tempPath = new ArrayList<AStarCoordinate>(); //temporary path to store a* iterations
+        AStarCoordinate tempNode = new AStarCoordinate(thisCoord);
         while(!thisCoord.equals(goal)){ //while we haven't reached the goal yet
             goalAngle = getAngleToGoal(thisCoord, goal);
             if(getDistanceToPoint(thisCoord,goal) > fieldOfView){ //if the rover can't see the goal...
@@ -92,72 +71,70 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
             }else{ //if we're close enough to see the goal just use that
                 interimGoal = goal;
             }
+            tempNode = new AStarCoordinate(thisCoord);
             tempPath.clear(); //wipe last a* iteration
             visitedCoords.clear();
-            tempPath.add(new AStarCoordinate(thisCoord.getX(), thisCoord.getY())); // we need a fresh AStarCoordinate to keep the iterations from seeing each other
-            tempPath.get(0).setCostSoFar(0); //set our new start point as such
             try {
-                tempPath = AStar(tempPath,interimGoal); //try a* from our current location to the next waypoint
+                bestNode = tempNode;
+                tempPath = IDAStar(tempNode,interimGoal); //try a* from our current location to the next waypoint
                 coords.addAll(tempPath.subList(1,tempPath.size())); //if we got this far, a* worked. add the a* path to the overall path
                 backtrackDistance = 0; //reset backtrack distance
             } catch (Exception e) { //if a* failed
                 if(coords.get(0).equals(thisCoord)){ //if we've backtracked to the start
                     throw e; //give up
                 }else{
-                    //System.out.printf("bt"); //backtrack by one. it can't visit thisCoord anymore since it already visited it
+                    System.out.printf("bt"); //backtrack by one. it can't visit thisCoord anymore since it already visited it
                     backtrackDistance++; //first backtrackDistance to get the next backtrack
-                    backCoord = coords.get(coords.size() - 1 - backtrackDistance);
+                    backCoord = coords.get(coords.size()-1-backtrackDistance);
                     coords.add(backCoord); //add the backtrack coordinate as the next place.
                     backtrackDistance++; //and a second one to account for the new entry to the overall path
                 }
             }
 
             thisCoord = coords.get(coords.size()-1); //set current location to the latest position in the path
-            //System.out.println((thisCoord.getX()) + "," + (thisCoord.getY())); //debug
+            System.out.println((thisCoord.getX()) + "," + (thisCoord.getY())); //debug
         }
         //If we reached here, we got out of the while loop. We're done!
     }
 
-
-
     /**
-     * Formal implementation of A* that we use for getting from point a to point b.
+     * Find a path from start to goal with IDA*. Then output it.
      * Throw an exception if a path cannot be found.
-     * Modified from AlgorithmUnlimitedScopeRecursive
      *
-     * @param unvisitedCoords The list of coordinates being considered by the algorithm.
+     * @param thisNode The coordinate being considered by the algorithm.
      */
-    public ArrayList<AStarCoordinate> AStar(ArrayList<AStarCoordinate> unvisitedCoords, Coordinate currentGoal) throws Exception { //the goal varies, so we take that in as an argument
-        if (unvisitedCoords.isEmpty()) { //since we're limited, not making the goal doesn't mean we lose
-            AStarCoordinate targetCoord = new AStarCoordinate(0,0);
-            for(AStarCoordinate n : visitedCoords){ //find the coord closest to the goal, faster than sorting
-                if(n.getDistanceToGoal() < targetCoord.getDistanceToGoal()){
-                    targetCoord = n;
-                }
+    public ArrayList<AStarCoordinate> IDAStar(AStarCoordinate thisNode, Coordinate currentGoal) throws Exception {
+        ArrayList<AStarCoordinate> currentPath = constructPath(thisNode);
+        /*if (coordIsInSet(thisNode, currentPath.subList(0,currentPath.size()-1))){
+            throw new Exception("WARNING: A path to the goal could not be found.");
+            // no loops
+        }*/
+        if (thisNode == null) {
+            if(getDistanceToPoint(bestNode,interimGoal) < (fieldOfView-1)){
+                return constructPath(bestNode);
             }
-            if(targetCoord.getDistanceToGoal() < (fieldOfView-1)) { //if we made at least a bit of progress, take it
-                return constructPath(targetCoord);
-            }else{ //if we didn't even get close, give up
-                throw new Exception("WARNING: A path to the goal could not be found.");
-            }
-        } else {
-            AStarCoordinate thisCoord = unvisitedCoords.get(0);
-            visitedCoords.add(thisCoord);
-
-            if (thisCoord.equals(currentGoal)) { //if we found the goal
-                return constructPath(thisCoord);
+            throw new Exception("WARNING: A path to the goal could not be found.");
+        }
+        else {
+            if (thisNode.equals(interimGoal)) { //if we found the goal
+                return constructPath(thisNode);
             }
             else {
-                ArrayList<AStarCoordinate> unvisitedNeighbors = getReachableUnvisitedNeighbors(thisCoord);
-                for (AStarCoordinate n : unvisitedNeighbors) {
-                    if (!coordIsInSet(n, unvisitedCoords)) //Don't add duplicates
-                        unvisitedCoords.add(n);
+                ArrayList<AStarCoordinate> neighbors = getReachableNeighbors(thisNode);
+                sortCoordinatesByCost(neighbors);
+                if(neighbors.get(0).getDistanceToGoal() < bestNode.getDistanceToGoal()){
+                    bestNode = neighbors.get(0);
                 }
-                sortCoordinatesByCost(unvisitedCoords);
-                unvisitedCoords.remove(thisCoord);
-                return AStar(unvisitedCoords, currentGoal);
+                for (AStarCoordinate n : neighbors) {
+                    try {
+                        return IDAStar(n, currentGoal);
+                    }catch (Exception e){
+                        //that neighbor won't work, keep going
+                    }
+                }
             }
-        }
+        } //if we get down here, we ran out of neighbors
+        throw new Exception("WARNING: A path to the goal could not be found.");
     }
 
     //----Helper methods-----------------------------------------------------------------------------------------------
@@ -199,10 +176,9 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
      * which can be visited by this algorithm's rover (meaning that
      * the slope between the coordinates is not too steep).
      * Possible neighbors are all eight coordinates surrounding the given one.
-     * Do not consider already-visited coordinates.
      * @param coord The coordinate whose neighbors will be found.
      */
-    public ArrayList<AStarCoordinate> getReachableUnvisitedNeighbors(AStarCoordinate coord) {
+    public ArrayList<AStarCoordinate> getReachableNeighbors(AStarCoordinate coord) {
         int x = coord.getX();
         int y = coord.getY();
         double costSoFar = coord.getCostSoFar();
@@ -210,14 +186,16 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
 
         for (int i = x-1; i <= x+1; i++) {
             for (int j = y-1; j <= y+1; j++) {
-                if (!(i == x && j == y) && checkIfViewed(new Coordinate(i,j))) { //check if valid for limited TODO: first element probably can be removed
+                if (!(i == x && j == y) && checkIfViewed(new Coordinate(i,j))) { //if this is not the given coordinate "coord".
                     try {
                         AStarCoordinate potentialNeighbor = new AStarCoordinate(i, j);
-                        potentialNeighbor.setCostSoFar(costSoFar+1); //TODO: diagonals should technically add sqrt(2), not 1
+                        if (i == x || j == y) {
+                            potentialNeighbor.setCostSoFar(costSoFar+1);
+                        } else {
+                            potentialNeighbor.setCostSoFar(costSoFar+sqrt(2));
+                        }
                         potentialNeighbor.setParent(coord);
-                        //TODO: Address issues with MarsRover.canTraverse (are we using Robert's idea?)
-                        if (rover.canTraverse(coord, potentialNeighbor)
-                                && !coordHasBeenVisited(potentialNeighbor)) { //if rover could visit this coordinate and hasn't already, add it
+                        if (rover.canTraverse(coord, potentialNeighbor)) { //if rover could visit this coordinate
                             neighbors.add(potentialNeighbor);
                         }
                     } catch (Exception e) {
@@ -237,7 +215,7 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
      */
     public void sortCoordinatesByCost(ArrayList<AStarCoordinate> coords) {
         for (AStarCoordinate c : coords) {
-            c.setDistanceToGoal(getDistanceToPoint(c,interimGoal)); //use the interim goal since this function is used on an iteration basis
+            c.setDistanceToGoal(getDistanceToPoint(c,interimGoal));
         }
 
         Collections.sort(coords); //Do the sort, per the "compareTo" method in AStarCoordinate
@@ -261,7 +239,7 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
      * @param coord Coordinate to test for
      * @return Boolean whether coord has been visited
      */
-    private boolean coordIsInSet(AStarCoordinate coord, ArrayList<AStarCoordinate> set) {
+    private boolean coordIsInSet(AStarCoordinate coord, List<AStarCoordinate> set) {
         for (AStarCoordinate c : set) {
             if (c.equals(coord))
                 return true;
@@ -270,16 +248,7 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
     }
 
     /**
-     * Check if there is a node matching ours in the visited set
-     * @param coord Coordinate to test for
-     * @return Boolean whether coord has been visited
-     */
-    private boolean coordHasBeenVisited(AStarCoordinate coord) {
-        return coordIsInSet(coord, visitedCoords); //TODO: if this change causes merge conflict, nix it.
-    }
-
-    /**
-     * Constructs a path for A* by traversing nodes' parents.
+     * Constructs a path for IDA* by traversing nodes' parents.
      * @param coord Node to start traversing
      */
     private ArrayList<AStarCoordinate> constructPath(AStarCoordinate coord) {

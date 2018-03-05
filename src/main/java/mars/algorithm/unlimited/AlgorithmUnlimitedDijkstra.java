@@ -9,7 +9,7 @@ import mars.out.TerminalOutput;
 import mars.rover.MarsRover;
 import java.util.*;
 
-public class Dijkstra extends Algorithm {
+public class AlgorithmUnlimitedDijkstra extends Algorithm {
 
     final int BUFFER_VALUE = 25;
 
@@ -21,7 +21,7 @@ public class Dijkstra extends Algorithm {
      * @param r The rover
      * @param output The output type specified during this algorithm's instantiation
      */
-    public Dijkstra(MarsRover r, String output) {
+    public AlgorithmUnlimitedDijkstra(MarsRover r, String output) {
         rover = r;
         map = rover.getMap();
         outputClass = output;
@@ -32,17 +32,17 @@ public class Dijkstra extends Algorithm {
      *
      * @param r The rover
      */
-    public Dijkstra(MarsRover r) {
+    public AlgorithmUnlimitedDijkstra(MarsRover r) {
         rover = r;
         map = rover.getMap();
         outputClass = "TerminalOutput";
     }
-    
+
     public ArrayList<Coordinate> getPath() {
         return fullPath;
     }
 
-    public void findPath(){
+    public void findPath() throws Exception{
         Vector<DijkstraNode> nodeVector = new Vector<DijkstraNode>();
 
         DijkstraNode startNode = new DijkstraNode(rover.getStartPosition());
@@ -153,7 +153,7 @@ public class Dijkstra extends Algorithm {
             if (minNode.getPosition().getX() == Integer.MAX_VALUE) {
                 // No path found?
                 // System.out.println("INT MAX LOL");
-                break;
+                throw new Exception("WARNING: A path to the goal could not be found.");
             }
 
             removeNodeFromVector(nodeVector, minNode);
