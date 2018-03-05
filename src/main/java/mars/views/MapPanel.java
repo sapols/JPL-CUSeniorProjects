@@ -69,6 +69,19 @@ public class MapPanel extends JPanel {
     }
 
     /**
+     * Reverse the disparity between Geotools' coordinate system and the one
+     * used by Java images. In Java images, X grows normally but Y grows downward.
+     * So convert the Java (X,Y)'s in the path back to the corresponding original (X,Y)'s.
+     */
+    public static void convertJavaXYtoPathXY(java.util.List<? extends Coordinate> path, BufferedImage mapBackgroundImage) {
+        for (Coordinate c : path) {
+            int javaY = c.getY();
+            int y = mapBackgroundImage.getHeight() - javaY;
+            c.setY(y);
+        }
+    }
+
+    /**
      * Given an image of a map and a path of Coordinates,
      * draw that path on the map as a red line.
      *
