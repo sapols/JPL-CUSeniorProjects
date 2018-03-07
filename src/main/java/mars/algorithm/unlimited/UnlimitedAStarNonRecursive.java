@@ -13,28 +13,28 @@ import java.util.List;
 /**
  * Class which implements the path-finding algorithm without a limited field of view.
  */
-public class AlgorithmUnlimitedScopeNonRecursive extends Algorithm {
+public class UnlimitedAStarNonRecursive extends Algorithm {
 
     ArrayList<Coordinate> fullPath = new ArrayList<Coordinate>();
 
     /**
-     * Default constructor for an AlgorithmUnlimitedScopeNonRecursive.
+     * Default constructor for an UnlimitedAStarNonRecursive.
      *
      * @param r The rover
      * @param output The output type specified during this algorithm's instantiation
      */
-    public AlgorithmUnlimitedScopeNonRecursive(MarsRover r, String output) {
+    public UnlimitedAStarNonRecursive(MarsRover r, String output) {
         rover = r;
         map = rover.getMap();
         outputClass = output;
     }
 
     /**
-     * Second constructor for an AlgorithmUnlimitedScopeNonRecursive which defaults output to "TerminalOutput".
+     * Second constructor for an UnlimitedAStarNonRecursive which defaults output to "TerminalOutput".
      *
      * @param r The rover
      */
-    public AlgorithmUnlimitedScopeNonRecursive(MarsRover r) {
+    public UnlimitedAStarNonRecursive(MarsRover r) {
         rover = r;
         map = rover.getMap();
         outputClass = "TerminalOutput";
@@ -47,8 +47,9 @@ public class AlgorithmUnlimitedScopeNonRecursive extends Algorithm {
     /**
      * Implementation of A*
      */
-    public void findPath() {
+    public void findPath() throws Exception {
         // Main method to find path.
+        boolean success = false;
 
         Coordinate startPosition = rover.getStartPosition();
         Coordinate endPosition= rover.getEndPosition();
@@ -72,6 +73,7 @@ public class AlgorithmUnlimitedScopeNonRecursive extends Algorithm {
 
             if (currentIsGoal(currentNode, goalNode)) {
                 constructPath(currentNode);
+                success = true;
                 break;
             }
 
@@ -116,7 +118,11 @@ public class AlgorithmUnlimitedScopeNonRecursive extends Algorithm {
             }
         }
 
-        Collections.reverse(fullPath);
+        if(success) {
+            Collections.reverse(fullPath);
+        }else{
+            throw new Exception("WARNING: A path to the goal could not be found.");
+        }
 
     }
 

@@ -2,6 +2,7 @@ package mars.out;
 
 import mars.algorithm.Algorithm;
 import mars.coordinate.*;
+import mars.map.GeoTIFF;
 
 import java.util.*;
 
@@ -17,6 +18,8 @@ public class TerminalOutput extends Output {
      */
     public TerminalOutput(Algorithm algorithm) {
         resultList = algorithm.getPath();
+        coordinateType = algorithm.rover.getCoordType();
+        convert = algorithm.rover.getMap();
         writeToOutput();
     }
 
@@ -27,6 +30,8 @@ public class TerminalOutput extends Output {
      */
     public TerminalOutput(List<? extends Coordinate> out) {
         resultList = out;
+        coordinateType = "";
+        convert = new GeoTIFF();
         writeToOutput();
     }
 
@@ -34,12 +39,25 @@ public class TerminalOutput extends Output {
      * Function that outputs resultList to terminal in a user-friendly format.
      */
     public void writeToOutput() {
+
         System.out.println("\nOutput path: ");
         System.out.println("------------");
-        for (int i = 1; i <= resultList.size(); i++) {
-            int x = resultList.get(i-1).getX();
-            int y = resultList.get(i-1).getY();
-            System.out.println(i + ". (" + x + ", " + y + ")");
+
+        if(coordinateType.equalsIgnoreCase("L")) {
+
+            for (int i = 1; i <= resultList.size(); i++) {
+                int x = resultList.get(i-1).getX();
+                int y = resultList.get(i-1).getY();
+                double [] outputCoordinate = convert.coordinateConvert(new Coordinate(x, y));
+                System.out.println(i + ". (" + outputCoordinate[0]+ ", " + outputCoordinate[1] + ")");
+            }
+        }
+        else{
+            for (int i = 1; i <= resultList.size(); i++) {
+                int x = resultList.get(i - 1).getX();
+                int y = resultList.get(i - 1).getY();
+                System.out.println(i + ". (" + x + ", " + y + ")");
+            }
         }
         System.out.println("------------");
     }

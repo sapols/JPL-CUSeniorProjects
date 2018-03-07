@@ -36,6 +36,23 @@ public class CoordinateTest extends TestCase{
         assertNotNull(testCoord);
     }
 
+    public void testAStarCoordinateMethods() throws Exception {
+        AStarCoordinate aStarCoord = new AStarCoordinate(10, 10);
+        AStarCoordinate aStarCoord2 = new AStarCoordinate(11, 12);
+        aStarCoord2.setCostSoFar(9000);
+        aStarCoord2.setDistanceToGoal(1);
+        aStarCoord2.setParent(aStarCoord);
+
+        assertNotNull(aStarCoord);
+        assertEquals(aStarCoord2.getX(), 11);
+        assertEquals(aStarCoord2.getY(), 12);
+        assertEquals(aStarCoord.getCostSoFar(), Double.POSITIVE_INFINITY);
+        assertEquals(aStarCoord.getDistanceToGoal(), Double.POSITIVE_INFINITY);
+        assertEquals(aStarCoord2.getCostSoFar(), 9000.0);
+        assertEquals(aStarCoord2.getDistanceToGoal(), 1.0);
+        assertEquals(aStarCoord, aStarCoord2.getParent());
+    }
+
     public void testBestFirstCoordinateInstantiate() throws Exception {
         Coordinate coord = new Coordinate(10,10);
         BestFirstCoordinate testCoord = new BestFirstCoordinate(coord);

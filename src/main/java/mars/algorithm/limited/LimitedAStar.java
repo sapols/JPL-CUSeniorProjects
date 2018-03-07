@@ -13,7 +13,7 @@ import java.util.Collections;
  * Class which implements the path-finding algorithm without a limited field of view.
  * Uses an A* search.
  */
-public class AlgorithmLimitedScopeAStar extends Algorithm {
+public class LimitedAStar extends Algorithm {
 
     ArrayList<AStarCoordinate> visitedCoords = new ArrayList<AStarCoordinate>();
     ArrayList<AStarCoordinate> path = new ArrayList<AStarCoordinate>();
@@ -22,7 +22,7 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
     double fieldOfView;
 
     /**
-     * Default constructor for an AlgorithmLimitedScopeAStar.
+     * Default constructor for an LimitedAStar.
      * rover - the rover being input
      * map - the map being used
      * goal - the end position the rover needs to get to
@@ -31,7 +31,7 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
      * @param r The rover
      * @param output The output type specified during this algorithm's instantiation
      */
-    public AlgorithmLimitedScopeAStar(MarsRover r, String output) {
+    public LimitedAStar(MarsRover r, String output) {
         rover = r;
         map = r.getMap();
         goal = r.getEndPosition();
@@ -40,7 +40,7 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
     }
 
     /**
-     * Second constructor for an AlgorithmLimitedScopeAStar which defaults output to "TerminalOutput".
+     * Second constructor for an LimitedAStar which defaults output to "TerminalOutput".
      * rover - the rover being input
      * map - the map being used
      * goal - the end position the rover needs to get to
@@ -48,7 +48,7 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
      *
      * @param r The rover
      */
-    public AlgorithmLimitedScopeAStar(MarsRover r) {
+    public LimitedAStar(MarsRover r) {
         rover = r;
         map = r.getMap();
         goal = r.getEndPosition();
@@ -106,7 +106,7 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
                 }else{
                     //System.out.printf("bt"); //backtrack by one. it can't visit thisCoord anymore since it already visited it
                     backtrackDistance++; //first backtrackDistance to get the next backtrack
-                    backCoord = coords.get(coords.size()-1-backtrackDistance);
+                    backCoord = coords.get(coords.size() - 1 - backtrackDistance);
                     coords.add(backCoord); //add the backtrack coordinate as the next place.
                     backtrackDistance++; //and a second one to account for the new entry to the overall path
                 }
@@ -123,7 +123,7 @@ public class AlgorithmLimitedScopeAStar extends Algorithm {
     /**
      * Formal implementation of A* that we use for getting from point a to point b.
      * Throw an exception if a path cannot be found.
-     * Modified from AlgorithmUnlimitedScopeRecursive
+     * Modified from UnlimitedAStarRecursive
      *
      * @param unvisitedCoords The list of coordinates being considered by the algorithm.
      */

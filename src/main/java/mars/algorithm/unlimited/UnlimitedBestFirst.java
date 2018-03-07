@@ -10,18 +10,18 @@ import java.util.ArrayList;
 
 
 
-public class AlgorithmUnlimitedBestFirst extends Algorithm {
+public class UnlimitedBestFirst extends Algorithm {
 
     ArrayList<Coordinate> fullPath = new ArrayList<Coordinate>();
     Coordinate goal;
 
     /**
-     * Default constructor for an AlgorithmUnlimitedScopeNonRecursive.
+     * Default constructor for an UnlimitedAStarNonRecursive.
      *
      * @param r The rover
      * @param output The output type specified during this algorithm's instantiation
      */
-    public AlgorithmUnlimitedBestFirst(MarsRover r, String output) {
+    public UnlimitedBestFirst(MarsRover r, String output) {
         rover = r;
         map = rover.getMap();
         goal = r.getEndPosition();
@@ -29,11 +29,11 @@ public class AlgorithmUnlimitedBestFirst extends Algorithm {
     }
 
     /**
-     * Second constructor for an AlgorithmUnlimitedScopeNonRecursive which defaults output to "TerminalOutput".
+     * Second constructor for an UnlimitedAStarNonRecursive which defaults output to "TerminalOutput".
      *
      * @param r The rover
      */
-    public AlgorithmUnlimitedBestFirst(MarsRover r) {
+    public UnlimitedBestFirst(MarsRover r) {
         rover = r;
         map = rover.getMap();
         goal = r.getEndPosition();
@@ -52,28 +52,46 @@ public class AlgorithmUnlimitedBestFirst extends Algorithm {
     /*
      * Implementation of Best First
      */
-    public void findPath() {
+    public void findPath() throws Exception {
         BestFirstCoordinate startPosition = new BestFirstCoordinate(rover.getStartPosition());
         BestFirstCoordinate endPosition = new BestFirstCoordinate(rover.getEndPosition());
 
         ArrayList<BestFirstCoordinate> closed = new ArrayList<BestFirstCoordinate>();
         ArrayList<BestFirstCoordinate> open = new ArrayList<BestFirstCoordinate>();
+        boolean validNeighbor = false;
         open.add(startPosition);
 
         BestFirstCoordinate current;
         ArrayList<BestFirstCoordinate> neighbors = new ArrayList<BestFirstCoordinate>();
 
+        boolean foundSolution = false;
+
         while(! open.isEmpty()){
             current = getLowestFScore(open);
             if (current.equals(goal)) { //if we found the goal
                 //No-op. We're done.
+                foundSolution = true;
+                break;
             }
             closed.add(current);
             open.remove(current);
             neighbors = getReachableNeighbors(current);
 
             for(BestFirstCoordinate n : neighbors){
-                if(!closed.contains(n)){
+                validNeighbor = true;
+                for(BestFirstCoordinate m : closed){
+                    if(m.equals(n)){
+                        validNeighbor = false;
+                        break;
+                    }
+                }
+                for(BestFirstCoordinate m : open){
+                    if(m.equals(n)){
+                        validNeighbor = false;
+                        break;
+                    }
+                }
+                if(validNeighbor){
                     open.add(n);
                 }
             }
@@ -81,7 +99,7 @@ public class AlgorithmUnlimitedBestFirst extends Algorithm {
 
 
         }
-
+        if (!foundSolution) throw new Exception("WARNING: A path to the goal could not be found.");
     }
 
     //------------------Helper_methods---------------------------------------------------

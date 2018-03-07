@@ -18,14 +18,14 @@ import java.util.List;
  * Class which implements the path-finding algorithm without a limited field of view.
  * Uses an A* search.
  */
-public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
+public class UnlimitedAStarRecursive extends Algorithm {
 
     ArrayList<AStarCoordinate> visitedCoords = new ArrayList<AStarCoordinate>();
     Coordinate goal;
     AStarCoordinate targetCoord;
 
     /**
-     * Default constructor for an AlgorithmUnlimitedScopeRecursive.
+     * Default constructor for an UnlimitedAStarRecursive.
      * rover - the rover being input
      * map - the map being used
      * goal - the end position the rover needs to get to
@@ -33,7 +33,7 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
      * @param r The rover
      * @param output The output type specified during this algorithm's instantiation
      */
-    public AlgorithmUnlimitedScopeRecursive(MarsRover r, String output) {
+    public UnlimitedAStarRecursive(MarsRover r, String output) {
         rover = r;
         map = r.getMap();
         goal = r.getEndPosition();
@@ -42,14 +42,14 @@ public class AlgorithmUnlimitedScopeRecursive extends Algorithm {
     }
 
     /**
-     * Second constructor for an AlgorithmUnlimitedScopeRecursive which defaults output to "TerminalOutput".
+     * Second constructor for an UnlimitedAStarRecursive which defaults output to "TerminalOutput".
      * rover - the rover being input
      * map - the map being used
      * goal - the end position the rover needs to get to
      *
      * @param r The rover
      */
-    public AlgorithmUnlimitedScopeRecursive(MarsRover r) {
+    public UnlimitedAStarRecursive(MarsRover r) {
         rover = r;
         map = r.getMap();
         goal = r.getEndPosition();

@@ -15,18 +15,18 @@ import static java.lang.Math.sqrt;
  * Class which implements the path-finding algorithm without a limited field of view.
  * Uses an IDA* search algorithm.
  */
-public class AlgorithmIDAStar extends Algorithm {
+public class UnlimitedIDAStar extends Algorithm {
 
     ArrayList<AStarCoordinate> fullPath = new ArrayList<AStarCoordinate>();
     Coordinate goal;
 
     /**
-     * Default constructor for an AlgorithmIDAStar.
+     * Default constructor for an UnlimitedIDAStar.
      *
      * @param r The rover
      * @param output The output type specified during this algorithm's instantiation
      */
-    public AlgorithmIDAStar(MarsRover r, String output) {
+    public UnlimitedIDAStar(MarsRover r, String output) {
         rover = r;
         map = r.getMap();
         goal = r.getEndPosition();
@@ -34,11 +34,11 @@ public class AlgorithmIDAStar extends Algorithm {
     }
 
     /**
-     * Second constructor for an AlgorithmIDAStar which defaults output to "TerminalOutput".
+     * Second constructor for an UnlimitedIDAStar which defaults output to "TerminalOutput".
      *
      * @param r The rover
      */
-    public AlgorithmIDAStar(MarsRover r) {
+    public UnlimitedIDAStar(MarsRover r) {
         rover = r;
         map = r.getMap();
         goal = r.getEndPosition();
