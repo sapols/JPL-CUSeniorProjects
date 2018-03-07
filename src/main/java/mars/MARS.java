@@ -1,5 +1,6 @@
 package mars;
 
+import mars.coordinate.Coordinate;
 import mars.ui.TerminalInterface;
 
 /**
@@ -13,6 +14,42 @@ public class MARS {
      */
     public static void main(String[] args) {
         TerminalInterface ti = new TerminalInterface();
+
+
+        for( int i = 0; i < args.length; i++) {
+            if(args[i].compareTo("-m") == 0){ //flag for map path
+                ti.mapPath = args[i+1];
+            }
+            if(args[i].compareTo("-sc") == 0){
+                try{
+                    ti.startCoords = new Coordinate(Integer.parseInt(args[i+1]),Integer.parseInt(args[i+2]));
+                    i = i+2;
+                }catch (Exception e) {
+                    System.out.println("Warning: Invalid Start Coordinates");
+                }
+            }
+            if(args[i].compareTo("-ec") == 0){
+                try{
+                    ti.endCoords = new Coordinate(Integer.parseInt(args[i+1]), Integer.parseInt(args[i+2]));
+                    i = i + 2;
+                }catch(Exception e){
+                    System.out.println("Warning: Invalid End Coordinates");
+                }
+            }
+            if(args[i].compareTo("-a") == 0){
+                ti.algorithmClass = args[i+1];
+            }
+            if(args[i].compareTo("-cop") == 0){
+                    ti.coordType = "P";
+            }
+            if(args[i].compareTo("-col") == 0){
+                ti.coordType = "L";
+            }
+            if(args[i].compareTo("-o") == 0){
+                ti.outputClass = args[i+1];
+            }
+
+        }
         ti.promptUser();
     }
 
