@@ -81,7 +81,7 @@ public class LimitedBestFirst extends Algorithm {
                 }
             }
             thisCoord = coords.get(coords.size() - 1);
-            System.out.println((thisCoord.getX()) + "," + (thisCoord.getY())); //debug
+            //System.out.println((thisCoord.getX()) + "," + (thisCoord.getY())); //debug
         }
     }
 

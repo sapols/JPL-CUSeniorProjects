@@ -7,6 +7,7 @@ import mars.out.TerminalOutput;
 import mars.rover.MarsRover;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 
@@ -70,6 +71,8 @@ public class UnlimitedBestFirst extends Algorithm {
             current = getLowestFScore(open);
             if (current.equals(goal)) { //if we found the goal
                 //No-op. We're done.
+                fullPath = constructPath(current);
+                Collections.reverse(fullPath);
                 foundSolution = true;
                 break;
             }
@@ -172,8 +175,8 @@ public class UnlimitedBestFirst extends Algorithm {
      * @param coord final coordinate in path
      *
      */
-    private ArrayList<BestFirstCoordinate> constructPath(BestFirstCoordinate coord){
-        ArrayList<BestFirstCoordinate> path = new ArrayList<BestFirstCoordinate>();
+    private ArrayList<Coordinate> constructPath(BestFirstCoordinate coord){
+        ArrayList<Coordinate> path = new ArrayList<Coordinate>();
         while (coord != null){
             path.add(coord);
             coord = coord.getParent();

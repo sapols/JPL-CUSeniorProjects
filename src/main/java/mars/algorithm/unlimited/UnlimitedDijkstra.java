@@ -145,9 +145,8 @@ public class UnlimitedDijkstra extends Algorithm {
             }
         }
 
-        while (!nodeVector.isEmpty()) {
-            boolean goalFound = false;
-
+        boolean goalFound = false;
+        while (!nodeVector.isEmpty() && !goalFound) {
             DijkstraNode minNode = getClosestNode(nodeVector);
 
             if (minNode.getPosition().getX() == Integer.MAX_VALUE) {
