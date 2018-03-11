@@ -9,6 +9,8 @@ import mars.out.OutputFactory;
 import mars.rover.MarsRover;
 import mars.ui.TerminalInterface;
 
+import java.io.File;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,46 +23,48 @@ public class MARS {
      * Main method to be called to start the program.
      * @param args unused
      */
-    public static void main(String[] args) {
-        long startTime = System.nanoTime();
-
+    public static void main(String[] args) throws Exception{
         Coordinate startCoord = new Coordinate(7568,1507);
         Coordinate endCoord = new Coordinate(7568,1727);
         String mapPath = "src/main/resources/Phobos_Viking_Mosaic_40ppd_DLRcontrol.tif";
-        MarsRover rover = new MarsRover(8,"P",startCoord,endCoord,mapPath,40);
-        Algorithm algorithm = new LimitedBreadthFirstSearch(rover,"MapImageOutput,TerminalOutput");
-        try{
-            algorithm.findPath();
-        } catch (Exception expectedException) {
-            //
-        }
-        long endTime = System.nanoTime();
-        long duration = (endTime - startTime);  //divide by 1000000 to get milliseconds.
-        System.out.println(duration/1000000);
+        ArrayList<String> algs = new ArrayList<String>();
 
-        OutputFactory.getOutput(algorithm);
+        algs.add("LimitedGreedy");
+        algs.add("LimitedAStar");
+        algs.add("LimitedBestFirst");
+        algs.add("LimitedBreadthFirstSearch");
+        algs.add("LimitedDijkstra");
+        algs.add("UnlimitedAStarNonRecursive");
+        algs.add("UnlimitedAStarRecursive");
+        algs.add("UnlimitedBestFirst");
+        algs.add("UnlimitedBreadthFirstSearch");
+        algs.add("UnlimitedDijkstra");
+        algs.add("UnlimitedGreedy");
 
-
+        doEval(algs, startCoord, endCoord, mapPath);
 
         //TerminalInterface ti = new TerminalInterface();
         //ti.promptUser();
     }
 
     public static ArrayList<Integer> eval(String algorithm, int slope, Coordinate startCoord, Coordinate endCoord, String mapPath, int fov) throws Exception{
-        long startTime, endTime;
+        long startTime, endTime, newTime;
+        int newLength;
         ArrayList<Long> times = new ArrayList<Long>();
         ArrayList<Integer> lengths = new ArrayList<Integer>();
         MarsRover newRover = new MarsRover(slope,"P", startCoord, endCoord, mapPath, fov);
-        for(int i = 0; i < 10; i++){
+        for(int i = 1; i < 11; i++){
             Algorithm newAlgorithm = AlgorithmFactory.getAlgorithm(algorithm,newRover,"TerminalOutput");
             startTime = System.nanoTime();
             newAlgorithm.findPath();
             endTime = System.nanoTime();
-            times.add((endTime - startTime));
-            lengths.add((newAlgorithm.getPath()).size());
-            System.out.println("Run " + i + "/10");
+            newTime = endTime - startTime;
+            newLength = (newAlgorithm.getPath()).size();
+            times.add(newTime);
+            lengths.add(newLength);
+            System.out.println("Run " + i + "/10 complete: " + newLength + " steps in " + (newTime / 1000000) + " ms");
         }
-        int timeTotal = 0;
+        long timeTotal = 0;
         for(long time : times){
             timeTotal += time;
         }
@@ -72,27 +76,36 @@ public class MARS {
         lengthsTotal = lengthsTotal / 10;
         ArrayList<Integer> results = new ArrayList<Integer>();
         results.add(lengthsTotal);
-        results.add(timeTotal);
+        results.add((int)timeTotal);
         return results;
     }
 
-    public void doEval(ArrayList<String> algorithms, Coordinate startCoord, Coordinate endCoord, String mapPath) throws Exception{
-        String outFile = "algorithm,type,";
+    public static void doEval(ArrayList<String> algorithms, Coordinate startCoord, Coordinate endCoord, String mapPath) throws Exception{
+        String outFile = "algorithm,";
         ArrayList<Integer> outResults;
+        int algCount = algorithms.size();
+        int testsDone = 1;
+        int testsTotal = 0;
         for(int i = 0; i < 13; i++){
-            for(int j = 0; j < 3; j++){
-                outFile += "steps slope " + (6 + i*2) + " fov " + (10 + j*10) + ",time (milli) slope " + (6 + i*2) + " fov " + (10 + j*10);
+            for(int j = 0; j < 4; j++){
+                testsTotal += algCount;
+                outFile += "steps slope " + (7 + i*2) + " fov " + (10 + j*10) + ",time slope " + (7 + i*2) + " fov " + (10 + j*10) + ",";
             }
         }
+        System.out.println("Header written");
         for(String algorithmName : algorithms){
             outFile += "\n" + algorithmName + ",";
             for(int i = 0; i < 13; i++) {
-                for (int j = 0; j < 3; j++) {
-                    outResults = eval(algorithmName, (6 + i*2), startCoord, endCoord, mapPath, (10 + j*10));
-                    outFile += outResults.get(0) + "," + outResults.get(1);
+                for (int j = 0; j < 4; j++) {
+                    System.out.println("Testing alg " + algorithmName + " with slope " + (7 + i*2) + " fov " + (10 + j*10) + " (Test " + testsDone + "/" + testsTotal + ")");
+                    testsDone += 1;
+                    outResults = eval(algorithmName, (7 + i*2), startCoord, endCoord, mapPath, (10 + j*10));
+                    outFile += outResults.get(0) + "," + outResults.get(1) + ",";
                 }
             }
         }
-        
+        PrintWriter pw = new PrintWriter(new File("results.csv"));
+        pw.write(outFile);
+        pw.close();
     }
 }
