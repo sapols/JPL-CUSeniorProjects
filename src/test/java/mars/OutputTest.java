@@ -60,6 +60,7 @@ public class OutputTest extends TestCase{
         assertEquals(testString, "1059039900,1023360986");
     }
 
+    /*
     public void testMultipleOutputRequestFormatting() throws Exception {
         TerminalInterface ti = new TerminalInterface();
         String outputDir = "src/main/java/mars/out/";
@@ -84,6 +85,7 @@ public class OutputTest extends TestCase{
         requestIsValid = ti.checkOutputRequest(request, outputs);
         assertFalse(requestIsValid);
     }
+    */
 
     /*
     public void testMapImageOutputInstantiate() throws Exception {

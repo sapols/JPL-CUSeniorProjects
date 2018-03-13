@@ -55,12 +55,11 @@ public class MARS {
         //ti.promptUser();
     }
 
-    public static ArrayList<Integer> eval(String algorithm, int slope, Coordinate startCoord, Coordinate endCoord, String mapPath, int fov) throws Exception{
+    public static ArrayList<Integer> eval(String algorithm, MarsRover newRover) throws Exception{
         long startTime, endTime, newTime;
         int newLength;
         ArrayList<Long> times = new ArrayList<Long>();
         ArrayList<Integer> lengths = new ArrayList<Integer>();
-        MarsRover newRover = new MarsRover(slope,"P", startCoord, endCoord, mapPath, fov);
         for(int i = 1; i < 11; i++){
             Algorithm newAlgorithm = AlgorithmFactory.getAlgorithm(algorithm,newRover,"TerminalOutput");
             startTime = System.nanoTime();
@@ -101,13 +100,17 @@ public class MARS {
             }
         }
         System.out.println("Header written");
+        MarsRover rover = new MarsRover(0,"P",startCoord,endCoord,mapPath,0);
+        System.out.println("Rover instantiated");
         for(String algorithmName : algorithms){
             outFile += "\n" + algorithmName + ",";
             for(int i = 0; i < 13; i++) {
                 for (int j = 0; j < 4; j++) {
                     System.out.println("Testing alg " + algorithmName + " with slope " + (7 + i*2) + " fov " + (10 + j*10) + " (Test " + testsDone + "/" + testsTotal + ")");
                     testsDone += 1;
-                    outResults = eval(algorithmName, (7 + i*2), startCoord, endCoord, mapPath, (10 + j*10));
+                    rover.setMaxSlope(7+i*2);
+                    rover.setFieldOfView(10+j*10);
+                    outResults = eval(algorithmName, rover);
                     outFile += outResults.get(0) + "," + outResults.get(1) + ",";
                 }
             }
