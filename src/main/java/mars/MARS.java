@@ -29,27 +29,25 @@ public class MARS {
         String mapPath = "src/main/resources/mi15S158E.tif";
         ArrayList<String> algs = new ArrayList<String>();
 
-        MarsRover rover = new MarsRover(10,"P",startCoord,endCoord,mapPath,10);
-        Algorithm alg = new UnlimitedAStarRecursive(rover,"MapImageOutput");
+        //MarsRover rover = new MarsRover(3,"P",startCoord,endCoord,mapPath,10);
+        //Algorithm alg = new UnlimitedGreedy(rover,"MapImageOutput");
 
-        alg.findPath();
-        OutputFactory.getOutput(alg);
+        //alg.findPath();
+        //OutputFactory.getOutput(alg);
 
-
-        /*algs.add("LimitedGreedy");
-        algs.add("LimitedAStar");
-        algs.add("LimitedBestFirst");
-        algs.add("LimitedBreadthFirstSearch");
-        algs.add("LimitedDijkstra");
-        algs.add("UnlimitedAStarNonRecursive");
-        algs.add("UnlimitedAStarRecursive");
-        algs.add("UnlimitedBestFirst");
-        algs.add("UnlimitedBreadthFirstSearch");
-        algs.add("UnlimitedDijkstra");
-        algs.add("UnlimitedGreedy");
+        //algs.add("LimitedGreedy");
+        //algs.add("LimitedAStar");
+        //algs.add("LimitedBestFirst");
+        //algs.add("LimitedBreadthFirstSearch");
+        //algs.add("LimitedDijkstra");
+        //algs.add("UnlimitedAStarNonRecursive");
+        //algs.add("UnlimitedAStarRecursive");
+        //algs.add("UnlimitedBestFirst");
+        //algs.add("UnlimitedBreadthFirstSearch");
+        //algs.add("UnlimitedDijkstra");
+        //algs.add("UnlimitedGreedy");
 
         doEval(algs, startCoord, endCoord, mapPath);
-        */
 
         //TerminalInterface ti = new TerminalInterface();
         //ti.promptUser();
