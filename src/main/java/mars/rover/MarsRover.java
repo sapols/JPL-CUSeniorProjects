@@ -140,16 +140,16 @@ public class MarsRover extends Rover {
             // step 2
             double point1height = map.getValue(point1.getX(),point1.getY()); //get the heights of the given points
             double point2height = map.getValue(point2.getX(),point2.getY());
-            if(point1height != point2height){ //if the heights aren't the same
+            if(Math.abs(point1height - point2height) > 3){ //if the heights aren't the same
                 //while the current adjusted point height and original are the same, and points are in bounds
                 while(temp1x > 0 && temp1x < map.getWidth() && temp1y > 0 && temp1y < map.getHeight() ){
-                    if(point1height != map.getValue(temp1x,temp1y)) break;
+                    if(Math.abs(point1height - map.getValue(temp1x,temp1y)) > 3) break;
                     temp1x -= Math.cos(angle); //subtract one unit length in the desired angle. note we don't round until the end
                     temp1y -= Math.sin(angle);
                 }
                 //then do the same for the second point
                 while(temp2x > 0 && temp2x < map.getWidth() && temp2y > 0 && temp2y < map.getHeight() ){
-                    if(point2height != map.getValue(temp2x,temp2y)) break;
+                    if(Math.abs(point2height - map.getValue(temp2x,temp2y)) > 3) break;
                     temp2x += Math.cos(angle);
                     temp2y += Math.sin(angle);
                 }

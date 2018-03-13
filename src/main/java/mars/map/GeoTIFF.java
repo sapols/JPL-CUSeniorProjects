@@ -58,7 +58,7 @@ public class GeoTIFF extends TerrainMap {
         if(x > gridData.getWidth() || x < 0 || y > gridData.getHeight() || y < 0){ //if x or y out of bounds, error
             throw new Exception("Bad getValue");
         }
-        double[] data = gridData.getPixel(posGrid.x,posGrid.y,pixel);
+        double[] data = gridData.getPixel((int)x,(int)y,pixel);
         return data[0];
     }
 

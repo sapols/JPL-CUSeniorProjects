@@ -24,12 +24,19 @@ public class MARS {
      * @param args unused
      */
     public static void main(String[] args) throws Exception{
-        Coordinate startCoord = new Coordinate(7568,1507);
-        Coordinate endCoord = new Coordinate(7568,1727);
-        String mapPath = "src/main/resources/Phobos_Viking_Mosaic_40ppd_DLRcontrol.tif";
+        Coordinate startCoord = new Coordinate(880,950);
+        Coordinate endCoord = new Coordinate(980,500);
+        String mapPath = "src/main/resources/mi15S158E.tif";
         ArrayList<String> algs = new ArrayList<String>();
 
-        algs.add("LimitedGreedy");
+        MarsRover rover = new MarsRover(10,"P",startCoord,endCoord,mapPath,10);
+        Algorithm alg = new UnlimitedAStarRecursive(rover,"MapImageOutput");
+
+        alg.findPath();
+        OutputFactory.getOutput(alg);
+
+
+        /*algs.add("LimitedGreedy");
         algs.add("LimitedAStar");
         algs.add("LimitedBestFirst");
         algs.add("LimitedBreadthFirstSearch");
@@ -42,6 +49,7 @@ public class MARS {
         algs.add("UnlimitedGreedy");
 
         doEval(algs, startCoord, endCoord, mapPath);
+        */
 
         //TerminalInterface ti = new TerminalInterface();
         //ti.promptUser();
