@@ -46,7 +46,6 @@ public class TerminalInterface extends UserInterface {
         if( startCoords == null)  promptForStartCoords();
         if( endCoords == null) promptForEndCoords();
         if( algorithmClass.compareTo("") == 0) promptForAlgorithm();
-        if( algType.compareTo("") == 0) promptForAlgorithmType();
         if( coordType.compareTo("") == 0) promptForCoordOutput();
         if( outputClass.compareTo("") == 0) promptForOutput();
 
@@ -58,7 +57,7 @@ public class TerminalInterface extends UserInterface {
      */
     public void startAlgorithm() {
         MarsRover r;
-        if (algType.equalsIgnoreCase("L"))
+        if (fieldOfView != 0)
             r = new MarsRover(slope, coordType, startCoords, endCoords, mapPath, fieldOfView);
         else //algType equals "U"
             r = new MarsRover(slope, coordType ,startCoords, endCoords, mapPath);
