@@ -72,7 +72,7 @@ public class MarsRover extends Rover {
     public double getSlope(int x1, int y1, int x2, int y2) throws Exception {
         double z1 = map.getValue(x1,y1);
         double z2 = map.getValue(x2,y2);
-        double zDistance = (z2 - z1)*11.7647;
+        double zDistance = (z2 - z1)*11;
         double xyDistance = Math.sqrt(Math.pow((x2-x1),2)+Math.pow((y2-y1),2)) * 231.;
         return Math.toDegrees(Math.atan(zDistance / xyDistance)); // construct a right-angle triangle such that adjacent = xyDistance and opposite = zDistance
     }
@@ -92,7 +92,7 @@ public class MarsRover extends Rover {
 
         double z1 = map.getValue(x1,y1);
         double z2 = map.getValue(x2,y2);
-        double zDistance = (z2 - z1)*11.7647;
+        double zDistance = (z2 - z1)*31;
         double xyDistance = Math.sqrt(Math.pow((x2-x1),2)+Math.pow((y2-y1),2)) * 231.;
         return Math.toDegrees(Math.atan(zDistance / xyDistance)); // construct a right-angle triangle such that adjacent = xyDistance and opposite = zDistance
     }
@@ -140,16 +140,16 @@ public class MarsRover extends Rover {
             // step 2
             double point1height = map.getValue(point1.getX(),point1.getY()); //get the heights of the given points
             double point2height = map.getValue(point2.getX(),point2.getY());
-            if(Math.abs(point1height - point2height) > 1){ //if the heights aren't the same
+            if(Math.abs(point1height - point2height) > 6){ //if the heights aren't the same
                 //while the current adjusted point height and original are the same, and points are in bounds
                 while(temp1x > 0 && temp1x < map.getWidth() && temp1y > 0 && temp1y < map.getHeight() ){
-                    if(Math.abs(point1height - map.getValue(temp1x,temp1y)) > 1) break;
+                    if(Math.abs(point1height - map.getValue(temp1x,temp1y)) > 6) break;
                     temp1x -= Math.cos(angle); //subtract one unit length in the desired angle. note we don't round until the end
                     temp1y -= Math.sin(angle);
                 }
                 //then do the same for the second point
                 while(temp2x > 0 && temp2x < map.getWidth() && temp2y > 0 && temp2y < map.getHeight() ){
-                    if(Math.abs(point2height - map.getValue(temp2x,temp2y)) > 1) break;
+                    if(Math.abs(point2height - map.getValue(temp2x,temp2y)) > 6) break;
                     temp2x += Math.cos(angle);
                     temp2y += Math.sin(angle);
                 }
@@ -168,7 +168,7 @@ public class MarsRover extends Rover {
     public void printSpecs() {
         System.out.println("\nThe specs of this rover: ");
         System.out.println("Max slope: " + maxSlope);
-        System.out.println("Ouput coordinates: "+ coordType);
+        System.out.println("Output coordinates: "+ coordType);
         System.out.println("Field of view: " + ((fieldOfView==Double.MAX_VALUE) ? "Unlimited" : fieldOfView));
         System.out.println("Current position - X: " + currentPosition.getX() + ", Y: " + currentPosition.getY());
         System.out.println("Start position - X: " + startPosition.getX() + ", Y: " + startPosition.getY());
