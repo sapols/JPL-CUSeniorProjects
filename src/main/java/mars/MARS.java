@@ -35,14 +35,14 @@ public class MARS {
         //alg.findPath();
         //OutputFactory.getOutput(alg);
 
-        //algs.add("LimitedGreedy");
+        algs.add("LimitedGreedy");
         //algs.add("LimitedAStar");
         //algs.add("LimitedBestFirst");
         //algs.add("LimitedBreadthFirstSearch");
         //algs.add("LimitedDijkstra");
         //algs.add("UnlimitedAStarNonRecursive");
         //algs.add("UnlimitedAStarRecursive");
-        //algs.add("UnlimitedBestFirst");
+        algs.add("UnlimitedBestFirst");
         //algs.add("UnlimitedBreadthFirstSearch");
         //algs.add("UnlimitedDijkstra");
         //algs.add("UnlimitedGreedy");
