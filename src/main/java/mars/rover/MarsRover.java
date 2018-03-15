@@ -72,7 +72,7 @@ public class MarsRover extends Rover {
     public double getSlope(int x1, int y1, int x2, int y2) throws Exception {
         double z1 = map.getValue(x1,y1);
         double z2 = map.getValue(x2,y2);
-        double zDistance = (z2 - z1)*11;
+        double zDistance = (z2 - z1)*11.2;
         double xyDistance = Math.sqrt(Math.pow((x2-x1),2)+Math.pow((y2-y1),2)) * 231.;
         return Math.toDegrees(Math.atan(zDistance / xyDistance)); // construct a right-angle triangle such that adjacent = xyDistance and opposite = zDistance
     }

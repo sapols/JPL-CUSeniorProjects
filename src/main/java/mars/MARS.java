@@ -24,22 +24,22 @@ public class MARS {
      * @param args unused
      */
     public static void main(String[] args) throws Exception{
-        Coordinate startCoord = new Coordinate(620,6520);
-        Coordinate endCoord = new Coordinate(450,6250);
+        Coordinate startCoord = new Coordinate(670,6565);
+        Coordinate endCoord = new Coordinate(425,6280);
         String mapPath = "src/main/resources/mi15S158E.tif";
         ArrayList<String> algs = new ArrayList<String>();
 
-        MarsRover rover = new MarsRover(7,"P",startCoord,endCoord,mapPath,10);
-        Algorithm alg = new LimitedAStar(rover,"MapImageOutput");
+        //MarsRover rover = new MarsRover(8,"P",startCoord,endCoord,mapPath,31);
+        //Algorithm alg = new LimitedAStar(rover,"TerminalOutput");
 
-        alg.findPath();
-        OutputFactory.getOutput(alg);
+        //alg.findPath();
+        //OutputFactory.getOutput(alg);
 
         algs.add("LimitedGreedy");
         algs.add("LimitedAStar");
-        //algs.add("LimitedBestFirst");
-        //algs.add("LimitedBreadthFirstSearch");
-        //algs.add("LimitedDijkstra");
+        algs.add("LimitedBestFirst");
+        algs.add("LimitedBreadthFirstSearch");
+        algs.add("LimitedDijkstra");
         //algs.add("UnlimitedAStarNonRecursive");
         algs.add("UnlimitedAStarRecursive");
         algs.add("UnlimitedBestFirst");
@@ -47,7 +47,7 @@ public class MARS {
         //algs.add("UnlimitedDijkstra");
         algs.add("UnlimitedGreedy");
 
-        //doEval(algs, startCoord, endCoord, mapPath);
+        doEval(algs, startCoord, endCoord, mapPath);
 
         //TerminalInterface ti = new TerminalInterface();
         //ti.promptUser();
@@ -94,7 +94,7 @@ public class MARS {
         for(int i = 0; i < 13; i++){
             for(int j = 0; j < 4; j++){
                 testsTotal += algCount;
-                outFile += "steps slope " + (7 + i*2) + " fov " + (10 + j*10) + ",time slope " + (7 + i*2) + " fov " + (10 + j*10) + ",";
+                outFile += "steps slope " + (8 + i*2) + " fov " + (10 + j*7) + ",time slope " + (8 + i*2) + " fov " + (10 + j*7) + ",";
             }
         }
         System.out.println("Header written");
@@ -104,10 +104,10 @@ public class MARS {
             outFile += "\n" + algorithmName + ",";
             for(int i = 0; i < 13; i++) {
                 for (int j = 0; j < 4; j++) {
-                    System.out.println("Testing alg " + algorithmName + " with slope " + (7 + i*2) + " fov " + (10 + j*10) + " (Test " + testsDone + "/" + testsTotal + ")");
+                    System.out.println("Testing alg " + algorithmName + " with slope " + (8 + i*2) + " fov " + (10 + j*7) + " (Test " + testsDone + "/" + testsTotal + ")");
                     testsDone += 1;
-                    rover.setMaxSlope(7+i*2);
-                    rover.setFieldOfView(10+j*10);
+                    rover.setMaxSlope(8+i*2);
+                    rover.setFieldOfView(10+j*7);
                     outResults = eval(algorithmName, rover);
                     outFile += outResults.get(0) + "," + outResults.get(1) + ",";
                 }
