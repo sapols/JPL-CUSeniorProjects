@@ -135,7 +135,7 @@ public class LimitedBestFirst extends Algorithm {
                 targetDistance = newDistance;
             }
         }
-        if(targetDistance < (fieldOfView-1)){
+        if(targetDistance < (fieldOfView-1) && !targetCoord.equals(new BestFirstCoordinate(0,0))){
             return constructPath(targetCoord);
         }else {
             throw new Exception("WARNING: A path to the goal could not be found.");
