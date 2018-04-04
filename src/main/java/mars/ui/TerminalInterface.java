@@ -20,16 +20,16 @@ import java.io.*;
 public class TerminalInterface extends UserInterface {
     //TODO: allow command-line arguments
 
-    double slope = 0;
-    Coordinate startCoords;
-    Coordinate endCoords;
-    String coordType = "";
-    String mapPath = "";
-    String algType = ""; //used to determine limited or unlimited.
-    String algorithmClass = ""; //used to instantiate the chosen algorithm by name
-    double fieldOfView = 0;
+    public double slope = 0;
+    public Coordinate startCoords;
+    public Coordinate endCoords;
+    public String coordType = "";
+    public String mapPath = "";
+    public String algType = ""; //used to determine limited or unlimited.
+    public String algorithmClass = ""; //used to instantiate the chosen algorithm by name
+    public double fieldOfView = 0;
     TerrainMap map = new GeoTIFF();
-    String outputClass = "";
+    public String outputClass = "";
     //other variables inherited from "UserInterface"
 
     /**
@@ -41,13 +41,14 @@ public class TerminalInterface extends UserInterface {
         System.out.println("*  Welcome to the Martian Autonomous Routing System. *");
         System.out.println("**==================================================**\n");
 
-        promptForMap();
-        promptForSlope();
-        promptForStartCoords();
-        promptForEndCoords();
-        promptForAlgorithm();
-        promptForCoordOutput();
-        promptForOutput();
+        if( mapPath.compareTo("") == 0) promptForMap();
+        if( slope == 0 ) promptForSlope();
+        if( startCoords == null)  promptForStartCoords();
+        if( endCoords == null) promptForEndCoords();
+        if( algorithmClass.compareTo("") == 0) promptForAlgorithm();
+        if( coordType.compareTo("") == 0) promptForCoordOutput();
+        if( outputClass.compareTo("") == 0) promptForOutput();
+
         startAlgorithm();
     }
 
@@ -56,7 +57,7 @@ public class TerminalInterface extends UserInterface {
      */
     public void startAlgorithm() {
         MarsRover r;
-        if (algType.equalsIgnoreCase("L"))
+        if (fieldOfView != 0)
             r = new MarsRover(slope, coordType, startCoords, endCoords, mapPath, fieldOfView);
         else //algType equals "U"
             r = new MarsRover(slope, coordType ,startCoords, endCoords, mapPath);
