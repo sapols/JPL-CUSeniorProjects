@@ -102,4 +102,5 @@ public class CLITest extends TestCase {
         CoordinateList coords = new CoordinateList();
         FileOutput fo = new FileOutput(coords);
     }
+
 }

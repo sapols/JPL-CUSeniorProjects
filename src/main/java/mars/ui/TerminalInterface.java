@@ -30,6 +30,7 @@ public class TerminalInterface extends UserInterface {
     double fieldOfView = 0;
     TerrainMap map = new GeoTIFF();
     String outputClass = "";
+    String latLong = "";
     //other variables inherited from "UserInterface"
 
     /**
@@ -43,6 +44,7 @@ public class TerminalInterface extends UserInterface {
 
         promptForMap();
         promptForSlope();
+        promptForLatLong();
         promptForStartCoords();
         promptForEndCoords();
         promptForAlgorithm();
@@ -130,57 +132,176 @@ public class TerminalInterface extends UserInterface {
         }
     }
 
+
+    /**
+     * Asks the user to specify the type of input coordingates they want to use.
+     */
+    public void promptForLatLong(){
+        Scanner scanner = new Scanner(System.in);
+
+        while(true){
+            System.out.println("\nWould you like to input your coordinates in (P) pixels or (L) latlong?");
+            latLong = scanner.next();
+            if(latLong.equalsIgnoreCase("P")){
+                break;
+            }
+            else if(latLong.equalsIgnoreCase("L")){
+                break;
+            }
+            else{
+                System.out.println("Warning: Enter 'P' for pixels or 'L' for latitude and longitude");
+                scanner.nextLine();
+            }
+        }
+
+    }
     /**
      * Asks the user for their start coordinates.
      */
     public void promptForStartCoords() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("\nEnter start coordinates (pressing enter between each number): ");
 
+        if(latLong.equalsIgnoreCase("L")){
+            System.out.println("\nEnter start coordinates in Lat/Long (pressing enter between each number): ");
+        }
+        else{
+            System.out.println("\nEnter start coordinates in Pixels (pressing enter between each number): ");
+        }
         while(true) if(checkStartCoords(scanner)) break;
     }
-
 
     /**
      * Asks the user for their goal coordinates.
      */
     public void promptForEndCoords() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("\nEnter end coordinates (pressing enter between each number):");
+        if(latLong.equalsIgnoreCase("L")){
+            System.out.println("\nEnter goal coordinates in Lat/Long (pressing enter between each number): ");
+        }
+        else{
+            System.out.println("\nEnter goal coordinates in Pixels (pressing enter between each number): ");
+        }
         while(true) if(checkEndCoords(scanner))break;
-
     }
 
     public Boolean checkStartCoords(Scanner scan) {
-        int x;
-        int y;
-        try {
-            System.out.print("X: ");
-            x = scan.nextInt();
-            System.out.print("Y: ");
-            y = scan.nextInt();
-            startCoords = new Coordinate(x, y);
-            return true;
-        } catch (Exception e) {
-            System.out.println("Warning: Enter coordinates as whole numbers only.");
-            scan.nextLine();
-            return false;
+        if(latLong.equalsIgnoreCase("L")){
+            double x;
+            double y;
+
+            double leftbound = 135;
+            double pixeldiff = 7680;
+
+            double pixelx = 0;
+            double pixely = 0;
+
+            try{
+                System.out.print("Lat: ");
+                y = scan.nextDouble();
+                System.out.print("Long: ");
+                x = scan.nextDouble();
+
+                if((x>=135 && x<=180) && (y>=-30 && y<=0)){
+                    //used to calculate map section displacement
+                    double Diff = x - leftbound;
+                    pixelx = Diff * 256.0;
+
+                    pixely = y * -256.0;
+                    pixely = pixeldiff - pixely;
+
+                    System.out.println("Longitude: "+(int)pixelx);
+                    System.out.println("Latitude: "+(int)pixely);
+
+                    startCoords = new Coordinate((int)pixelx, (int)pixely);
+                    return true;
+                }
+                else{
+                    System.out.println("Warning map degrees are out of bounds or not entered as decimals.\n" +
+                            "Please ensure that Latitude is between 135 and 180 and Longitude is between 0 and -30");
+                    return false;
+                }
+            } catch (Exception e) {
+                System.out.println("Warning: Enter coordinates as decimal values only");
+                scan.nextLine();
+                return false;
+            }
+        }
+        else{
+            int x;
+            int y;
+            try {
+                System.out.print("X: ");
+                x = scan.nextInt();
+                System.out.print("Y: ");
+                y = scan.nextInt();
+                startCoords = new Coordinate(x, y);
+                return true;
+            } catch (Exception e) {
+                System.out.println("Warning: Enter coordinates as whole numbers only.");
+                scan.nextLine();
+                return false;
+            }
+
         }
     }
     public Boolean checkEndCoords(Scanner scan) {
-        int x;
-        int y;
-        try {
-            System.out.print("X: ");
-            x = scan.nextInt();
-            System.out.print("Y: ");
-            y = scan.nextInt();
-            endCoords = new Coordinate(x, y);
-            return true;
-        } catch (Exception e) {
-            System.out.println("Warning: Enter coordinates as whole numbers only.");
-            scan.nextLine();
-            return false;
+        if(latLong.equalsIgnoreCase("L")){
+            double x;
+            double y;
+
+            double leftbound = 135;
+            double pixeldiff = 7680;
+
+            double pixelx = 0;
+            double pixely = 0;
+
+            try{
+                System.out.print("Lat: ");
+                y = scan.nextDouble();
+                System.out.print("Long: ");
+                x = scan.nextDouble();
+
+                if((x>=135 && x<=180) && (y>=-30 && y<=0)){
+                    //used to calculate map section displacement
+                    double Diff = x - leftbound;
+                    pixelx = Diff * 256.0;
+
+                    pixely = y * -256.0;
+                    pixely = pixeldiff - pixely;
+
+                    System.out.println("Longitude: "+(int)pixelx);
+                    System.out.println("Latitude: "+(int)pixely);
+
+                    endCoords = new Coordinate((int)pixelx, (int)pixely);
+                    return true;
+                }
+                else{
+                    System.out.println("Warning map degrees are out of bounds or not entered as decimals.\n" +
+                            "Please ensure that Latitude is between 135 and 180 and Longitude is between 0 and -30");
+                    return false;
+                }
+
+            } catch (Exception e) {
+                System.out.println("Warning: Enter coordinates as decimal values only.");
+                scan.nextLine();
+                return false;
+            }
+        }
+        else {
+            int x;
+            int y;
+            try {
+                System.out.print("X: ");
+                x = scan.nextInt();
+                System.out.print("Y: ");
+                y = scan.nextInt();
+                endCoords = new Coordinate(x, y);
+                return true;
+            } catch (Exception e) {
+                System.out.println("Warning: Enter coordinates as whole numbers only.");
+                scan.nextLine();
+                return false;
+            }
         }
     }
 

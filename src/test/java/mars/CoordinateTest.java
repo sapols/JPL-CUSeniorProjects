@@ -70,4 +70,8 @@ public class CoordinateTest extends TestCase{
         GreedyCoordinate testCoord = new GreedyCoordinate(coord);
         assertNotNull(testCoord);
     }
+
+
+
+
 }
