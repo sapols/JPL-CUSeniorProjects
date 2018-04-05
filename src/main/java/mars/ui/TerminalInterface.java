@@ -31,6 +31,7 @@ public class TerminalInterface extends UserInterface {
     TerrainMap map = new GeoTIFF();
     public String outputClass = "";
     String latLong = "";
+
     //other variables inherited from "UserInterface"
 
     /**
@@ -44,7 +45,7 @@ public class TerminalInterface extends UserInterface {
 
         if( mapPath.compareTo("") == 0) promptForMap();
         if( slope == 0 ) promptForSlope();
-		promptForLatLong();
+        promptForLatLong();
         if( startCoords == null)  promptForStartCoords();
         if( endCoords == null) promptForEndCoords();
         if( algorithmClass.compareTo("") == 0) promptForAlgorithm();
