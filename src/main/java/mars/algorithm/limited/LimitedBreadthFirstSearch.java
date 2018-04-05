@@ -150,7 +150,7 @@ public class LimitedBreadthFirstSearch extends Algorithm {
 		        targetNode = n;
             }
         }
-        if(getDistanceToPoint(targetNode.getPosition(),endPosition) < (fieldOfView-1)){
+        if(getDistanceToPoint(targetNode.getPosition(),endPosition) < (fieldOfView-1) && !targetNode.getPosition().equals(startPosition)){
             ArrayList<Coordinate> path = constructPath(targetNode);
             Collections.reverse(path);
             return path;

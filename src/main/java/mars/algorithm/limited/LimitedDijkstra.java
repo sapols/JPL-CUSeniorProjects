@@ -218,7 +218,7 @@ public class LimitedDijkstra extends Algorithm {
                         minNode = t;
                     }
                 }
-                if(minNode.distBetween(goalNode) < (fieldOfView-1)){
+                if(minNode.distBetween(goalNode) < (fieldOfView-1) && !minNode.getPosition().equals(startNode.getPosition())){
                     List<Coordinate> tmpList = minNode.constructPath();
                     path = new ArrayList<Coordinate>(tmpList);
                     break;
@@ -282,6 +282,22 @@ public class LimitedDijkstra extends Algorithm {
             }
             if (goalFound) {
                 break;
+            }
+        }
+        if(nodeVector.isEmpty()){
+            DijkstraNode minNode = getClosestNode(trashVector);
+
+            for(DijkstraNode t : trashVector){
+                if(t.distBetween(goalNode) < minNode.distBetween(goalNode)){
+                    minNode = t;
+                }
+            }
+
+            if(minNode.distBetween(goalNode) < (fieldOfView-1) && !minNode.getPosition().equals(startNode.getPosition())){
+                List<Coordinate> tmpList = minNode.constructPath();
+                path = new ArrayList<Coordinate>(tmpList);
+            }else{
+                throw new Exception("WARNING: A path to the goal could not be found.");
             }
         }
         Collections.reverse(path);
