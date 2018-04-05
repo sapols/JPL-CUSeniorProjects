@@ -30,7 +30,6 @@ public class TerminalInterface extends UserInterface {
     public double fieldOfView = 0;
     TerrainMap map = new GeoTIFF();
     public String outputClass = "";
-    String outputClass = "";
     String latLong = "";
     //other variables inherited from "UserInterface"
 
