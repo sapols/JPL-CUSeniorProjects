@@ -235,6 +235,8 @@ public class TerminalInterface extends UserInterface {
                 x = scan.nextInt();
                 System.out.print("Y: ");
                 y = scan.nextInt();
+                System.out.println("Latitude: " + y);
+                System.out.println("Longitude: " + x);
                 startCoords = new Coordinate(x, y);
                 return true;
             } catch (Exception e) {
@@ -273,6 +275,7 @@ public class TerminalInterface extends UserInterface {
                     System.out.println("Longitude: "+(int)pixelx);
                     System.out.println("Latitude: "+(int)pixely);
 
+
                     endCoords = new Coordinate((int)pixelx, (int)pixely);
                     return true;
                 }
@@ -296,6 +299,8 @@ public class TerminalInterface extends UserInterface {
                 x = scan.nextInt();
                 System.out.print("Y: ");
                 y = scan.nextInt();
+                System.out.println("Latitude: " + y);
+                System.out.println("Longitude: " + x);
                 endCoords = new Coordinate(x, y);
                 return true;
             } catch (Exception e) {
