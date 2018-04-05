@@ -104,6 +104,7 @@ public class TerminalInterface extends UserInterface {
                 System.out.println("Please only select from the given options. Try again:");
             }
         }
+
     }
 
     /**
@@ -277,7 +278,7 @@ public class TerminalInterface extends UserInterface {
                 }
                 else{
                     System.out.println("Warning map degrees are out of bounds or not entered as decimals.\n" +
-                            "Please ensure that Latitude is between 135 and 180 and Longitude is between 0 and -30");
+                            "Please ensure that Latitude is between 0 and -30 and Longitude is between 135 and 180.");
                     return false;
                 }
 

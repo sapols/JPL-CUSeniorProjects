@@ -52,7 +52,7 @@ public class AppTest extends TestCase {
         Coordinate starts = new Coordinate(10,10);
         Coordinate ends = new Coordinate(20, 20);
         String coordType = "L";
-        MarsRover newRover = new MarsRover(0,coordType,starts,ends,"src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
+        MarsRover newRover = new MarsRover(0,coordType,starts,ends,"src/main/resources/marsMap.tif");
         assertEquals(0.,newRover.getSlope(20,20,21,20));
     }
 
@@ -61,7 +61,7 @@ public class AppTest extends TestCase {
         Coordinate starts = new Coordinate(10,10);
         Coordinate ends = new Coordinate(20, 20);
         String coordType = "L";
-        MarsRover newRover = new MarsRover(0,coordType,starts,ends,"src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
+        MarsRover newRover = new MarsRover(0,coordType,starts,ends,"src/main/resources/marsMap.tif");
 
         double maxSlope = 0.5;
         Coordinate point1 = new Coordinate(20, 20);
@@ -120,7 +120,7 @@ public class AppTest extends TestCase {
     public void testpixeltoLatLong() throws Exception{
         Coordinate currentCoord = new Coordinate(11000, 5000);
         GeoTIFF newMap = new GeoTIFF();
-        newMap.initMap("src/test/resources/Phobos_ME_HRSC_DEM_Global_2ppd.tiff");
+        newMap.initMap("src/main/resources/marsMap.tif");
         double[] degrees = newMap.coordinateConvert(currentCoord);
         try{
             assertTrue(degrees[0] != 0 && degrees[1] != 0);
