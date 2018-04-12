@@ -30,11 +30,11 @@ public class MARS {
         ArrayList<String> algs = new ArrayList<String>();
 
 
-        //MarsRover rover = new MarsRover(16,"P",startCoord,endCoord,mapPath,10);
-        //Algorithm alg = new UnlimitedBreadthFirstSearch(rover,"TerminalOutput");
+        MarsRover rover = new MarsRover(10,"P",startCoord,endCoord,mapPath,17);
+        Algorithm alg = new LimitedAStar(rover,"MapImageOutput");
 
-        //alg.findPath();
-        //OutputFactory.getOutput(alg);
+        alg.findPath();
+        OutputFactory.getOutput(alg);
 
         ///*
         //algs.add("LimitedGreedy"); //COMPLETED
@@ -47,9 +47,9 @@ public class MARS {
         //algs.add("UnlimitedBestFirst"); //COMPLETED
         //algs.add("UnlimitedBreadthFirstSearch"); //8 = 424, 12 = 407, 16 = ???, 20 = ???, 24 = ???
         //algs.add("UnlimitedDijkstra");
-        algs.add("UnlimitedGreedy");
+        //algs.add("UnlimitedGreedy");
 
-        doEval(algs, startCoord, endCoord, mapPath);
+        //doEval(algs, startCoord, endCoord, mapPath);
         //*/
 
         //TerminalInterface ti = new TerminalInterface();
