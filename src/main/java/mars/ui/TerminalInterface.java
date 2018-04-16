@@ -7,6 +7,8 @@ import mars.map.GeoTIFF;
 import mars.map.TerrainMap;
 import mars.out.*;
 import mars.rover.MarsRover;
+import mars.views.MapCoordinatePickerFrame;
+
 import java.util.Map;
 import java.util.*;
 import java.io.*;
@@ -136,7 +138,8 @@ public class TerminalInterface extends UserInterface {
      */
     public void promptForStartCoords() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("\nEnter start coordinates (pressing enter between each number): ");
+        System.out.println("\nEnter start coordinates (pressing enter between each number). ");
+        System.out.println("Alternatively, enter 'map' to click to select them:");
 
         while(true) if(checkStartCoords(scanner)) break;
     }
@@ -157,11 +160,18 @@ public class TerminalInterface extends UserInterface {
         int y;
         try {
             System.out.print("X: ");
-            x = scan.nextInt();
-            System.out.print("Y: ");
-            y = scan.nextInt();
-            startCoords = new Coordinate(x, y);
-            return true;
+            String userX = scan.nextLine();
+
+            if (userX.trim().equalsIgnoreCase("map")) { //User wants to click their map to select start/end coords
+                getStartAndEndCoordsByMapClick();
+                return true;
+            } else { //Continue with prompting as normal
+                x = Integer.parseInt(userX);
+                System.out.print("Y: ");
+                y = scan.nextInt();
+                startCoords = new Coordinate(x, y);
+                return true;
+            }
         } catch (Exception e) {
             System.out.println("Warning: Enter coordinates as whole numbers only.");
             scan.nextLine();
@@ -183,6 +193,15 @@ public class TerminalInterface extends UserInterface {
             scan.nextLine();
             return false;
         }
+    }
+
+    /**
+     * Opens a frame with the user's map displayed,
+     * and gets the start/end coordinates by clicking it.
+     */
+    public void getStartAndEndCoordsByMapClick() {
+        endCoords = new Coordinate(0, 0); //Stop the text prompt; MapCoordinatePickerFrame will override these coords
+        new MapCoordinatePickerFrame(this, mapPath);
     }
 
     public void promptForCoordOutput(){
