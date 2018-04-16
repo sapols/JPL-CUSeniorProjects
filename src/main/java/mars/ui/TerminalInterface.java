@@ -159,7 +159,7 @@ public class TerminalInterface extends UserInterface {
         int y;
         try {
             System.out.print("X: ");
-            String userX = scan.nextLine();
+            String userX = scan.next();
 
             if (userX.trim().equalsIgnoreCase("map")) { //User wants to click their map to select start/end coords
                 getStartAndEndCoordsByMapClick();
