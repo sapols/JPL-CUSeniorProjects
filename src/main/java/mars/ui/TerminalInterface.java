@@ -8,7 +8,6 @@ import mars.map.TerrainMap;
 import mars.out.*;
 import mars.rover.MarsRover;
 import mars.views.MapCoordinatePickerFrame;
-
 import java.util.Map;
 import java.util.*;
 import java.io.*;
