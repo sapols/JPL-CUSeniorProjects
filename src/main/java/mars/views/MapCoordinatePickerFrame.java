@@ -2,7 +2,6 @@ package mars.views;
 
 import mars.coordinate.Coordinate;
 import mars.ui.TerminalInterface;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -156,12 +155,13 @@ public class MapCoordinatePickerFrame extends JFrame {
      * @param y Y component of
      */
     public void drawStartMarkOnMap(int x, int y, int r) {
-        for (int i = x-(r/2); i <= x+(r/2); i++) {
-            for (int j = y-(r/2); j <= y+(r/2); j++) {
-                int leftXBorder = x-(r/2);
-                int rightXBorder = x+(r/2);
-                int topYBorder = y-(r/2);
-                int bottomYBorder = y+(r/2);
+        int leftXBorder = x-(r/2);
+        int rightXBorder = x+(r/2);
+        int topYBorder = y-(r/2);
+        int bottomYBorder = y+(r/2);
+
+        for (int i = leftXBorder; i <= rightXBorder; i++) {
+            for (int j = topYBorder; j <= bottomYBorder; j++) {
                 if (i == leftXBorder || i == rightXBorder || j == topYBorder || j == bottomYBorder) {
                     imagePanel.mapBackgroundImage.setRGB(i, j, new Color(255, 0, 18, 187).getRGB());
                 }
