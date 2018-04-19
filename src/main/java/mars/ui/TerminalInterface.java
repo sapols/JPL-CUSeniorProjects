@@ -197,7 +197,7 @@ public class TerminalInterface extends UserInterface {
             double y;
 
             double leftbound = 135;
-            double pixeldiff = 76800;
+            double bottomBound = -30;
 
             double pixelx = 0;
             double pixely = 0;
@@ -211,14 +211,16 @@ public class TerminalInterface extends UserInterface {
 
                 if((x>=135 && x<= 180)&&(y>=-30 && y<=0)){
                     //used to calculate map section
-                    double Diff = x - leftbound;
-                    pixelx = Diff * 256.0;
+                    double Diffx = x - leftbound;
+                    pixelx = Diffx * 256.0;
 
-                    pixely = y * -256.0;
-                    pixely = pixeldiff - pixely;
+                    double Diffy = y - bottomBound;
+                    pixely = Diffy * 256;
 
+                    System.out.println("here");
+                    System.out.println("Latitude: " + (int)pixely);
                     System.out.println("Longitude: " + (int)pixelx);
-                    System.out.println("Latitude:" + (int)pixely);
+
 
                     startCoords = new Coordinate((int)pixelx, (int)pixely);
                     return true;
@@ -266,7 +268,7 @@ public class TerminalInterface extends UserInterface {
             double y;
 
             double leftbound = 135;
-            double pixeldiff = 76800;
+            double bottomBound = -30;
 
             double pixelx = 0;
             double pixely = 0;
@@ -280,14 +282,15 @@ public class TerminalInterface extends UserInterface {
 
                 if((x>=135 && x<= 180)&&(y>=-30 && y<=0)){
                     //used to calculate map section
-                    double Diff = x - leftbound;
-                    pixelx = Diff * 256.0;
+                    double Diffx = x - leftbound;
+                    pixelx = Diffx * 256.0;
 
-                    pixely = y * -256.0;
-                    pixely = pixeldiff - pixely;
+                    double Diffy = y - bottomBound;
+                    pixely = Diffy * 256;
 
+                    System.out.println("here");
+                    System.out.println("Latitude: " + (int)pixely);
                     System.out.println("Longitude: " + (int)pixelx);
-                    System.out.println("Latitude:" + (int)pixely);
 
                     endCoords = new Coordinate((int)pixelx, (int)pixely);
                     return true;

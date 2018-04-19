@@ -59,7 +59,7 @@ public class GeoTIFF extends TerrainMap {
             throw new Exception("Bad getValue");
         }
         double[] data;
-        if (mapPath == "src/main/resources/mi15S158E.tif") {
+        if (mapPath == "src/main/resources/marsMap.tif") {
             data = gridData.getPixel((int)x,(int)y,pixel);
         }else{
             data = gridData.getPixel(posGrid.x,posGrid.y,pixel);
