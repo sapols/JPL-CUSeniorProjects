@@ -158,92 +158,23 @@ public class GeoTIFF extends TerrainMap {
 
 
 
-    public double[] coordinateConvert(Coordinate coord){
+    public double[] coordinateConvert(Coordinate coord) {
 
-        double getEquator = gridData.getHeight() / 2;
-        double getPrimeMeridean = gridData.getWidth() / 2;
+        double xpixel = coord.getX();
+        double ypixel = coord.getY();
 
         //new Coordinate placeholder
-        double xLatDouble = 0;
-        double yLonDouble = 0;
 
+        double Diffx = xpixel / 256.0;
+        double xLonDouble = Diffx + 135.0;
 
-        if(coord.getUnits() == "pixels") {
+        double Diffy = ypixel / 256;
+        double yLatDouble = -30 + Diffy;
 
-
-            //get x and y coordinate
-            double xpixel = coord.getX();
-            double ypixel = coord.getY();
-
-            double pixelDistanceLatitude = ypixel - getEquator;
-            double pixelDistanceLongitude = xpixel - getPrimeMeridean;
-
-
-            /**
-             * TODO: find a method to dynamically calculate Pixels Per Degree given a GeoTiff
-             *
-              */
-
-            //Viking Mosaic is 40 pixels per degree.
-            xLatDouble = pixelDistanceLatitude / 40.0;
-            yLonDouble = pixelDistanceLongitude / 40.0;
-
-
-
-        }
-
-        else if(coord.getUnits() == "latlong"){
-
-            //get x and y coordinate
-            double latdegree = coord.getX();
-            double longdegree = coord.getY();
-
-            //declare latitude and longitude pixel
-            double latitudepixel;
-            double longitudepixel;
-
-
-            /**
-             * TODO: find a method to dynamically calculate Pixels Per Degree given a GeoTiff
-             *
-             */
-            //Viking Mosaic is 40 pixels per degree
-            latitudepixel = latdegree * 40;
-            longitudepixel = longdegree * 40;
-
-            double pixelDistanceLatitude = getEquator + latitudepixel;
-            double pixelDistanceLongitude = getPrimeMeridean + longitudepixel;
-
-            xLatDouble = (int) pixelDistanceLatitude;
-            yLonDouble = (int) pixelDistanceLongitude;
-
-
-        }
-        else{
-            System.out.println("Invalid Coordinate type");
-        }
-
-        double [] newCoord = {xLatDouble, yLonDouble};
+        double[] newCoord = {yLatDouble, xLonDouble};
 
         return newCoord;
-
     }
-
-
-    /* leftover function from Route. Keeping here for now
-    public void getLine(double x) throws Exception {
-        double lastStat = -1;
-        double newStat = -1;
-        int lastY = 0;
-        int maxY = 46080;
-        for(int i=0; i<maxY; i++){
-            newStat = terrain.getValue(x,i);
-            if(newStat != lastStat){
-                System.out.println(Double.toString(lastStat) + " (" + Integer.toString(lastY) + " - " + Integer.toString(i) + ")");
-                lastStat = newStat;
-                lastY = i;
-            }
-        }
-    }
-     */
 }
+
+
