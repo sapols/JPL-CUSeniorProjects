@@ -67,16 +67,16 @@ public class MapTest extends TestCase{
         assertTrue(minresult < maxresult);
     }
 
-    public void testLatLonConvert() throws Exception {
-        GeoTIFF map = new GeoTIFF();
-        map.initMap("src/main/resources/Mars_MGS_MOLA_DEM_mosaic_global_463m.tif");
-        double lat = 4.59;
-        double lon = 137.44;
-
-        double[] pixels = map.coordinateConvert(new Coordinate((int)lat, (int)lon));
-        System.out.println("x: " + pixels[0]);
-        System.out.println("y: " + pixels[1]);
-    }
+//    public void testLatLonConvert() throws Exception {
+//        GeoTIFF map = new GeoTIFF();
+//        map.initMap("src/main/resources/Mars_MGS_MOLA_DEM_mosaic_global_463m.tif");
+//        double lat = 4.59;
+//        double lon = 137.44;
+//
+//        double[] pixels = map.coordinateConvert(new Coordinate((int)lat, (int)lon));
+//        System.out.println("x: " + pixels[0]);
+//        System.out.println("y: " + pixels[1]);
+//    }
 
     /*
     //@Test
