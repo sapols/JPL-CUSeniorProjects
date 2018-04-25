@@ -45,7 +45,7 @@ public class TerminalInterface extends UserInterface {
 
         if( mapPath.compareTo("") == 0) promptForMap();
         if( slope == 0 ) promptForSlope();
-        promptForLatLong();
+        promptForInputType();
         if( startCoords == null)  promptForStartCoords();
         if( endCoords == null) promptForEndCoords();
         if( algorithmClass.compareTo("") == 0) promptForAlgorithm();
@@ -134,12 +134,13 @@ public class TerminalInterface extends UserInterface {
         }
     }
 
-    public void promptForLatLong(){
+    public void promptForInputType(){
         Scanner scanner = new Scanner(System.in);
 
         if(mapPath.equals("src/main/resources/marsMap.tif")){
             while(true){
-                System.out.println("\nWould you like to input your coordinates in (P) pixels or (L) lat/long?");
+                System.out.println("\nWould you like to input your coordinates in (P) pixels, (L) lat/long,");
+                System.out.println("or (MAP) by clicking a map?");
                 latLong = scanner.next();
 
                 if(latLong.equalsIgnoreCase("P")){
@@ -148,14 +149,31 @@ public class TerminalInterface extends UserInterface {
                 else if(latLong.equalsIgnoreCase("L")){
                     break;
                 }
+                else if(latLong.equalsIgnoreCase("map")){
+                    break;
+                }
                 else{
-                    System.out.println("Warning: Enter 'P' for pixels or 'L' for latitude/longitude");
+                    System.out.println("Warning: Enter 'P' for pixels, 'L' for latitude/longitude, or 'map'.");
                     scanner.nextLine();
                 }
             }
         }
         else{
-          latLong = "P";
+            while(true){
+                System.out.println("\nWould you like to input your coordinates in (P) pixels or (MAP) by clicking a map?");
+                latLong = scanner.next();
+
+                if(latLong.equalsIgnoreCase("P")){
+                    break;
+                }
+                else if(latLong.equalsIgnoreCase("map")){
+                    break;
+                }
+                else{
+                    System.out.println("Warning: Enter 'P' for pixels or 'map' for a clickable map.");
+                    scanner.nextLine();
+                }
+            }
         }
     }
 
@@ -167,15 +185,15 @@ public class TerminalInterface extends UserInterface {
 
         if(latLong.equalsIgnoreCase("L")){
             System.out.println("\nEnter start coordinates in lat/long (pressing enter between each number): ");
-            System.out.println("Alternatively, enter 'map' to click to select them:");
-
+            while(true) if(checkStartCoords(scanner)) break;
+        }
+        else if (latLong.equalsIgnoreCase("map")) {
+            getStartAndEndCoordsByMapClick();
         }
         else{
             System.out.println("\nEnter start coordinates in pixels (pressing enter between each number): ");
-            System.out.println("Alternatively, enter 'map' to click to select them:");
+            while(true) if(checkStartCoords(scanner)) break;
         }
-
-        while(true) if(checkStartCoords(scanner)) break;
     }
 
 
@@ -202,41 +220,34 @@ public class TerminalInterface extends UserInterface {
             double x;
             double y;
 
-            double leftbound = 135;
+            double leftBound = 135;
             double bottomBound = -30;
 
-            double pixelx = 0;
-            double pixely = 0;
+            double pixelX = 0;
+            double pixelY = 0;
 
             try{
                 System.out.print("Lat: ");
-                String userLat = scan.next();
+                y = scan.nextDouble();
 
-                if (userLat.trim().equalsIgnoreCase("map")) { //User wants to click their map to select start/end coords
-                    getStartAndEndCoordsByMapClick();
+                System.out.print("Long: ");
+                x = scan.nextDouble();
+
+                if ((x >= 135 && x <= 180) && (y >= -30 && y <= 0)) {
+                    //used to calculate map section
+                    double diffX = x - leftBound;
+                    pixelX = diffX * 256.0;
+
+                    double diffY = y - bottomBound;
+                    pixelY = diffY * 256;
+
+                    startCoords = new Coordinate((int) pixelX, (int) pixelY);
                     return true;
-                } else { //Continue with prompting as normal
-                    y = Double.parseDouble(userLat);
+                } else {
+                    System.out.println("\nWarning: those coordinates were out of bounds or not entered as numbers.");
+                    System.out.println("Please ensure that latitude is between 0.0 and -30.0 and that longitude is between 135.0 and 180.0.\n");
 
-                    System.out.print("Long: ");
-                    x = scan.nextDouble();
-
-                    if ((x >= 135 && x <= 180) && (y >= -30 && y <= 0)) {
-                        //used to calculate map section
-                        double Diffx = x - leftbound;
-                        pixelx = Diffx * 256.0;
-
-                        double Diffy = y - bottomBound;
-                        pixely = Diffy * 256;
-
-                        startCoords = new Coordinate((int) pixelx, (int) pixely);
-                        return true;
-                    } else {
-                        System.out.println("\nWarning: those coordinates were out of bounds or not entered as numbers.");
-                        System.out.println("Please ensure that latitude is between 0.0 and -30.0 and that longitude is between 135.0 and 180.0.\n");
-
-                        return false;
-                    }
+                    return false;
                 }
             } catch (Exception e) {
                 System.out.println("Warning: Enter coordinates as numerical values only");
@@ -251,18 +262,13 @@ public class TerminalInterface extends UserInterface {
 
             try {
                 System.out.print("X: ");
-                String userX = scan.next();
+                x = scan.nextInt();
 
-                if (userX.trim().equalsIgnoreCase("map")) { //User wants to click their map to select start/end coords
-                    getStartAndEndCoordsByMapClick();
-                    return true;
-                } else { //Continue with prompting as normal
-                    x = Integer.parseInt(userX);
-                    System.out.print("Y: ");
-                    y = scan.nextInt();
-                    startCoords = new Coordinate(x, y);
-                    return true;
-                }
+                System.out.print("Y: ");
+                y = scan.nextInt();
+
+                startCoords = new Coordinate(x, y);
+                return true;
             } catch (Exception e) {
                 System.out.println("Warning: Enter coordinates as whole numbers only.");
                 scan.nextLine();
@@ -276,11 +282,11 @@ public class TerminalInterface extends UserInterface {
             double x;
             double y;
 
-            double leftbound = 135;
+            double leftBound = 135;
             double bottomBound = -30;
 
-            double pixelx = 0;
-            double pixely = 0;
+            double pixelX = 0;
+            double pixelY = 0;
 
             try{
                 System.out.print("Lat: ");
@@ -291,13 +297,13 @@ public class TerminalInterface extends UserInterface {
 
                 if((x>=135 && x<= 180)&&(y>=-30 && y<=0)){
                     //used to calculate map section
-                    double Diffx = x - leftbound;
-                    pixelx = Diffx * 256.0;
+                    double diffX = x - leftBound;
+                    pixelX = diffX * 256.0;
 
-                    double Diffy = y - bottomBound;
-                    pixely = Diffy * 256;
+                    double diffY = y - bottomBound;
+                    pixelY = diffY * 256;
 
-                    endCoords = new Coordinate((int)pixelx, (int)pixely);
+                    endCoords = new Coordinate((int)pixelX, (int)pixelY);
                     return true;
                 }
                 else{
@@ -450,7 +456,7 @@ public class TerminalInterface extends UserInterface {
 
         System.out.println("\nLast question, please choose your output type (separate multiple choices with commas ','):\n");
         for (Integer index : outputs.keySet()) {
-            System.out.println("("+index+") " + outputs.get(index));
+            System.out.println("("+index+") " + getBetterOutputName(outputs.get(index)));
         }
         System.out.println(); //New line
 
@@ -646,6 +652,24 @@ public class TerminalInterface extends UserInterface {
         }
 
         return outputs;
+    }
+
+    /**
+     * Helper method that returns better names for known output types
+     */
+    public String getBetterOutputName(String outputFileName) {
+        String betterName = "";
+
+        if (outputFileName.equals("FileOutput"))
+            betterName = "File Output";
+        else if (outputFileName.equals("MapImageOutput"))
+            betterName = "Map Image Output";
+        else if (outputFileName.equals("TerminalOutput"))
+            betterName = "Terminal Output";
+        else
+            betterName = outputFileName;
+
+        return betterName;
     }
 
 }
