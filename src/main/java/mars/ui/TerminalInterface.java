@@ -85,7 +85,7 @@ public class TerminalInterface extends UserInterface {
         Map<Integer, String> maps = findMaps(resourceDir);
 
         for (Integer index : maps.keySet()) {
-            System.out.println("("+index+") " + maps.get(index));
+            System.out.println("("+index+") " + getBetterMapName(maps.get(index)));
         }
         System.out.println(); //New line
 
@@ -138,7 +138,7 @@ public class TerminalInterface extends UserInterface {
 
         if(mapPath.equals("src/main/resources/marsMap.tif")){
             while(true){
-                System.out.println("\nWould you like to input your coordinates in (P) pixels or (L) latlong?");
+                System.out.println("\nWould you like to input your coordinates in (P) pixels or (L) lat/long?");
                 latLong = scanner.next();
 
                 if(latLong.equalsIgnoreCase("P")){
@@ -148,7 +148,7 @@ public class TerminalInterface extends UserInterface {
                     break;
                 }
                 else{
-                    System.out.println("Warning: Enter 'P' for pixels or 'L' for latitude and longitude");
+                    System.out.println("Warning: Enter 'P' for pixels or 'L' for latitude/longitude");
                     scanner.nextLine();
                 }
             }
@@ -167,11 +167,11 @@ public class TerminalInterface extends UserInterface {
         Scanner scanner = new Scanner(System.in);
 
         if(latLong.equalsIgnoreCase("L")){
-            System.out.println("\nEnter start coordinates in Lat/long (pressing enter between each number): ");
+            System.out.println("\nEnter start coordinates in lat/long (pressing enter between each number): ");
 
         }
         else{
-            System.out.println("\nEnter start coordinates in Pixels (pressing enter between each number): ");
+            System.out.println("\nEnter start coordinates in pixels (pressing enter between each number): ");
         }
 
         while(true) if(checkStartCoords(scanner)) break;
@@ -185,11 +185,11 @@ public class TerminalInterface extends UserInterface {
         Scanner scanner = new Scanner(System.in);
 
         if(latLong.equalsIgnoreCase("L")){
-            System.out.println("\nEnter start coordinates in Lat/long (pressing enter between each number): ");
+            System.out.println("\nEnter end coordinates in lat/long (pressing enter between each number): ");
 
         }
         else{
-            System.out.println("\nEnter start coordinates in Pixels (pressing enter between each number): ");
+            System.out.println("\nEnter end coordinates in pixels (pressing enter between each number): ");
         }
 
         while(true) if(checkEndCoords(scanner))break;
@@ -226,19 +226,18 @@ public class TerminalInterface extends UserInterface {
                     return true;
                 }
                 else{
-                    System.out.println("Warning map degrees are out of bounds or not entered as decimals.\n");
-                    System.out.println("Please ensure that the longitude is between 135 and 180 and Latitude is between 0 and -30.\n");
+                    System.out.println("\nWarning: those coordinates were out of bounds or not entered as numbers.");
+                    System.out.println("Please ensure that latitude is between 0.0 and -30.0 and that longitude is between 135.0 and 180.0.\n");
 
                     return false;
                 }
             } catch (Exception e) {
-                System.out.println("Warning: Enter coordinates as decimal values only");
+                System.out.println("Warning: Enter coordinates as numerical values only");
                 scan.nextLine();
 
                 return false;
             }
         }
-
         else{
             int x;
             int y;
@@ -259,6 +258,7 @@ public class TerminalInterface extends UserInterface {
             }
         }
     }
+
     public Boolean checkEndCoords(Scanner scan) {
         if(latLong.equalsIgnoreCase("L")){
             double x;
@@ -289,13 +289,13 @@ public class TerminalInterface extends UserInterface {
                     return true;
                 }
                 else{
-                    System.out.println("Warning map degrees are out of bounds or not entered as decimals.\n");
-                    System.out.println("Please ensure that the longitude is between 135 and 180 and Latitude is between 0 and -30.\n");
+                    System.out.println("\nWarning: those coordinates were out of bounds or not entered as numbers.");
+                    System.out.println("Please ensure that latitude is between 0.0 and -30.0 and that longitude is between 135.0 and 180.0.\n");
 
                     return false;
                 }
             } catch (Exception e) {
-                System.out.println("Warning: Enter coordinates as decimal values only");
+                System.out.println("Warning: Enter coordinates as numerical values only");
                 scan.nextLine();
 
                 return false;
@@ -326,17 +326,21 @@ public class TerminalInterface extends UserInterface {
         Scanner scanner = new Scanner(System.in);
 
         while(true){
-            System.out.println("\nWould you like the output coordinates to be in (P) pixels or (L) latlong?");
-            coordType = scanner.next();
-            if(coordType.equalsIgnoreCase("P")){
-                break;
+            if(mapPath.equals("src/main/resources/marsMap.tif")) {
+                System.out.println("\nWould you like the output coordinates to be in (P) pixels or (L) lat/long?");
+                coordType = scanner.next();
+                if (coordType.equalsIgnoreCase("P")) {
+                    break;
+                } else if (coordType.equalsIgnoreCase("L")) {
+                    break;
+                } else {
+                    System.out.println("Warning: Enter 'P' for pixels or 'L' for latitude/longitude");
+                    scanner.nextLine();
+                }
             }
-            else if(coordType.equalsIgnoreCase("L")){
+            else {
+                coordType = "P";
                 break;
-            }
-            else{
-                System.out.println("Warning: Enter 'P' for pixels or 'L' for latitude and longitude");
-                scanner.nextLine();
             }
         }
 
@@ -356,8 +360,8 @@ public class TerminalInterface extends UserInterface {
             }
             else if(algType.equalsIgnoreCase("L")) {
                 scanner.nextLine();
-                //TODO: say what the units are here.
-                System.out.println("\nEnter the Field of View radius of your rover:");
+                //TODO: allow meter units on supported maps
+                System.out.println("\nEnter the Field of View radius of your rover (in pixels):");
                 while(true) {
                     try {
                         fieldOfView = scanner.nextDouble();
@@ -395,7 +399,7 @@ public class TerminalInterface extends UserInterface {
 
         System.out.println("\nPlease choose your algorithm:\n");
         for (Integer index : algorithms.keySet()) {
-            System.out.println("("+index+") " + algorithms.get(index));
+            System.out.println("("+index+") " + getBetterAlgorithmName(algorithms.get(index)));
         }
         System.out.println(); //New line
 
@@ -520,6 +524,28 @@ public class TerminalInterface extends UserInterface {
     }
 
     /**
+     * Helper method that returns better names for known maps
+     */
+    public String getBetterMapName(String mapFileName) {
+        String betterName = "";
+
+        if (mapFileName.equals("Europa_Voyager_GalileoSSI_global_mosaic_500m.tif"))
+            betterName = "Europa";
+        else if (mapFileName.equals("Mars_MGS_MOLA_DEM_mosaic_global_463m.tif"))
+            betterName = "Mars (global)";
+        else if (mapFileName.equals("marsMap.tif"))
+            betterName = "Mars (Aeolus region)";
+        else if (mapFileName.equals("Phobos_ME_HRSC_DEM_Global_2ppd.tiff"))
+            betterName = "Phobos (global)";
+        else if (mapFileName.equals("Phobos_Viking_Mosaic_40ppd_DLRcontrol.tif"))
+            betterName = "Phobos (Viking mosaic)";
+        else
+            betterName = mapFileName;
+
+        return betterName;
+    }
+
+    /**
      * Returns a Map of [index] -> [name of algorithm]
      */
     public Map<Integer, String> findAlgorithms(String dir) {
@@ -536,6 +562,44 @@ public class TerminalInterface extends UserInterface {
         }
 
         return algorithms;
+    }
+
+    /**
+     * Helper method that returns better names for known algorithms
+     */
+    public String getBetterAlgorithmName(String algFileName) {
+        String betterName = "";
+
+        if (algFileName.equals("LimitedAStar"))
+            betterName = "A* Search";
+        else if (algFileName.equals("LimitedBestFirst"))
+            betterName = "Best-First Search";
+        else if (algFileName.equals("LimitedBreadthFirstSearch"))
+            betterName = "Breadth-First Search";
+        else if (algFileName.equals("LimitedDijkstra"))
+            betterName = "Dijkstra's Algorithm";
+        else if (algFileName.equals("LimitedGreedy"))
+            betterName = "Greedy Algorithm";
+        else if (algFileName.equals("LimitedIDAStar"))
+            betterName = "IDA* Search";
+        else if (algFileName.equals("UnlimitedAStarNonRecursive"))
+            betterName = "A* Search (non-recursive)";
+        else if (algFileName.equals("UnlimitedAStarRecursive"))
+            betterName = "A* Search (recursive)";
+        else if (algFileName.equals("UnlimitedBestFirst"))
+            betterName = "Best-First Search";
+        else if (algFileName.equals("UnlimitedBreadthFirstSearch"))
+            betterName = "Breadth-First Search";
+        else if (algFileName.equals("UnlimitedDijkstra"))
+            betterName = "Dijkstra's Algorithm";
+        else if (algFileName.equals("UnlimitedGreedy"))
+            betterName = "Greedy Algorithm";
+        else if (algFileName.equals("UnlimitedIDAStar"))
+            betterName = "IDA* Search";
+        else
+            betterName = algFileName;
+
+        return betterName;
     }
 
     /**
