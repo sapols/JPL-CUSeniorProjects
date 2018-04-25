@@ -140,7 +140,8 @@ public class MarsRover extends Rover {
             // step 2
             double point1height = map.getValue(point1.getX(),point1.getY()); //get the heights of the given points
             double point2height = map.getValue(point2.getX(),point2.getY());
-            if(point1height != point2height){ //if the heights aren't the same
+            if((point1height != point2height && !(map.getMapPath()).equals("src/main/resources/marsMap.tif")) ||
+                    (Math.abs(point1height - point2height) > 6 && (map.getMapPath()).equals("src/main/resources/marsMap.tif"))){ //if the heights aren't the same
                 //while the current adjusted point height and original are the same, and points are in bounds
                 while(temp1x > 0 && temp1x < map.getWidth() && temp1y > 0 && temp1y < map.getHeight() ){
                     if(point1height != map.getValue(temp1x,temp1y)) break;

@@ -7,6 +7,7 @@ import mars.map.GeoTIFF;
 import mars.map.TerrainMap;
 import mars.out.*;
 import mars.rover.MarsRover;
+import mars.views.MapCoordinatePickerFrame;
 import java.util.Map;
 import java.util.*;
 import java.io.*;
@@ -30,6 +31,7 @@ public class TerminalInterface extends UserInterface {
     public double fieldOfView = 0;
     TerrainMap map = new GeoTIFF();
     public String outputClass = "";
+    String latLong = "";
     //other variables inherited from "UserInterface"
 
     /**
@@ -43,6 +45,7 @@ public class TerminalInterface extends UserInterface {
 
         if( mapPath.compareTo("") == 0) promptForMap();
         if( slope == 0 ) promptForSlope();
+        promptForLatLong();
         if( startCoords == null)  promptForStartCoords();
         if( endCoords == null) promptForEndCoords();
         if( algorithmClass.compareTo("") == 0) promptForAlgorithm();
@@ -83,7 +86,7 @@ public class TerminalInterface extends UserInterface {
         Map<Integer, String> maps = findMaps(resourceDir);
 
         for (Integer index : maps.keySet()) {
-            System.out.println("("+index+") " + maps.get(index));
+            System.out.println("("+index+") " + getBetterMapName(maps.get(index)));
         }
         System.out.println(); //New line
 
@@ -131,12 +134,46 @@ public class TerminalInterface extends UserInterface {
         }
     }
 
+    public void promptForLatLong(){
+        Scanner scanner = new Scanner(System.in);
+
+        if(mapPath.equals("src/main/resources/marsMap.tif")){
+            while(true){
+                System.out.println("\nWould you like to input your coordinates in (P) pixels or (L) lat/long?");
+                latLong = scanner.next();
+
+                if(latLong.equalsIgnoreCase("P")){
+                    break;
+                }
+                else if(latLong.equalsIgnoreCase("L")){
+                    break;
+                }
+                else{
+                    System.out.println("Warning: Enter 'P' for pixels or 'L' for latitude/longitude");
+                    scanner.nextLine();
+                }
+            }
+        }
+        else{
+          latLong = "P";
+        }
+    }
+
     /**
      * Asks the user for their start coordinates.
      */
     public void promptForStartCoords() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("\nEnter start coordinates (pressing enter between each number): ");
+
+        if(latLong.equalsIgnoreCase("L")){
+            System.out.println("\nEnter start coordinates in lat/long (pressing enter between each number): ");
+            System.out.println("Alternatively, enter 'map' to click to select them:");
+
+        }
+        else{
+            System.out.println("\nEnter start coordinates in pixels (pressing enter between each number): ");
+            System.out.println("Alternatively, enter 'map' to click to select them:");
+        }
 
         while(true) if(checkStartCoords(scanner)) break;
     }
@@ -147,59 +184,184 @@ public class TerminalInterface extends UserInterface {
      */
     public void promptForEndCoords() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("\nEnter end coordinates (pressing enter between each number):");
+
+        if(latLong.equalsIgnoreCase("L")){
+            System.out.println("\nEnter end coordinates in lat/long (pressing enter between each number): ");
+
+        }
+        else{
+            System.out.println("\nEnter end coordinates in pixels (pressing enter between each number): ");
+        }
+
         while(true) if(checkEndCoords(scanner))break;
 
     }
 
     public Boolean checkStartCoords(Scanner scan) {
-        int x;
-        int y;
-        try {
-            System.out.print("X: ");
-            x = scan.nextInt();
-            System.out.print("Y: ");
-            y = scan.nextInt();
-            startCoords = new Coordinate(x, y);
-            return true;
-        } catch (Exception e) {
-            System.out.println("Warning: Enter coordinates as whole numbers only.");
-            scan.nextLine();
-            return false;
+        if(latLong.equalsIgnoreCase("L")){
+            double x;
+            double y;
+
+            double leftbound = 135;
+            double bottomBound = -30;
+
+            double pixelx = 0;
+            double pixely = 0;
+
+            try{
+                System.out.print("Lat: ");
+                String userLat = scan.next();
+
+                if (userLat.trim().equalsIgnoreCase("map")) { //User wants to click their map to select start/end coords
+                    getStartAndEndCoordsByMapClick();
+                    return true;
+                } else { //Continue with prompting as normal
+                    y = Double.parseDouble(userLat);
+
+                    System.out.print("Long: ");
+                    x = scan.nextDouble();
+
+                    if ((x >= 135 && x <= 180) && (y >= -30 && y <= 0)) {
+                        //used to calculate map section
+                        double Diffx = x - leftbound;
+                        pixelx = Diffx * 256.0;
+
+                        double Diffy = y - bottomBound;
+                        pixely = Diffy * 256;
+
+                        startCoords = new Coordinate((int) pixelx, (int) pixely);
+                        return true;
+                    } else {
+                        System.out.println("\nWarning: those coordinates were out of bounds or not entered as numbers.");
+                        System.out.println("Please ensure that latitude is between 0.0 and -30.0 and that longitude is between 135.0 and 180.0.\n");
+
+                        return false;
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Warning: Enter coordinates as numerical values only");
+                scan.nextLine();
+
+                return false;
+            }
+        }
+        else{
+            int x;
+            int y;
+
+            try {
+                System.out.print("X: ");
+                String userX = scan.next();
+
+                if (userX.trim().equalsIgnoreCase("map")) { //User wants to click their map to select start/end coords
+                    getStartAndEndCoordsByMapClick();
+                    return true;
+                } else { //Continue with prompting as normal
+                    x = Integer.parseInt(userX);
+                    System.out.print("Y: ");
+                    y = scan.nextInt();
+                    startCoords = new Coordinate(x, y);
+                    return true;
+                }
+            } catch (Exception e) {
+                System.out.println("Warning: Enter coordinates as whole numbers only.");
+                scan.nextLine();
+                return false;
+            }
         }
     }
+
     public Boolean checkEndCoords(Scanner scan) {
-        int x;
-        int y;
-        try {
-            System.out.print("X: ");
-            x = scan.nextInt();
-            System.out.print("Y: ");
-            y = scan.nextInt();
-            endCoords = new Coordinate(x, y);
-            return true;
-        } catch (Exception e) {
-            System.out.println("Warning: Enter coordinates as whole numbers only.");
-            scan.nextLine();
-            return false;
+        if(latLong.equalsIgnoreCase("L")){
+            double x;
+            double y;
+
+            double leftbound = 135;
+            double bottomBound = -30;
+
+            double pixelx = 0;
+            double pixely = 0;
+
+            try{
+                System.out.print("Lat: ");
+                y = scan.nextDouble();
+
+                System.out.print("Long: ");
+                x = scan.nextDouble();
+
+                if((x>=135 && x<= 180)&&(y>=-30 && y<=0)){
+                    //used to calculate map section
+                    double Diffx = x - leftbound;
+                    pixelx = Diffx * 256.0;
+
+                    double Diffy = y - bottomBound;
+                    pixely = Diffy * 256;
+
+                    endCoords = new Coordinate((int)pixelx, (int)pixely);
+                    return true;
+                }
+                else{
+                    System.out.println("\nWarning: those coordinates were out of bounds or not entered as numbers.");
+                    System.out.println("Please ensure that latitude is between 0.0 and -30.0 and that longitude is between 135.0 and 180.0.\n");
+
+                    return false;
+                }
+            } catch (Exception e) {
+                System.out.println("Warning: Enter coordinates as numerical values only");
+                scan.nextLine();
+
+                return false;
+            }
+        }
+        else{
+            int x;
+            int y;
+
+            try {
+                System.out.print("X: ");
+                x = scan.nextInt();
+                System.out.print("Y: ");
+                y = scan.nextInt();
+
+                endCoords = new Coordinate(x, y);
+                return true;
+            } catch (Exception e) {
+
+                System.out.println("Warning: Enter coordinates as whole numbers only.");
+                scan.nextLine();
+                return false;
+            }
         }
     }
+
+    /**
+     * Opens a frame with the user's map displayed,
+     * and gets the start/end coordinates by clicking it.
+     */
+     public void getStartAndEndCoordsByMapClick() {
+        endCoords = new Coordinate(0, 0); //Stop the text prompt; MapCoordinatePickerFrame will override these coords
+        new MapCoordinatePickerFrame(this, mapPath);
+     }
 
     public void promptForCoordOutput(){
         Scanner scanner = new Scanner(System.in);
 
         while(true){
-            System.out.println("\nWould you like the output coordinates to be in (P) pixels or (L) latlong?");
-            coordType = scanner.next();
-            if(coordType.equalsIgnoreCase("P")){
-                break;
+            if(mapPath.equals("src/main/resources/marsMap.tif")) {
+                System.out.println("\nWould you like the output coordinates to be in (P) pixels or (L) lat/long?");
+                coordType = scanner.next();
+                if (coordType.equalsIgnoreCase("P")) {
+                    break;
+                } else if (coordType.equalsIgnoreCase("L")) {
+                    break;
+                } else {
+                    System.out.println("Warning: Enter 'P' for pixels or 'L' for latitude/longitude");
+                    scanner.nextLine();
+                }
             }
-            else if(coordType.equalsIgnoreCase("L")){
+            else {
+                coordType = "P";
                 break;
-            }
-            else{
-                System.out.println("Warning: Enter 'P' for pixels or 'L' for latitude and longitude");
-                scanner.nextLine();
             }
         }
 
@@ -219,8 +381,8 @@ public class TerminalInterface extends UserInterface {
             }
             else if(algType.equalsIgnoreCase("L")) {
                 scanner.nextLine();
-                //TODO: say what the units are here.
-                System.out.println("\nEnter the Field of View radius of your rover:");
+                //TODO: allow meter units on supported maps
+                System.out.println("\nEnter the Field of View radius of your rover (in pixels):");
                 while(true) {
                     try {
                         fieldOfView = scanner.nextDouble();
@@ -258,7 +420,7 @@ public class TerminalInterface extends UserInterface {
 
         System.out.println("\nPlease choose your algorithm:\n");
         for (Integer index : algorithms.keySet()) {
-            System.out.println("("+index+") " + algorithms.get(index));
+            System.out.println("("+index+") " + getBetterAlgorithmName(algorithms.get(index)));
         }
         System.out.println(); //New line
 
@@ -383,6 +545,28 @@ public class TerminalInterface extends UserInterface {
     }
 
     /**
+     * Helper method that returns better names for known maps
+     */
+    public String getBetterMapName(String mapFileName) {
+        String betterName = "";
+
+        if (mapFileName.equals("Europa_Voyager_GalileoSSI_global_mosaic_500m.tif"))
+            betterName = "Europa";
+        else if (mapFileName.equals("Mars_MGS_MOLA_DEM_mosaic_global_463m.tif"))
+            betterName = "Mars (global)";
+        else if (mapFileName.equals("marsMap.tif"))
+            betterName = "Mars (Aeolus region)";
+        else if (mapFileName.equals("Phobos_ME_HRSC_DEM_Global_2ppd.tiff"))
+            betterName = "Phobos (global)";
+        else if (mapFileName.equals("Phobos_Viking_Mosaic_40ppd_DLRcontrol.tif"))
+            betterName = "Phobos (Viking mosaic)";
+        else
+            betterName = mapFileName;
+
+        return betterName;
+    }
+
+    /**
      * Returns a Map of [index] -> [name of algorithm]
      */
     public Map<Integer, String> findAlgorithms(String dir) {
@@ -399,6 +583,44 @@ public class TerminalInterface extends UserInterface {
         }
 
         return algorithms;
+    }
+
+    /**
+     * Helper method that returns better names for known algorithms
+     */
+    public String getBetterAlgorithmName(String algFileName) {
+        String betterName = "";
+
+        if (algFileName.equals("LimitedAStar"))
+            betterName = "A* Search";
+        else if (algFileName.equals("LimitedBestFirst"))
+            betterName = "Best-First Search";
+        else if (algFileName.equals("LimitedBreadthFirstSearch"))
+            betterName = "Breadth-First Search";
+        else if (algFileName.equals("LimitedDijkstra"))
+            betterName = "Dijkstra's Algorithm";
+        else if (algFileName.equals("LimitedGreedy"))
+            betterName = "Greedy Algorithm";
+        else if (algFileName.equals("LimitedIDAStar"))
+            betterName = "IDA* Search";
+        else if (algFileName.equals("UnlimitedAStarNonRecursive"))
+            betterName = "A* Search (non-recursive)";
+        else if (algFileName.equals("UnlimitedAStarRecursive"))
+            betterName = "A* Search (recursive)";
+        else if (algFileName.equals("UnlimitedBestFirst"))
+            betterName = "Best-First Search";
+        else if (algFileName.equals("UnlimitedBreadthFirstSearch"))
+            betterName = "Breadth-First Search";
+        else if (algFileName.equals("UnlimitedDijkstra"))
+            betterName = "Dijkstra's Algorithm";
+        else if (algFileName.equals("UnlimitedGreedy"))
+            betterName = "Greedy Algorithm";
+        else if (algFileName.equals("UnlimitedIDAStar"))
+            betterName = "IDA* Search";
+        else
+            betterName = algFileName;
+
+        return betterName;
     }
 
     /**

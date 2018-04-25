@@ -70,7 +70,8 @@ public class CLITest extends TestCase {
 
     public void testCLIcheckStartCoordsFailsWithNonNumbers() throws Exception{
         TerminalInterface ti = new TerminalInterface();
-        assertFalse(ti.checkStartCoords(new Scanner("non-number non-number")));
+        Boolean bool = ti.checkStartCoords(new Scanner("non-number non-number"));
+        assertFalse(bool);
     }
 
     public void testCLIcheckStartCoordsFailsWithNonIntegers() throws Exception{
