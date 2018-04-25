@@ -7,6 +7,7 @@ import mars.map.GeoTIFF;
 import mars.map.TerrainMap;
 import mars.out.*;
 import mars.rover.MarsRover;
+import mars.views.MapCoordinatePickerFrame;
 import java.util.Map;
 import java.util.*;
 import java.io.*;
@@ -158,8 +159,6 @@ public class TerminalInterface extends UserInterface {
         }
     }
 
-
-
     /**
      * Asks the user for their start coordinates.
      */
@@ -168,10 +167,12 @@ public class TerminalInterface extends UserInterface {
 
         if(latLong.equalsIgnoreCase("L")){
             System.out.println("\nEnter start coordinates in lat/long (pressing enter between each number): ");
+            System.out.println("Alternatively, enter 'map' to click to select them:");
 
         }
         else{
             System.out.println("\nEnter start coordinates in pixels (pressing enter between each number): ");
+            System.out.println("Alternatively, enter 'map' to click to select them:");
         }
 
         while(true) if(checkStartCoords(scanner)) break;
@@ -209,27 +210,33 @@ public class TerminalInterface extends UserInterface {
 
             try{
                 System.out.print("Lat: ");
-                y = scan.nextDouble();
+                String userLat = scan.next();
 
-                System.out.print("Long: ");
-                x = scan.nextDouble();
-
-                if((x>=135 && x<= 180)&&(y>=-30 && y<=0)){
-                    //used to calculate map section
-                    double Diffx = x - leftbound;
-                    pixelx = Diffx * 256.0;
-
-                    double Diffy = y - bottomBound;
-                    pixely = Diffy * 256;
-
-                    startCoords = new Coordinate((int)pixelx, (int)pixely);
+                if (userLat.trim().equalsIgnoreCase("map")) { //User wants to click their map to select start/end coords
+                    getStartAndEndCoordsByMapClick();
                     return true;
-                }
-                else{
-                    System.out.println("\nWarning: those coordinates were out of bounds or not entered as numbers.");
-                    System.out.println("Please ensure that latitude is between 0.0 and -30.0 and that longitude is between 135.0 and 180.0.\n");
+                } else { //Continue with prompting as normal
+                    y = Double.parseDouble(userLat);
 
-                    return false;
+                    System.out.print("Long: ");
+                    x = scan.nextDouble();
+
+                    if ((x >= 135 && x <= 180) && (y >= -30 && y <= 0)) {
+                        //used to calculate map section
+                        double Diffx = x - leftbound;
+                        pixelx = Diffx * 256.0;
+
+                        double Diffy = y - bottomBound;
+                        pixely = Diffy * 256;
+
+                        startCoords = new Coordinate((int) pixelx, (int) pixely);
+                        return true;
+                    } else {
+                        System.out.println("\nWarning: those coordinates were out of bounds or not entered as numbers.");
+                        System.out.println("Please ensure that latitude is between 0.0 and -30.0 and that longitude is between 135.0 and 180.0.\n");
+
+                        return false;
+                    }
                 }
             } catch (Exception e) {
                 System.out.println("Warning: Enter coordinates as numerical values only");
@@ -244,14 +251,19 @@ public class TerminalInterface extends UserInterface {
 
             try {
                 System.out.print("X: ");
-                x = scan.nextInt();
-                System.out.print("Y: ");
-                y = scan.nextInt();
+                String userX = scan.next();
 
-                startCoords = new Coordinate(x, y);
-                return true;
+                if (userX.trim().equalsIgnoreCase("map")) { //User wants to click their map to select start/end coords
+                    getStartAndEndCoordsByMapClick();
+                    return true;
+                } else { //Continue with prompting as normal
+                    x = Integer.parseInt(userX);
+                    System.out.print("Y: ");
+                    y = scan.nextInt();
+                    startCoords = new Coordinate(x, y);
+                    return true;
+                }
             } catch (Exception e) {
-
                 System.out.println("Warning: Enter coordinates as whole numbers only.");
                 scan.nextLine();
                 return false;
@@ -321,6 +333,15 @@ public class TerminalInterface extends UserInterface {
             }
         }
     }
+
+    /**
+     * Opens a frame with the user's map displayed,
+     * and gets the start/end coordinates by clicking it.
+     */
+     public void getStartAndEndCoordsByMapClick() {
+        endCoords = new Coordinate(0, 0); //Stop the text prompt; MapCoordinatePickerFrame will override these coords
+        new MapCoordinatePickerFrame(this, mapPath);
+     }
 
     public void promptForCoordOutput(){
         Scanner scanner = new Scanner(System.in);

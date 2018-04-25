@@ -92,7 +92,7 @@ public class LimitedIDAStar extends Algorithm {
             }
 
             thisCoord = coords.get(coords.size()-1); //set current location to the latest position in the path
-            System.out.println((thisCoord.getX()) + "," + (thisCoord.getY())); //debug
+            //System.out.println((thisCoord.getX()) + "," + (thisCoord.getY())); //debug
         }
         //If we reached here, we got out of the while loop. We're done!
     }
