@@ -136,20 +136,25 @@ public class TerminalInterface extends UserInterface {
     public void promptForLatLong(){
         Scanner scanner = new Scanner(System.in);
 
-        while(true){
-            System.out.println("\nWould you like to input your coordinates in (P) pixels or (L) latlong?");
-            latLong = scanner.next();
+        if(mapPath.equals("src/main/resources/marsMap.tif")){
+            while(true){
+                System.out.println("\nWould you like to input your coordinates in (P) pixels or (L) latlong?");
+                latLong = scanner.next();
 
-            if(latLong.equalsIgnoreCase("P")){
-                break;
+                if(latLong.equalsIgnoreCase("P")){
+                    break;
+                }
+                else if(latLong.equalsIgnoreCase("L")){
+                    break;
+                }
+                else{
+                    System.out.println("Warning: Enter 'P' for pixels or 'L' for latitude and longitude");
+                    scanner.nextLine();
+                }
             }
-            else if(latLong.equalsIgnoreCase("L")){
-                break;
-            }
-            else{
-                System.out.println("Warning: Enter 'P' for pixels or 'L' for latitude and longitude");
-                scanner.nextLine();
-            }
+        }
+        else{
+          latLong = "P";
         }
     }
 
@@ -217,17 +222,12 @@ public class TerminalInterface extends UserInterface {
                     double Diffy = y - bottomBound;
                     pixely = Diffy * 256;
 
-                    System.out.println("here");
-                    System.out.println("Latitude: " + (int)pixely);
-                    System.out.println("Longitude: " + (int)pixelx);
-
-
                     startCoords = new Coordinate((int)pixelx, (int)pixely);
                     return true;
                 }
                 else{
                     System.out.println("Warning map degrees are out of bounds or not entered as decimals.\n");
-                    System.out.println("Please ensure that the latitude is between 135 and 180 and Longitude is between 0 and -30.\n");
+                    System.out.println("Please ensure that the longitude is between 135 and 180 and Latitude is between 0 and -30.\n");
 
                     return false;
                 }
@@ -248,9 +248,6 @@ public class TerminalInterface extends UserInterface {
                 x = scan.nextInt();
                 System.out.print("Y: ");
                 y = scan.nextInt();
-
-                System.out.println("Longitude: " + x);
-                System.out.println("Latitude:" + y);
 
                 startCoords = new Coordinate(x, y);
                 return true;
@@ -288,16 +285,12 @@ public class TerminalInterface extends UserInterface {
                     double Diffy = y - bottomBound;
                     pixely = Diffy * 256;
 
-                    System.out.println("here");
-                    System.out.println("Latitude: " + (int)pixely);
-                    System.out.println("Longitude: " + (int)pixelx);
-
                     endCoords = new Coordinate((int)pixelx, (int)pixely);
                     return true;
                 }
                 else{
                     System.out.println("Warning map degrees are out of bounds or not entered as decimals.\n");
-                    System.out.println("Please ensure that the latitude is between 135 and 180 and Longitude is between 0 and -30.\n");
+                    System.out.println("Please ensure that the longitude is between 135 and 180 and Latitude is between 0 and -30.\n");
 
                     return false;
                 }
@@ -317,9 +310,6 @@ public class TerminalInterface extends UserInterface {
                 x = scan.nextInt();
                 System.out.print("Y: ");
                 y = scan.nextInt();
-
-                System.out.println("Longitude: " + x);
-                System.out.println("Latitude:" + y);
 
                 endCoords = new Coordinate(x, y);
                 return true;
