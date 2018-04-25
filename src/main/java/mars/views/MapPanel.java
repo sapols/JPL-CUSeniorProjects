@@ -16,6 +16,8 @@ public class MapPanel extends JPanel {
     private MapFrame frame;
     private java.util.List<? extends Coordinate> path;
     private BufferedImage mapBackgroundImage;
+    private java.util.List<Coordinate> curiosityPath;
+    private String mapPath;
 
     /**
      * Constructor for this JPanel subclass.
@@ -25,10 +27,12 @@ public class MapPanel extends JPanel {
      * @param p The path output by our rover's algorithm
      * @param img The image of the map used by our rover
      */
-    public MapPanel(MapFrame f, java.util.List<? extends Coordinate> p, BufferedImage img) {
+    public MapPanel(MapFrame f, java.util.List<? extends Coordinate> p, java.util.List<Coordinate> cp, BufferedImage img, String mPath) {
         frame = f;
         path = p;
+        curiosityPath = cp;
         mapBackgroundImage = img;
+        mapPath = mPath;
 
         setPreferredSize(new Dimension(mapBackgroundImage.getWidth(), mapBackgroundImage.getHeight()));
         this.setLayout(new BorderLayout(10, 10));
@@ -36,6 +40,8 @@ public class MapPanel extends JPanel {
         //Create components
         mapBackgroundImage = convertColorModel(mapBackgroundImage, BufferedImage.TYPE_INT_ARGB); //Needed to add non-greyscale colors
         convertPathXYtoJavaXY(); //Needed to account for differences in coordinate systems
+        convertCuriosityPathXYtoJavaXY();
+        drawCuriosityPathOnImage();
         drawPathOnImage(mapBackgroundImage, path);
     }
 
@@ -62,6 +68,14 @@ public class MapPanel extends JPanel {
      */
     public void convertPathXYtoJavaXY() {
         for (Coordinate c : path) {
+            int y = c.getY();
+            int javaY = mapBackgroundImage.getHeight() - y;
+            c.setY(javaY);
+        }
+    }
+
+    public void convertCuriosityPathXYtoJavaXY() {
+        for (Coordinate c : curiosityPath) {
             int y = c.getY();
             int javaY = mapBackgroundImage.getHeight() - y;
             c.setY(javaY);
@@ -95,6 +109,17 @@ public class MapPanel extends JPanel {
             map.setRGB(x, y, new Color(255, 0, 18, 187).getRGB());
         }
     }
+
+    public void drawCuriosityPathOnImage() {
+        if(mapPath.equals("src/main/resources/marsMap.tif")) {
+            for (Coordinate c : curiosityPath) {
+                int x = c.getX();
+                int y = c.getY();
+                mapBackgroundImage.setRGB(x, y, new Color(0, 200, 255, 255).getRGB());
+            }
+        }
+    }
+
 
     /**
      * Refreshes the components on panel.

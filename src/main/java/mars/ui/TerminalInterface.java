@@ -202,11 +202,11 @@ public class TerminalInterface extends UserInterface {
             double x;
             double y;
 
-            double leftbound = 135;
+            double leftBound = 135;
             double bottomBound = -30;
 
-            double pixelx = 0;
-            double pixely = 0;
+            double pixelX = 0;
+            double pixelY = 0;
 
             try{
                 System.out.print("Lat: ");
@@ -223,13 +223,13 @@ public class TerminalInterface extends UserInterface {
 
                     if ((x >= 135 && x <= 180) && (y >= -30 && y <= 0)) {
                         //used to calculate map section
-                        double Diffx = x - leftbound;
-                        pixelx = Diffx * 256.0;
+                        double diffX = x - leftBound;
+                        pixelX = diffX * 256.0;
 
-                        double Diffy = y - bottomBound;
-                        pixely = Diffy * 256;
+                        double diffY = y - bottomBound;
+                        pixelY = diffY * 256;
 
-                        startCoords = new Coordinate((int) pixelx, (int) pixely);
+                        startCoords = new Coordinate((int) pixelX, (int) pixelY);
                         return true;
                     } else {
                         System.out.println("\nWarning: those coordinates were out of bounds or not entered as numbers.");
@@ -276,11 +276,11 @@ public class TerminalInterface extends UserInterface {
             double x;
             double y;
 
-            double leftbound = 135;
+            double leftBound = 135;
             double bottomBound = -30;
 
-            double pixelx = 0;
-            double pixely = 0;
+            double pixelX = 0;
+            double pixelY = 0;
 
             try{
                 System.out.print("Lat: ");
@@ -291,13 +291,13 @@ public class TerminalInterface extends UserInterface {
 
                 if((x>=135 && x<= 180)&&(y>=-30 && y<=0)){
                     //used to calculate map section
-                    double Diffx = x - leftbound;
-                    pixelx = Diffx * 256.0;
+                    double diffX = x - leftBound;
+                    pixelX = diffX * 256.0;
 
-                    double Diffy = y - bottomBound;
-                    pixely = Diffy * 256;
+                    double diffY = y - bottomBound;
+                    pixelY = diffY * 256;
 
-                    endCoords = new Coordinate((int)pixelx, (int)pixely);
+                    endCoords = new Coordinate((int)pixelX, (int)pixelY);
                     return true;
                 }
                 else{
