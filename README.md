@@ -24,8 +24,8 @@ This project is sponsored by NASA Jet Propulsion Laboratory, with Marcel Llopis 
 To use the program, you must provide it:
 - a compatible elevation map (see below)
 - specifications for a theoretical rover, including a maximum slope it can safely traverse, as well as field of view for using the limited route algorithm
-- a start coordinate (in pixels) corresponding to a location on the input map
-- an end coordinate (in pixels) also corresponding to the map
+- a start coordinate (in pixels or latitude/longitude) corresponding to a location on the input map
+- an end coordinate (in pixels or latitude/longitude) also corresponding to the map
 - a specified algorithm type to run (see below)
 - a specified algorithm to run (see below)
 - a specified coordinate output type (see below)
@@ -95,3 +95,7 @@ This information can be provided to the utiltity by simply running it, and follo
 ### Execution
 
 Once the program completes, the resultant path the chosen algorithm determined will be output to the terminal in a human-readable format. It can be run again to check against another algorithm or saved to a CSV.
+
+## Copyright
+
+MIT
