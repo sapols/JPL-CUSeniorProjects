@@ -95,7 +95,3 @@ This information can be provided to the utiltity by simply running it, and follo
 ### Execution
 
 Once the program completes, the resultant path the chosen algorithm determined will be output to the terminal in a human-readable format. It can be run again to check against another algorithm or saved to a CSV.
-
-## Copyright
-
-something open source TODO
