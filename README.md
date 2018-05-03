@@ -1,10 +1,10 @@
 Master: [![Build Status](https://travis-ci.org/RossBlassingame/JPL-CUSeniorProjects.svg?branch=master)](https://travis-ci.org/RossBlassingame/JPL-CUSeniorProjects)
 Dev: [![Build Status](https://travis-ci.org/RossBlassingame/JPL-CUSeniorProjects.svg?branch=dev)](https://travis-ci.org/RossBlassingame/JPL-CUSeniorProjects)
 
-# CU Senior Projects -- JPL Team
+# CU Senior Projects — JPL Team
 
 ## M.A.R.S.
-The Martian Autonomous Routing System (or MARS) is a command-line utility that produces lists of coordinates describing possible routes for a rover to take to reach a goal coordinate from the start, whilst navigating a provided elevation map, within the bounds of its physical capabilities.
+The Martian Autonomous Routing System (M.A.R.S.) is a command-line utility that produces lists of coordinates describing possible routes for a rover to take from a start to a goal coordinate, navigating a provided elevation map with various algorithms, within the bounds of its physical capabilities. Research was conducted to assess how useful the various algorithms are in guiding a rover. Our paper is stored in `docs/MARS Research Paper.pdf`.
 
 ## Members:
  - Ross Blassingame
@@ -15,7 +15,7 @@ The Martian Autonomous Routing System (or MARS) is a command-line utility that p
  - Dean Moser
  
 ## Sponsor
-This project is sponsored by NASA Jet Propulsion Laboratory, with Marcel Llopis providing advice and oversight for the work.
+This project is sponsored by NASA's Jet Propulsion Laboratory, with Marcel Llopis providing advice and oversight for the work.
 
 ## Usage
 
@@ -37,13 +37,13 @@ To use the program, you must provide it:
 - a specified output type (see below)
 
 
-Compatible elevation map formats include:
+#### Compatible elevation map formats include:
 
 | Format    | Accepted Extension(s) |
 | --------- | --------------------- |
 | GeoTIFF   | .tiff, .tif           |
 
-Available maps include:
+#### Available maps include (but are not limited to):
 
 | Map Names                                  | Prompt Key  | 
 | -----------------------------------------  | ----------- | 
@@ -53,14 +53,14 @@ Available maps include:
 | Phobos (global)                            | (4)         |
 | Phobos (Viking mosaic)                     | (5)         | 
 
-Available algorithm types include:
+#### Available algorithm types include:
 
 | Algorithm Type  | Prompt Key | Description                                                                               |
 | --------------- | ---------- | ----------------------------------------------------------------------------------------- |
 | Unlimited scope | U          | Navigates from start to goal with perfect information with regards to the elevation map.  |
 | Limited scope   | L          | Navigates from start to goal with information gathered as it traverses the elevation map. |
  
-Available algorithms include:
+#### Available algorithms include:
 
 | Unlimited Algorithms| Prompt Key | Description                                                                               |
 | ------------------- | ---------- | ----------------------------------------------------------------------------------------- |
@@ -78,26 +78,25 @@ Available algorithms include:
 | IDA*                | (2)        | Navigates from start to goal with information gathered as it traverses the elevation map. |
 | Best First          | (3)        | Navigates from start to goal with perfect information with regards to the elevation map.  |
 | Breadth First Search| (4)        | Navigates from start to goal with information gathered as it traverses the elevation map. | 
-| A* (Non-Recursive)  | (5)        | Navigates from start to goal with perfect information with regards to the elevation map.  |
-| A* (Recursive)      | (6)        | Navigates from start to goal with information gathered as it traverses the elevation map. | 
-| Dijkstra            | (7)        | Navigates from start to goal with information gathered as it traverses the elevation map. |
+| A*                  | (5)        | Navigates from start to goal with perfect information with regards to the elevation map.  |
+| Dijkstra            | (6)        | Navigates from start to goal with information gathered as it traverses the elevation map. |
 
-Available output coordinate types include:
+#### Available output coordinate types include:
 
 | Coordinate Type| Prompt Key | Description                                                                                |
 | -------------- | ---------- | ------------------------------------------------------------------------------------------ |
 | Pixel          | P          | Outputs the rover's path from start to goal coordinate in pixels.                          |
-| Lat/Lon        | L          | Outputs the rover's path from start to goal coordinate in latitude and longitude.          |
+| Lat/Long       | L          | Outputs the rover's path from start to goal coordinate in latitude and longitude.          |
 
-Available output options include:
+#### Available output options include:
 
 | Output Type| Prompt Key | Description                                                                                    |
-| -------------- | ---------- | ------------------------------------------------------------------------------------------ |
-| File Output    | (1)        | Outputs the rover's path from start to goal coordinate in an external CSV file.            |
-| Image Output   | (2)        | Outputs the rover's path from start to goal coordinate by coloring the path on the GeoTIFF.|
-| Terminal Output| (3)        | Outputs the rover's path from start to goal coordinate in the terminal.                    |
+| ------------------ | ---------- | ------------------------------------------------------------------------------------------ |
+| File Output        | (1)        | Outputs the rover's path from start to goal coordinate in an external CSV file.            |
+| Map Image Output   | (2)        | Outputs the rover's path from start to goal coordinate by coloring the path on the GeoTIFF.|
+| Terminal Output    | (3)        | Outputs the rover's path from start to goal coordinate in the terminal.                    |
 
-This information can be provided to the utiltity by simply running it, and following the prompts. 
+This information can be given to the software by simply running it and following the prompts, or by running it with command-line arguments. Start and end coordinates can be chosen by clicking in the optional GUI. 
  
 ### Execution
 
