@@ -19,6 +19,11 @@ This project is sponsored by NASA Jet Propulsion Laboratory, with Marcel Llopis 
 
 ## Usage
 
+The first step after cloning this repo is to download all the maps used in M.A.R.S. to your machine:
+https://drive.google.com/drive/folders/1xHH8RP3YiBOSrKbFDmddHxtVKfZrIqUE?usp=sharing
+
+Next, place those maps inside of `src/main/resources`.
+
 ### Input
 
 To use the program, you must provide it:
