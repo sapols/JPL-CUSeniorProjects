@@ -1,10 +1,10 @@
 Master: [![Build Status](https://travis-ci.org/RossBlassingame/JPL-CUSeniorProjects.svg?branch=master)](https://travis-ci.org/RossBlassingame/JPL-CUSeniorProjects)
 Dev: [![Build Status](https://travis-ci.org/RossBlassingame/JPL-CUSeniorProjects.svg?branch=dev)](https://travis-ci.org/RossBlassingame/JPL-CUSeniorProjects)
 
-# CU Senior Projects -- JPL Team
+# CU Senior Projects — JPL Team
 
 ## M.A.R.S.
-The Martian Autonomous Routing System (or MARS) is a command-line utility that produces lists of coordinates describing possible routes for a rover to take to reach a goal coordinate from the start, whilst navigating a provided elevation map, within the bounds of its physical capabilities.
+The Martian Autonomous Routing System (M.A.R.S.) is a command-line utility that produces lists of coordinates describing possible routes for a rover to take from a start to a goal coordinate, navigating a provided elevation map, within the bounds of its physical capabilities.
 
 ## Members:
  - Ross Blassingame
@@ -15,7 +15,7 @@ The Martian Autonomous Routing System (or MARS) is a command-line utility that p
  - Dean Moser
  
 ## Sponsor
-This project is sponsored by NASA Jet Propulsion Laboratory, with Marcel Llopis providing advice and oversight for the work.
+This project is sponsored by NASA's Jet Propulsion Laboratory, with Marcel Llopis providing advice and oversight for the work.
 
 ## Usage
 
