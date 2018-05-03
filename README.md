@@ -19,6 +19,11 @@ This project is sponsored by NASA Jet Propulsion Laboratory, with Marcel Llopis 
 
 ## Usage
 
+The first step after cloning this repo is to download all the maps used in M.A.R.S. to your machine:
+https://drive.google.com/drive/folders/1xHH8RP3YiBOSrKbFDmddHxtVKfZrIqUE?usp=sharing
+
+Next, place those maps inside of `src/main/resources`.
+
 ### Input
 
 To use the program, you must provide it:
@@ -40,11 +45,13 @@ Compatible elevation map formats include:
 
 Available maps include:
 
-| Map Names                                  | Prompt Key  | Description           |
-| -----------------------------------------  | ----------- | ----------------------|
-| Mars_MGS_MOLA_DEM_mosaic_global_463m.tif   | (1)         | 128 Pixels Per Degree |
-| Phobos_ME_HRSC_DEM_Global_2ppd.tiff        | (2)         | 2 Pixels Per Degree   |
-| Phobos_Viking_Mosaic_40ppd_DLRcontrol.tif  | (3)         | 40 Pixels Per Degree  |
+| Map Names                                  | Prompt Key  | 
+| -----------------------------------------  | ----------- | 
+| Europa                                     | (1)         | 
+| Mars (global)                              | (2)         |
+| Mars (Aeolus region                        | (3)         |
+| Phobos (global)                            | (4)         |
+| Phobos (Viking mosaic)                     | (5)         | 
 
 Available algorithm types include:
 
