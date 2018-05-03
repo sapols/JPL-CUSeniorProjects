@@ -43,7 +43,7 @@ Compatible elevation map formats include:
 | --------- | --------------------- |
 | GeoTIFF   | .tiff, .tif           |
 
-Available maps include:
+Available maps include (but are not limited to):
 
 | Map Names                                  | Prompt Key  | 
 | -----------------------------------------  | ----------- | 
@@ -78,24 +78,23 @@ Available algorithms include:
 | IDA*                | (2)        | Navigates from start to goal with information gathered as it traverses the elevation map. |
 | Best First          | (3)        | Navigates from start to goal with perfect information with regards to the elevation map.  |
 | Breadth First Search| (4)        | Navigates from start to goal with information gathered as it traverses the elevation map. | 
-| A* (Non-Recursive)  | (5)        | Navigates from start to goal with perfect information with regards to the elevation map.  |
-| A* (Recursive)      | (6)        | Navigates from start to goal with information gathered as it traverses the elevation map. | 
-| Dijkstra            | (7)        | Navigates from start to goal with information gathered as it traverses the elevation map. |
+| A*                  | (5)        | Navigates from start to goal with perfect information with regards to the elevation map.  |
+| Dijkstra            | (6)        | Navigates from start to goal with information gathered as it traverses the elevation map. |
 
 Available output coordinate types include:
 
 | Coordinate Type| Prompt Key | Description                                                                                |
 | -------------- | ---------- | ------------------------------------------------------------------------------------------ |
 | Pixel          | P          | Outputs the rover's path from start to goal coordinate in pixels.                          |
-| Lat/Lon        | L          | Outputs the rover's path from start to goal coordinate in latitude and longitude.          |
+| Lat/Long       | L          | Outputs the rover's path from start to goal coordinate in latitude and longitude.          |
 
 Available output options include:
 
 | Output Type| Prompt Key | Description                                                                                    |
-| -------------- | ---------- | ------------------------------------------------------------------------------------------ |
-| File Output    | (1)        | Outputs the rover's path from start to goal coordinate in an external CSV file.            |
-| Image Output   | (2)        | Outputs the rover's path from start to goal coordinate by coloring the path on the GeoTIFF.|
-| Terminal Output| (3)        | Outputs the rover's path from start to goal coordinate in the terminal.                    |
+| ------------------ | ---------- | ------------------------------------------------------------------------------------------ |
+| File Output        | (1)        | Outputs the rover's path from start to goal coordinate in an external CSV file.            |
+| Map Image Output   | (2)        | Outputs the rover's path from start to goal coordinate by coloring the path on the GeoTIFF.|
+| Terminal Output    | (3)        | Outputs the rover's path from start to goal coordinate in the terminal.                    |
 
 This information can be provided to the utiltity by simply running it, and following the prompts. 
  
