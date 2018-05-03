@@ -52,6 +52,7 @@ Available maps include:
 | Mars (Aeolus region                        | (3)         |
 | Phobos (global)                            | (4)         |
 | Phobos (Viking mosaic)                     | (5)         | 
+
 Available algorithm types include:
 
 | Algorithm Type  | Prompt Key | Description                                                                               |
