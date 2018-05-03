@@ -6,6 +6,8 @@ Dev: [![Build Status](https://travis-ci.org/RossBlassingame/JPL-CUSeniorProjects
 ## M.A.R.S.
 The Martian Autonomous Routing System (M.A.R.S.) is a command-line utility that produces lists of coordinates describing possible routes for a rover to take from a start to a goal coordinate, navigating a provided elevation map with various algorithms, within the bounds of its physical capabilities. Research was conducted to assess how useful the various algorithms are in guiding a rover. Our paper is stored in `docs/MARS Research Paper.pdf`.
 
+![Poster](https://github.com/sapols/JPL-CUSeniorProjects/blob/dev/docs/MARS%20Expo%20Poster.jpg)
+
 ## Members:
  - Ross Blassingame
  - Robert Ballard
