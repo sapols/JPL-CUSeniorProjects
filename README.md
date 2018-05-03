@@ -37,13 +37,13 @@ To use the program, you must provide it:
 - a specified output type (see below)
 
 
-Compatible elevation map formats include:
+#### Compatible elevation map formats include:
 
 | Format    | Accepted Extension(s) |
 | --------- | --------------------- |
 | GeoTIFF   | .tiff, .tif           |
 
-Available maps include (but are not limited to):
+#### Available maps include (but are not limited to):
 
 | Map Names                                  | Prompt Key  | 
 | -----------------------------------------  | ----------- | 
@@ -53,14 +53,14 @@ Available maps include (but are not limited to):
 | Phobos (global)                            | (4)         |
 | Phobos (Viking mosaic)                     | (5)         | 
 
-Available algorithm types include:
+#### Available algorithm types include:
 
 | Algorithm Type  | Prompt Key | Description                                                                               |
 | --------------- | ---------- | ----------------------------------------------------------------------------------------- |
 | Unlimited scope | U          | Navigates from start to goal with perfect information with regards to the elevation map.  |
 | Limited scope   | L          | Navigates from start to goal with information gathered as it traverses the elevation map. |
  
-Available algorithms include:
+#### Available algorithms include:
 
 | Unlimited Algorithms| Prompt Key | Description                                                                               |
 | ------------------- | ---------- | ----------------------------------------------------------------------------------------- |
@@ -81,14 +81,14 @@ Available algorithms include:
 | A*                  | (5)        | Navigates from start to goal with perfect information with regards to the elevation map.  |
 | Dijkstra            | (6)        | Navigates from start to goal with information gathered as it traverses the elevation map. |
 
-Available output coordinate types include:
+#### Available output coordinate types include:
 
 | Coordinate Type| Prompt Key | Description                                                                                |
 | -------------- | ---------- | ------------------------------------------------------------------------------------------ |
 | Pixel          | P          | Outputs the rover's path from start to goal coordinate in pixels.                          |
 | Lat/Long       | L          | Outputs the rover's path from start to goal coordinate in latitude and longitude.          |
 
-Available output options include:
+#### Available output options include:
 
 | Output Type| Prompt Key | Description                                                                                    |
 | ------------------ | ---------- | ------------------------------------------------------------------------------------------ |
@@ -96,7 +96,7 @@ Available output options include:
 | Map Image Output   | (2)        | Outputs the rover's path from start to goal coordinate by coloring the path on the GeoTIFF.|
 | Terminal Output    | (3)        | Outputs the rover's path from start to goal coordinate in the terminal.                    |
 
-This information can be provided to the utiltity by simply running it, and following the prompts. 
+This information can be given to the software by simply running it and following the prompts, or by running it with command-line arguments. Start and end coordinates can be chosen by clicking in the optional GUI. 
  
 ### Execution
 
