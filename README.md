@@ -64,24 +64,24 @@ To use the program, you must provide it:
  
 #### Available algorithms include:
 
-| Unlimited Algorithms| Prompt Key | Description                                                                               |
-| ------------------- | ---------- | ----------------------------------------------------------------------------------------- |
-| Greedy              | (1)        | Navigates from start to goal with perfect information with regards to the elevation map.  |
-| IDA*                | (2)        | Navigates from start to goal with information gathered as it traverses the elevation map. |
-| Best First          | (3)        | Navigates from start to goal with perfect information with regards to the elevation map.  |
-| Breadth First Search| (4)        | Navigates from start to goal with information gathered as it traverses the elevation map. | 
-| A* (Non-Recursive)  | (5)        | Navigates from start to goal with perfect information with regards to the elevation map.  |
-| A* (Recursive)      | (6)        | Navigates from start to goal with information gathered as it traverses the elevation map. | 
-| Dijkstra            | (7)        | Navigates from start to goal with information gathered as it traverses the elevation map. |
+| Unlimited Algorithms| Prompt Key |                                                                                
+| ------------------- | ---------- | 
+| Greedy              | (1)        |   
+| IDA*                | (2)        | 
+| Best First          | (3)        | 
+| Breadth First Search| (4)        | 
+| A* (Non-Recursive)  | (5)        | 
+| A* (Recursive)      | (6)        | 
+| Dijkstra            | (7)        | 
 
-| Limited Algorithms  | Prompt Key | Description                                                                               |
-| ------------------- | ---------- | ----------------------------------------------------------------------------------------- |
-| Greedy              | (1)        | Navigates from start to goal with perfect information with regards to the elevation map.  |
-| IDA*                | (2)        | Navigates from start to goal with information gathered as it traverses the elevation map. |
-| Best First          | (3)        | Navigates from start to goal with perfect information with regards to the elevation map.  |
-| Breadth First Search| (4)        | Navigates from start to goal with information gathered as it traverses the elevation map. | 
-| A*                  | (5)        | Navigates from start to goal with perfect information with regards to the elevation map.  |
-| Dijkstra            | (6)        | Navigates from start to goal with information gathered as it traverses the elevation map. |
+| Limited Algorithms  | Prompt Key |                                                                                
+| ------------------- | ---------- | 
+| Greedy              | (1)        | 
+| IDA*                | (2)        | 
+| Best First          | (3)        |  
+| Breadth First Search| (4)        | 
+| A*                  | (5)        | 
+| Dijkstra            | (6)        | 
 
 #### Available output coordinate types include:
 
